@@ -36,9 +36,7 @@
             // 
             // textBox1
             // 
-            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox1.Anchor = (System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left| System.Windows.Forms.AnchorStyles.Right);
             this.textBox1.Location = new System.Drawing.Point(8, 27);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
@@ -48,8 +46,7 @@
             // 
             // textBox2
             // 
-            this.textBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox2.Anchor = (System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right);
             this.textBox2.Location = new System.Drawing.Point(8, 124);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(288, 20);
@@ -66,7 +63,7 @@
             // 
             // stringCounterLbl
             // 
-            this.stringCounterLbl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.stringCounterLbl.Anchor = (System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left);
             this.stringCounterLbl.AutoSize = true;
             this.stringCounterLbl.Location = new System.Drawing.Point(12, 108);
             this.stringCounterLbl.Name = "stringCounterLbl";
@@ -83,10 +80,10 @@
             this.Controls.Add(this.stringLbl);
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.textBox1);
-            this.MaximizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(318, 193);
+            this.MaximizeBox = false; // Убираем функцию на весь экран
+            this.MinimumSize = new System.Drawing.Size(318, 193); //Минимальный размер 
             this.Name = "Form1";
-            this.Text = " StringLengthCounter";
+            this.Text = "StringLengthCounter";
             this.Shown += new System.EventHandler(this.Form1_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();
