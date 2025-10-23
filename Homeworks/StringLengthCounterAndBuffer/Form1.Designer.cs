@@ -81,7 +81,6 @@
             this.Controls.Add(this.textBox1);
             this.Name = "Form1";
             this.Text = " StringLengthCounter";
-            this.Shown += new System.EventHandler(this.Form1_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();
 
