@@ -5,16 +5,17 @@ namespace StringLengthCounterAndBuffer
 {
     public partial class Form1 : Form
     {
+        private bool IsInitialised = true;
         public Form1()
         {
             InitializeComponent();
-            this.ActiveControl = null;
             textBox1.Text = string.Empty;
             textBox2.Text = textBox1.Text.Length.ToString();
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
+
             textBox2.Text = textBox1.Text.Length.ToString(); 
         }
 
@@ -26,12 +27,12 @@ namespace StringLengthCounterAndBuffer
 
         private void textBox1_Enter(object sender, EventArgs e)
         {
+            if (IsInitialised)
+            {
+                IsInitialised = false;
+                return;
+            }
             textBox1.Text = Clipboard.GetText();
-        }
-
-        private void Form1_Shown(object sender, EventArgs e)
-        {
-            this.ActiveControl = null;
         }
     }
 }
