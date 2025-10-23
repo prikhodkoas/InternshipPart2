@@ -25,7 +25,10 @@ namespace StringLengthCounterAndBuffer
         /// </summary>
         private void textBox1_Leave(object sender, EventArgs e)
         {
-            Clipboard.SetText(textBox1.Text);
+            if (!string.IsNullOrEmpty(textBox1.Text))
+            {
+                Clipboard.SetText(textBox1.Text);
+            }
             textBox1.Clear();
         }
 
@@ -38,13 +41,12 @@ namespace StringLengthCounterAndBuffer
         }
 
         /// <summary>
-        /// При инициализации формы подписываемся на событие фокуса textBox
+        /// При инициализации формы подписываемся на события для фокуса textBox
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void Form1_Shown(object sender, EventArgs e)
         {
             textBox1.Enter += textBox1_Enter;
+            textBox1.Leave += textBox1_Leave;
         }
     }
 }
