@@ -5,11 +5,6 @@ namespace StringLengthCounterAndBuffer
 {
     public partial class Form1 : Form
     {
-        /// <summary>
-        /// Поле для проверки является ли запуск первым
-        /// </summary>
-        private bool _isInitialised = true;
-
         public Form1()
         {
             InitializeComponent();
@@ -22,7 +17,6 @@ namespace StringLengthCounterAndBuffer
         /// </summary>
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-
             textBox2.Text = textBox1.Text.Length.ToString(); 
         }
 
@@ -38,16 +32,19 @@ namespace StringLengthCounterAndBuffer
         /// <summary>
         /// При повторном фокусе textBox текст копируется из буфера обмена в textBox 
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void textBox1_Enter(object sender, EventArgs e)
         {
-            if (_isInitialised)
-            {
-                _isInitialised = false;
-                return;
-            }
             textBox1.Text = Clipboard.GetText();
+        }
+
+        /// <summary>
+        /// При инициализации формы подписываемся на событие фокуса textBox
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Form1_Shown(object sender, EventArgs e)
+        {
+            textBox1.Enter += textBox1_Enter;
         }
     }
 }
