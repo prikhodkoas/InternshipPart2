@@ -32,7 +32,9 @@
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.stringLbl = new System.Windows.Forms.Label();
             this.stringCounterLbl = new System.Windows.Forms.Label();
-            this.SuspendLayout();
+
+            this.SuspendLayout(); // Метод приостанавливающий автоматическую раскладку элементов на форме
+
             // 
             // textBox1
             // 
@@ -85,17 +87,12 @@
             this.Name = "Form1";
             this.Text = "StringLengthCounter";
             this.Shown += new System.EventHandler(this.Form1_Shown);
-            this.ResumeLayout(false);
-            this.PerformLayout();
 
+            this.ResumeLayout(false); //Возобновление перерасчета 
+            this.PerformLayout(); //Применение измеенений
         }
 
         #endregion
-
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.Label stringLbl;
-        private System.Windows.Forms.Label stringCounterLbl;
     }
 }
 

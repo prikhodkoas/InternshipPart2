@@ -5,6 +5,11 @@ namespace StringLengthCounterAndBuffer
 {
     public partial class Form1 : Form
     {
+        private TextBox textBox1;
+        private TextBox textBox2;
+        private Label stringLbl;
+        private Label stringCounterLbl;
+
         public Form1()
         {
             InitializeComponent();
