@@ -107,7 +107,7 @@ namespace StringLengthCounterAndBuffer
         /// При повторном фокусе textBox текст копируется из буфера обмена в textBox 
         /// </summary>
         private void textBox1_Enter(object sender, EventArgs e)
-        { 
+        {
             textBox1.Text = Clipboard.GetText();
         }
 
