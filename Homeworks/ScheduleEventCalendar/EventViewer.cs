@@ -20,6 +20,8 @@ namespace ScheduleEventCalendar
         public EventViewer()
         {
             InitializeComponent();
+            Application.AddMessageFilter(new CalendarContextMenuBlocker(monthCalendar));
+
         }
 
         private void AddEventToolStripMenuItem_Click(object sender, EventArgs e)
@@ -37,30 +39,31 @@ namespace ScheduleEventCalendar
 
         }
 
-        private void MonthCalendar_MouseDown(object sender, MouseEventArgs e)
+        private void CalendarWrapper_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
             {
-                // Получаем дату под курсором
-                DateTime? clickedDate = GetDateFromPoint(e.Location);
-                if (clickedDate.HasValue)
+                var date = GetDateFromPoint(e.Location);
+                if (date.HasValue)
                 {
-                    // Сохраняем выбранную дату, если нужно
-                    monthCalendar.SetDate(clickedDate.Value);
-
-                    // Показываем контекстное меню
-                    contextMenuStripCalendar.Show(monthCalendar, e.Location);
+                    monthCalendar.SetDate(date.Value);
+                    contextMenuStripCalendar.Show(calendarWrapper, e.Location);
                 }
             }
         }
+
         private DateTime? GetDateFromPoint(Point location)
         {
-            var hit = monthCalendar.HitTest(location);
+            var relativePoint = monthCalendar.PointToClient(location);
+            var hit = monthCalendar.HitTest(relativePoint);
+
             if (hit.HitArea == MonthCalendar.HitArea.Date)
             {
                 return hit.Time;
             }
+
             return null;
         }
+
     }
 }
