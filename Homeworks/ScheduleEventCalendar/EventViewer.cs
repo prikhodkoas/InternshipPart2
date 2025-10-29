@@ -17,12 +17,50 @@ namespace ScheduleEventCalendar
         /// </summary>
         private Dictionary<DateTime, List<ScheduleEvent>> _events = new Dictionary<DateTime, List<ScheduleEvent>>();
 
-        private Panel calendarPanel;
-        private Panel infoPanel;
-
         public EventViewer()
         {
             InitializeComponent();
+        }
+
+        private void AddEventToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void UpdateEventToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void DeleteEventToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void MonthCalendar_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                // Получаем дату под курсором
+                DateTime? clickedDate = GetDateFromPoint(e.Location);
+                if (clickedDate.HasValue)
+                {
+                    // Сохраняем выбранную дату, если нужно
+                    monthCalendar.SetDate(clickedDate.Value);
+
+                    // Показываем контекстное меню
+                    contextMenuStripCalendar.Show(monthCalendar, e.Location);
+                }
+            }
+        }
+        private DateTime? GetDateFromPoint(Point location)
+        {
+            var hit = monthCalendar.HitTest(location);
+            if (hit.HitArea == MonthCalendar.HitArea.Date)
+            {
+                return hit.Time;
+            }
+            return null;
         }
     }
 }

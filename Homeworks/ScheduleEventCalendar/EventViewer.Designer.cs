@@ -31,26 +31,63 @@ namespace ScheduleEventCalendar
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.LstBxEvents = new System.Windows.Forms.ListBox();
             this.monthCalendar = new System.Windows.Forms.MonthCalendar();
+            this.contextMenuStripCalendar = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.AddEventToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.UpdateEventToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.DeleteEventToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.contextMenuStripCalendar.SuspendLayout();
             this.SuspendLayout();
-
-            // 
-            // monthCalendar
-            // 
-            this.monthCalendar.Dock = System.Windows.Forms.DockStyle.Left;
-            this.monthCalendar.Margin = new System.Windows.Forms.Padding(6);
-            this.monthCalendar.Name = "monthCalendar";
-            this.monthCalendar.TabIndex = 0;
-
             // 
             // LstBxEvents
             // 
             this.LstBxEvents.Dock = System.Windows.Forms.DockStyle.Fill;
             this.LstBxEvents.FormattingEnabled = true;
+            this.LstBxEvents.Location = new System.Drawing.Point(164, 0);
             this.LstBxEvents.Name = "LstBxEvents";
+            this.LstBxEvents.Size = new System.Drawing.Size(136, 162);
             this.LstBxEvents.TabIndex = 1;
-
+            // 
+            // monthCalendar
+            // 
+            this.monthCalendar.Dock = System.Windows.Forms.DockStyle.Left;
+            this.monthCalendar.Location = new System.Drawing.Point(0, 0);
+            this.monthCalendar.Margin = new System.Windows.Forms.Padding(6);
+            this.monthCalendar.Name = "monthCalendar";
+            this.monthCalendar.TabIndex = 0;
+            this.monthCalendar.MouseDown += new System.Windows.Forms.MouseEventHandler(this.monthCalendar_MouseDown);
+            // 
+            // contextMenuStripCalendar
+            // 
+            this.contextMenuStripCalendar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.AddEventToolStripMenuItem,
+            this.UpdateEventToolStripMenuItem,
+            this.DeleteEventToolStripMenuItem});
+            this.contextMenuStripCalendar.Name = "contextMenuStripCalendar";
+            this.contextMenuStripCalendar.Size = new System.Drawing.Size(205, 70);
+            // 
+            // AddEventToolStripMenuItem
+            // 
+            this.AddEventToolStripMenuItem.Name = "AddEventToolStripMenuItem";
+            this.AddEventToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.AddEventToolStripMenuItem.Text = "Добавить событие";
+            this.AddEventToolStripMenuItem.Click += new System.EventHandler(this.AddEventToolStripMenuItem_Click);
+            // 
+            // UpdateEventToolStripMenuItem
+            // 
+            this.UpdateEventToolStripMenuItem.Name = "UpdateEventToolStripMenuItem";
+            this.UpdateEventToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.UpdateEventToolStripMenuItem.Text = "Редактировать событие";
+            this.UpdateEventToolStripMenuItem.Click += new System.EventHandler(this.UpdateEventToolStripMenuItem_Click);
+            // 
+            // DeleteEventToolStripMenuItem
+            // 
+            this.DeleteEventToolStripMenuItem.Name = "DeleteEventToolStripMenuItem";
+            this.DeleteEventToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.DeleteEventToolStripMenuItem.Text = "Удалить событие";
+            this.DeleteEventToolStripMenuItem.Click += new System.EventHandler(this.DeleteEventToolStripMenuItem_Click);
             // 
             // EventViewer
             // 
@@ -58,16 +95,22 @@ namespace ScheduleEventCalendar
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.LstBxEvents);
             this.Controls.Add(this.monthCalendar);
+            this.MaximumSize = new System.Drawing.Size(0, 162);
+            this.MinimumSize = new System.Drawing.Size(300, 162);
             this.Name = "EventViewer";
-            this.MinimumSize = new System.Drawing.Size(300, monthCalendar.Height + 2);
-            this.MaximumSize = new System.Drawing.Size(int.MaxValue, monthCalendar.Height + 2);
-            this.Size = new System.Drawing.Size(500, monthCalendar.Height + 2);
+            this.Size = new System.Drawing.Size(300, 162);
+            this.contextMenuStripCalendar.ResumeLayout(false);
             this.ResumeLayout(false);
+
         }
 
         #endregion
 
         private System.Windows.Forms.ListBox LstBxEvents;
         private System.Windows.Forms.MonthCalendar monthCalendar;
+        private ContextMenuStrip contextMenuStripCalendar;
+        private ToolStripMenuItem AddEventToolStripMenuItem;
+        private ToolStripMenuItem UpdateEventToolStripMenuItem;
+        private ToolStripMenuItem DeleteEventToolStripMenuItem;
     }
 }
