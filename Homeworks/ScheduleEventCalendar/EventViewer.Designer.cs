@@ -1,4 +1,5 @@
 ﻿using System.Windows.Forms;
+using System.Drawing;
 
 namespace ScheduleEventCalendar
 {
@@ -32,51 +33,41 @@ namespace ScheduleEventCalendar
         {
             this.LstBxEvents = new System.Windows.Forms.ListBox();
             this.monthCalendar = new System.Windows.Forms.MonthCalendar();
-            this.PnlDelete = new System.Windows.Forms.Panel();
             this.SuspendLayout();
-            // 
-            // LstBxEvents
-            // 
-            this.LstBxEvents.FormattingEnabled = true;
-            this.LstBxEvents.ItemHeight = 20;
-            this.LstBxEvents.Location = new System.Drawing.Point(178, 0);
-            this.LstBxEvents.Name = "LstBxEvents";
-            this.LstBxEvents.Size = new System.Drawing.Size(263, 264);
-            this.LstBxEvents.TabIndex = 1;
+
             // 
             // monthCalendar
             // 
             this.monthCalendar.Dock = System.Windows.Forms.DockStyle.Left;
-            this.monthCalendar.Location = new System.Drawing.Point(0, 0);
+            this.monthCalendar.Margin = new System.Windows.Forms.Padding(6);
             this.monthCalendar.Name = "monthCalendar";
             this.monthCalendar.TabIndex = 0;
+
             // 
-            // PnlDelete
+            // LstBxEvents
             // 
-            this.PnlDelete.Dock = System.Windows.Forms.DockStyle.Right;
-            this.PnlDelete.ForeColor = System.Drawing.Color.White;
-            this.PnlDelete.Location = new System.Drawing.Point(487, 0);
-            this.PnlDelete.Name = "PnlDelete";
-            this.PnlDelete.Size = new System.Drawing.Size(145, 251);
-            this.PnlDelete.TabIndex = 2;
+            this.LstBxEvents.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.LstBxEvents.FormattingEnabled = true;
+            this.LstBxEvents.Name = "LstBxEvents";
+            this.LstBxEvents.TabIndex = 1;
+
             // 
             // EventViewer
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.monthCalendar);
-            this.Controls.Add(this.PnlDelete);
             this.Controls.Add(this.LstBxEvents);
+            this.Controls.Add(this.monthCalendar);
             this.Name = "EventViewer";
-            this.Size = new System.Drawing.Size(632, 251);
+            this.MinimumSize = new System.Drawing.Size(300, monthCalendar.Height + 2);
+            this.MaximumSize = new System.Drawing.Size(int.MaxValue, monthCalendar.Height + 2);
+            this.Size = new System.Drawing.Size(500, monthCalendar.Height + 2);
             this.ResumeLayout(false);
-
         }
 
         #endregion
 
         private System.Windows.Forms.ListBox LstBxEvents;
-        private System.Windows.Forms.Panel PnlDelete;
         private System.Windows.Forms.MonthCalendar monthCalendar;
     }
 }
