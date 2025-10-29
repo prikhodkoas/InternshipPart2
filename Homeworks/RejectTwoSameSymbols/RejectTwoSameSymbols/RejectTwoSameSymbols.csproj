@@ -54,6 +54,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ValidationService.cs" />
     <EmbeddedResource Include="RejectTwoSameSymbolsForm.resx">
       <DependentUpon>RejectTwoSameSymbolsForm.cs</DependentUpon>
     </EmbeddedResource>

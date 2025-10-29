@@ -6,6 +6,11 @@ namespace RejectTwoSameSymbols
 {
     public partial class RejectTwoSameSymbolsForm : Form
     {
+        private Color DefaultTextColor = Color.Black;
+        private Color RejectedTextColor = Color.Red;
+
+        private readonly ValidationService ValidationService = new ValidationService();
+
         #region Initialize Control Components
 
         #region Initialize inputTextBox 
@@ -29,17 +34,13 @@ namespace RejectTwoSameSymbols
         /// </summary>
         private void InputTextBox_TextChanged(object sender, System.EventArgs e)
         {
-            string input = inputTextBox.Text;
-
-            Regex regex = new Regex(@"(.)\1");
-
-            if (regex.IsMatch(input))
+            if (ValidationService.IsTwoSameSymbols(inputTextBox.Text))
             {
-                inputTextBox.ForeColor = Color.Red;
+                inputTextBox.ForeColor = RejectedTextColor;
             }
             else
             {
-                inputTextBox.ForeColor = Color.Black;
+                inputTextBox.ForeColor = DefaultTextColor;
             }
         }
         public RejectTwoSameSymbolsForm()
