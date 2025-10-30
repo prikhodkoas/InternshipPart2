@@ -16,8 +16,9 @@ namespace ScheduleEventCalendar
         {
             InitializeComponent();
 
-            // Подписка на событие клика календаря
             monthCalendar.MouseDown += MonthCalendar_MouseDown;
+
+            LstBxEvents.MouseDown += LstBxEvents_MouseDown;
         }
 
         private void MonthCalendar_MouseDown(object sender, MouseEventArgs e)
@@ -27,10 +28,8 @@ namespace ScheduleEventCalendar
                 var date = GetDateFromPoint(e.Location);
                 if (date.HasValue)
                 {
-                    // выделяем дату, по которой кликнули
                     monthCalendar.SetDate(date.Value);
 
-                    // показываем контекстное меню в месте клика
                     contextMenuStripCalendar.Show(monthCalendar, e.Location);
                 }
             }
@@ -67,6 +66,27 @@ namespace ScheduleEventCalendar
             LoadEventsForDate(selectedDate);
         }
 
+        private void monthCalendar_DateChanged(object sender, DateRangeEventArgs e)
+        {
+            LoadEventsForDate(e.End);
+        }
+
+        private void LoadEventsForDate(DateTime date)
+        {
+            LstBxEvents.DataSource = null;
+
+            if (_events.TryGetValue(date.Date, out var eventsForDate) && eventsForDate.Count > 0)
+            {
+                LstBxEvents.DataSource = eventsForDate;
+                LstBxEvents.DisplayMember = "Title";
+            }
+            else
+            {
+                LstBxEvents.Items.Clear();
+                LstBxEvents.Items.Add("Нет событий на выбранную дату");
+            }
+        }
+
         private void UpdateEventToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (LstBxEvents.SelectedItem is ScheduleEvent selectedEvent)
@@ -81,28 +101,16 @@ namespace ScheduleEventCalendar
             }
         }
 
-        private void DeleteEventToolStripMenuItem_Click(object sender, EventArgs e)
+        private void LstBxEvents_MouseDown(object sender, MouseEventArgs e)
         {
-            
-        }
-
-        private void monthCalendar_DateChanged(object sender, DateRangeEventArgs e)
-        {
-            LoadEventsForDate(e.End);
-        }
-
-        private void LoadEventsForDate(DateTime date)
-        {
-            LstBxEvents.Items.Clear();
-
-            if (_events.TryGetValue(date.Date, out var eventsForDate))
+            if (e.Button == MouseButtons.Right)
             {
-                foreach (var ev in eventsForDate)
-                    LstBxEvents.Items.Add(ev.Title);
-            }
-            else
-            {
-                LstBxEvents.Items.Add("Нет событий на выбранную дату");
+                int index = LstBxEvents.IndexFromPoint(e.Location);
+                if (index != ListBox.NoMatches)
+                {
+                    LstBxEvents.SelectedIndex = index;
+                    contextMenuStripEventList.Show(LstBxEvents, e.Location); 
+                }
             }
         }
     }

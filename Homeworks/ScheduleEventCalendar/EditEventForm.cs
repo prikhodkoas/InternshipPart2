@@ -12,12 +12,17 @@ namespace ScheduleEventCalendar
 {
     public partial class EditEventForm : Form
     {
-        public ScheduleEvent CreatedEvent { get; private set; } = new ScheduleEvent();
+        public ScheduleEvent ChangedEvent { get; private set; } = new ScheduleEvent();
 
-        public EditEventForm(ScheduleEvent se)
+        public EditEventForm(ScheduleEvent changedEvent)
         {
-            CreatedEvent = se;
+            ChangedEvent = changedEvent;
+
             InitializeComponent();
+
+            TitleTxtBx.Text = changedEvent.Title;
+            EventDateDtTmPckr.Value = changedEvent.EventDate;
+            //CategoryCmbBx.Items
         }
 
         private void CancelBtn_Click(object sender, EventArgs e)
@@ -32,9 +37,11 @@ namespace ScheduleEventCalendar
                 MessageBox.Show("Введите название события.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            CreatedEvent.Title = TitleTxtBx.Text;
-            CreatedEvent.EventDate = EventDateDtTmPckr.Value;
-            CreatedEvent.Category = CategoryCmbBx.SelectedItem as string;
+            ChangedEvent.Title = TitleTxtBx.Text;
+            ChangedEvent.EventDate = EventDateDtTmPckr.Value;
+            ChangedEvent.Category = CategoryCmbBx.SelectedItem as string;
+
+            DialogResult = DialogResult.OK;
             Close();
         }
     }

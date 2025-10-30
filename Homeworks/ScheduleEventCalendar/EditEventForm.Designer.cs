@@ -46,6 +46,7 @@
             this.OkBtn.TabIndex = 17;
             this.OkBtn.Text = "ОК";
             this.OkBtn.UseVisualStyleBackColor = true;
+            this.OkBtn.Click += new System.EventHandler(this.OkBtn_Click);
             // 
             // CancelBtn
             // 
@@ -55,6 +56,7 @@
             this.CancelBtn.TabIndex = 16;
             this.CancelBtn.Text = "Отмена";
             this.CancelBtn.UseVisualStyleBackColor = true;
+            this.CancelBtn.Click += new System.EventHandler(this.CancelBtn_Click);
             // 
             // CategoryLbl
             // 
