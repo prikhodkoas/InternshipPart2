@@ -34,6 +34,9 @@ namespace ScheduleEventCalendar
             CreatedEvent.Title = TitleTxtBx.Text;
             CreatedEvent.EventDate = EventDateDtTmPckr.Value;
             CreatedEvent.Category = CategoryCmbBx.SelectedItem as string;
+
+            DialogResult = DialogResult.OK;
+            Close();
         }
     }
 }

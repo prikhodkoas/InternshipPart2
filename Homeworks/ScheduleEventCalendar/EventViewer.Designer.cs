@@ -79,6 +79,7 @@ namespace ScheduleEventCalendar
             this.monthCalendar.Location = new System.Drawing.Point(0, 0);
             this.monthCalendar.Name = "monthCalendar";
             this.monthCalendar.TabIndex = 0;
+            this.monthCalendar.DateChanged += new System.Windows.Forms.DateRangeEventHandler(this.monthCalendar_DateChanged);
             // 
             // EventViewer
             // 

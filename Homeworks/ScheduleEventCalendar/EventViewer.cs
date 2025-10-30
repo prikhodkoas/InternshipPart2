@@ -64,16 +64,46 @@ namespace ScheduleEventCalendar
                     _events[selectedDate].Add(newEvent);
                 }
             }
+            LoadEventsForDate(selectedDate);
         }
 
         private void UpdateEventToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //
+            if (LstBxEvents.SelectedItem is ScheduleEvent selectedEvent)
+            {
+                using (var form = new EditEventForm(selectedEvent))
+                {
+                    if (form.ShowDialog() == DialogResult.OK)
+                    {
+                        LoadEventsForDate(selectedEvent.EventDate);
+                    }
+                }
+            }
         }
 
         private void DeleteEventToolStripMenuItem_Click(object sender, EventArgs e)
         {
             
+        }
+
+        private void monthCalendar_DateChanged(object sender, DateRangeEventArgs e)
+        {
+            LoadEventsForDate(e.End);
+        }
+
+        private void LoadEventsForDate(DateTime date)
+        {
+            LstBxEvents.Items.Clear();
+
+            if (_events.TryGetValue(date.Date, out var eventsForDate))
+            {
+                foreach (var ev in eventsForDate)
+                    LstBxEvents.Items.Add(ev.Title);
+            }
+            else
+            {
+                LstBxEvents.Items.Add("Нет событий на выбранную дату");
+            }
         }
     }
 }
