@@ -30,14 +30,12 @@
         {
             this.TitleLbl = new System.Windows.Forms.Label();
             this.TitleTxtBx = new System.Windows.Forms.TextBox();
-            this.StartTimeDtTmPckr = new System.Windows.Forms.DateTimePicker();
-            this.StartTimeLbl = new System.Windows.Forms.Label();
-            this.EndTimeLbl = new System.Windows.Forms.Label();
-            this.EndTimeDtTmPckr = new System.Windows.Forms.DateTimePicker();
             this.CategoryCmbBx = new System.Windows.Forms.ComboBox();
             this.CategoryLbl = new System.Windows.Forms.Label();
             this.CancelBtn = new System.Windows.Forms.Button();
             this.OkBtn = new System.Windows.Forms.Button();
+            this.EventDateDtTmPckr = new System.Windows.Forms.DateTimePicker();
+            this.DateTimeLbl = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // TitleLbl
@@ -56,42 +54,10 @@
             this.TitleTxtBx.Size = new System.Drawing.Size(200, 26);
             this.TitleTxtBx.TabIndex = 1;
             // 
-            // StartTimeDtTmPckr
-            // 
-            this.StartTimeDtTmPckr.Location = new System.Drawing.Point(12, 84);
-            this.StartTimeDtTmPckr.Name = "StartTimeDtTmPckr";
-            this.StartTimeDtTmPckr.Size = new System.Drawing.Size(200, 26);
-            this.StartTimeDtTmPckr.TabIndex = 2;
-            // 
-            // StartTimeLbl
-            // 
-            this.StartTimeLbl.AutoSize = true;
-            this.StartTimeLbl.Location = new System.Drawing.Point(12, 61);
-            this.StartTimeLbl.Name = "StartTimeLbl";
-            this.StartTimeLbl.Size = new System.Drawing.Size(135, 20);
-            this.StartTimeLbl.TabIndex = 3;
-            this.StartTimeLbl.Text = "Начало события";
-            // 
-            // EndTimeLbl
-            // 
-            this.EndTimeLbl.AutoSize = true;
-            this.EndTimeLbl.Location = new System.Drawing.Point(12, 113);
-            this.EndTimeLbl.Name = "EndTimeLbl";
-            this.EndTimeLbl.Size = new System.Drawing.Size(123, 20);
-            this.EndTimeLbl.TabIndex = 4;
-            this.EndTimeLbl.Text = "Конец события";
-            // 
-            // EndTimeDtTmPckr
-            // 
-            this.EndTimeDtTmPckr.Location = new System.Drawing.Point(12, 136);
-            this.EndTimeDtTmPckr.Name = "EndTimeDtTmPckr";
-            this.EndTimeDtTmPckr.Size = new System.Drawing.Size(200, 26);
-            this.EndTimeDtTmPckr.TabIndex = 5;
-            // 
             // CategoryCmbBx
             // 
             this.CategoryCmbBx.FormattingEnabled = true;
-            this.CategoryCmbBx.Location = new System.Drawing.Point(12, 188);
+            this.CategoryCmbBx.Location = new System.Drawing.Point(12, 137);
             this.CategoryCmbBx.Name = "CategoryCmbBx";
             this.CategoryCmbBx.Size = new System.Drawing.Size(200, 28);
             this.CategoryCmbBx.TabIndex = 6;
@@ -99,7 +65,7 @@
             // CategoryLbl
             // 
             this.CategoryLbl.AutoSize = true;
-            this.CategoryLbl.Location = new System.Drawing.Point(12, 165);
+            this.CategoryLbl.Location = new System.Drawing.Point(12, 114);
             this.CategoryLbl.Name = "CategoryLbl";
             this.CategoryLbl.Size = new System.Drawing.Size(89, 20);
             this.CategoryLbl.TabIndex = 7;
@@ -107,7 +73,7 @@
             // 
             // CancelBtn
             // 
-            this.CancelBtn.Location = new System.Drawing.Point(11, 223);
+            this.CancelBtn.Location = new System.Drawing.Point(12, 171);
             this.CancelBtn.Name = "CancelBtn";
             this.CancelBtn.Size = new System.Drawing.Size(98, 30);
             this.CancelBtn.TabIndex = 8;
@@ -117,27 +83,41 @@
             // 
             // OkBtn
             // 
-            this.OkBtn.Location = new System.Drawing.Point(115, 223);
+            this.OkBtn.Location = new System.Drawing.Point(114, 171);
             this.OkBtn.Name = "OkBtn";
             this.OkBtn.Size = new System.Drawing.Size(98, 30);
             this.OkBtn.TabIndex = 9;
-            this.OkBtn.Text = "Ок";
+            this.OkBtn.Text = "ОК";
             this.OkBtn.UseVisualStyleBackColor = true;
             this.OkBtn.Click += new System.EventHandler(this.OkBtn_Click);
+            // 
+            // EventDateDtTmPckr
+            // 
+            this.EventDateDtTmPckr.Location = new System.Drawing.Point(12, 84);
+            this.EventDateDtTmPckr.Name = "EventDateDtTmPckr";
+            this.EventDateDtTmPckr.Size = new System.Drawing.Size(200, 26);
+            this.EventDateDtTmPckr.TabIndex = 2;
+            // 
+            // DateTimeLbl
+            // 
+            this.DateTimeLbl.AutoSize = true;
+            this.DateTimeLbl.Location = new System.Drawing.Point(12, 61);
+            this.DateTimeLbl.Name = "DateTimeLbl";
+            this.DateTimeLbl.Size = new System.Drawing.Size(116, 20);
+            this.DateTimeLbl.TabIndex = 3;
+            this.DateTimeLbl.Text = "Дата события";
             // 
             // AddEventForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(226, 264);
+            this.ClientSize = new System.Drawing.Size(226, 213);
             this.Controls.Add(this.OkBtn);
             this.Controls.Add(this.CancelBtn);
             this.Controls.Add(this.CategoryLbl);
             this.Controls.Add(this.CategoryCmbBx);
-            this.Controls.Add(this.EndTimeDtTmPckr);
-            this.Controls.Add(this.EndTimeLbl);
-            this.Controls.Add(this.StartTimeLbl);
-            this.Controls.Add(this.StartTimeDtTmPckr);
+            this.Controls.Add(this.DateTimeLbl);
+            this.Controls.Add(this.EventDateDtTmPckr);
             this.Controls.Add(this.TitleTxtBx);
             this.Controls.Add(this.TitleLbl);
             this.Name = "AddEventForm";
@@ -151,13 +131,11 @@
 
         private System.Windows.Forms.Label TitleLbl;
         private System.Windows.Forms.TextBox TitleTxtBx;
-        private System.Windows.Forms.DateTimePicker StartTimeDtTmPckr;
-        private System.Windows.Forms.Label StartTimeLbl;
-        private System.Windows.Forms.Label EndTimeLbl;
-        private System.Windows.Forms.DateTimePicker EndTimeDtTmPckr;
         private System.Windows.Forms.ComboBox CategoryCmbBx;
         private System.Windows.Forms.Label CategoryLbl;
         private System.Windows.Forms.Button CancelBtn;
         private System.Windows.Forms.Button OkBtn;
+        private System.Windows.Forms.DateTimePicker EventDateDtTmPckr;
+        private System.Windows.Forms.Label DateTimeLbl;
     }
 }

@@ -12,10 +12,11 @@ namespace ScheduleEventCalendar
 {
     public partial class AddEventForm : Form
     {
-        private ScheduleEvent _scheduleEvent { get; set; } = new ScheduleEvent();
-        public AddEventForm()
+        public ScheduleEvent CreatedEvent { get; private set; } = new ScheduleEvent();
+        public AddEventForm(DateTime selectedDate)
         {
             InitializeComponent();
+            EventDateDtTmPckr.Value = selectedDate;
         }
 
         private void CancelBtn_Click(object sender, EventArgs e)
@@ -25,10 +26,14 @@ namespace ScheduleEventCalendar
 
         private void OkBtn_Click(object sender, EventArgs e)
         {
-            _scheduleEvent.Title = TitleTxtBx.Text;
-            _scheduleEvent.StartTime = StartTimeDtTmPckr.Value;
-            _scheduleEvent.EndTime = EndTimeDtTmPckr.Value;
-            _scheduleEvent.Category = CategoryCmbBx.SelectedItem as string;
+            if (string.IsNullOrEmpty(TitleTxtBx.Text))
+            {
+                MessageBox.Show("Введите название события.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            CreatedEvent.Title = TitleTxtBx.Text;
+            CreatedEvent.EventDate = EventDateDtTmPckr.Value;
+            CreatedEvent.Category = CategoryCmbBx.SelectedItem as string;
         }
     }
 }

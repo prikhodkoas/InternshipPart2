@@ -50,20 +50,30 @@ namespace ScheduleEventCalendar
 
         private void AddEventToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // логика добавления события
-            MessageBox.Show("Добавить событие для даты: " + monthCalendar.SelectionStart.ToShortDateString());
+            var selectedDate = monthCalendar.SelectionStart;
+
+            using (var form = new AddEventForm(selectedDate))
+            {
+                if (form.ShowDialog() == DialogResult.OK)
+                {
+                    var newEvent = form.CreatedEvent;
+
+                    if (!_events.ContainsKey(selectedDate))
+                        _events[selectedDate] = new List<ScheduleEvent>();
+
+                    _events[selectedDate].Add(newEvent);
+                }
+            }
         }
 
         private void UpdateEventToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // логика редактирования события
-            MessageBox.Show("Редактировать событие для даты: " + monthCalendar.SelectionStart.ToShortDateString());
+            //
         }
 
         private void DeleteEventToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // логика удаления события
-            MessageBox.Show("Удалить событие для даты: " + monthCalendar.SelectionStart.ToShortDateString());
+            
         }
     }
 }

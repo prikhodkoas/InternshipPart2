@@ -36,19 +36,19 @@ namespace ScheduleEventCalendar
             this.LstBxEvents.Dock = System.Windows.Forms.DockStyle.Fill;
             this.LstBxEvents.FormattingEnabled = true;
             this.LstBxEvents.ItemHeight = 20;
-            this.LstBxEvents.Location = new System.Drawing.Point(246, 0);
+            this.LstBxEvents.Location = new System.Drawing.Point(228, 0);
             this.LstBxEvents.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.LstBxEvents.Name = "LstBxEvents";
-            this.LstBxEvents.Size = new System.Drawing.Size(204, 249);
+            this.LstBxEvents.Size = new System.Drawing.Size(222, 249);
             this.LstBxEvents.TabIndex = 1;
             // 
             // contextMenuStripCalendar
             // 
             this.contextMenuStripCalendar.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.contextMenuStripCalendar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-                this.AddEventToolStripMenuItem,
-                this.UpdateEventToolStripMenuItem,
-                this.DeleteEventToolStripMenuItem});
+            this.AddEventToolStripMenuItem,
+            this.UpdateEventToolStripMenuItem,
+            this.DeleteEventToolStripMenuItem});
             this.contextMenuStripCalendar.Name = "contextMenuStripCalendar";
             this.contextMenuStripCalendar.Size = new System.Drawing.Size(279, 100);
             // 
@@ -93,6 +93,7 @@ namespace ScheduleEventCalendar
             this.Size = new System.Drawing.Size(450, 249);
             this.contextMenuStripCalendar.ResumeLayout(false);
             this.ResumeLayout(false);
+
         }
 
         #endregion

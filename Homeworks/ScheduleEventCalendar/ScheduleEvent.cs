@@ -9,10 +9,8 @@ namespace ScheduleEventCalendar
 {
     public class ScheduleEvent
     {
-        
         public string Title { get; set; }
-        public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
+        public DateTime EventDate { get; set; }
         public string Category { get; set; }
         public Color Color { get; set; }
     }
