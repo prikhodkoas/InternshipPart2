@@ -1,61 +1,44 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ScheduleEventCalendar
 {
-    public partial class EventViewer: UserControl
+    public partial class EventViewer : UserControl
     {
         /// <summary>
-        /// Структура данных для храния событий контрола
+        /// События, привязанные к датам календаря
         /// </summary>
-        private Dictionary<DateTime, List<ScheduleEvent>> _events = new Dictionary<DateTime, List<ScheduleEvent>>();
+        private readonly Dictionary<DateTime, List<ScheduleEvent>> _events = new Dictionary<DateTime, List<ScheduleEvent>>();
 
         public EventViewer()
         {
             InitializeComponent();
-            Application.AddMessageFilter(new CalendarContextMenuBlocker(monthCalendar));
 
+            // Подписка на событие клика календаря
+            monthCalendar.MouseDown += MonthCalendar_MouseDown;
         }
 
-        private void AddEventToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            
-        }
-
-        private void UpdateEventToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void DeleteEventToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void CalendarWrapper_MouseDown(object sender, MouseEventArgs e)
+        private void MonthCalendar_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
             {
                 var date = GetDateFromPoint(e.Location);
                 if (date.HasValue)
                 {
+                    // выделяем дату, по которой кликнули
                     monthCalendar.SetDate(date.Value);
-                    contextMenuStripCalendar.Show(calendarWrapper, e.Location);
+
+                    // показываем контекстное меню в месте клика
+                    contextMenuStripCalendar.Show(monthCalendar, e.Location);
                 }
             }
         }
 
         private DateTime? GetDateFromPoint(Point location)
         {
-            var relativePoint = monthCalendar.PointToClient(location);
-            var hit = monthCalendar.HitTest(relativePoint);
+            var hit = monthCalendar.HitTest(location);
 
             if (hit.HitArea == MonthCalendar.HitArea.Date)
             {
@@ -65,5 +48,22 @@ namespace ScheduleEventCalendar
             return null;
         }
 
+        private void AddEventToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // логика добавления события
+            MessageBox.Show("Добавить событие для даты: " + monthCalendar.SelectionStart.ToShortDateString());
+        }
+
+        private void UpdateEventToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // логика редактирования события
+            MessageBox.Show("Редактировать событие для даты: " + monthCalendar.SelectionStart.ToShortDateString());
+        }
+
+        private void DeleteEventToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // логика удаления события
+            MessageBox.Show("Удалить событие для даты: " + monthCalendar.SelectionStart.ToShortDateString());
+        }
     }
 }
