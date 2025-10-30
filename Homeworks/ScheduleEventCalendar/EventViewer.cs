@@ -91,13 +91,37 @@ namespace ScheduleEventCalendar
         {
             if (LstBxEvents.SelectedItem is ScheduleEvent selectedEvent)
             {
+                var oldDate = selectedEvent.EventDate; // запоминаем старую дату
+
                 using (var form = new EditEventForm(selectedEvent))
                 {
                     if (form.ShowDialog() == DialogResult.OK)
                     {
-                        LoadEventsForDate(selectedEvent.EventDate);
+                        var updatedEvent = form.ChangedEvent;
+
+                        // Если дата изменилась — переносим событие в другую дату
+                        if (oldDate.Date != updatedEvent.EventDate.Date)
+                        {
+                            if (_events.ContainsKey(oldDate))
+                                _events[oldDate].Remove(selectedEvent);
+
+                            if (!_events.ContainsKey(updatedEvent.EventDate.Date))
+                                _events[updatedEvent.EventDate.Date] = new List<ScheduleEvent>();
+
+                            _events[updatedEvent.EventDate.Date].Add(updatedEvent);
+                        }
+                        else
+                        {
+                            // просто обновляем поля у старого объекта (если дата не изменилась)
+                            selectedEvent.Title = updatedEvent.Title;
+                            selectedEvent.Category = updatedEvent.Category;
+                            selectedEvent.EventDate = updatedEvent.EventDate;
+                        }
+
+                        LoadEventsForDate(updatedEvent.EventDate);
                     }
                 }
+                LoadEventsForDate(oldDate);
             }
         }
 
