@@ -12,6 +12,14 @@ namespace ScheduleEventCalendar
         public string Title { get; set; }
         public DateTime EventDate { get; set; }
         public string Category { get; set; }
-        public Color Color { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null) 
+                return false;
+            if (obj is ScheduleEvent se)
+                return this.Title == se.Title && this.EventDate == se.EventDate && this.Category == se.Category;
+            return false;
+        }
     }
 }

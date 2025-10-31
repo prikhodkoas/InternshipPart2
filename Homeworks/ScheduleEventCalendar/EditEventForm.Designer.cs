@@ -41,7 +41,7 @@
             // OkBtn
             // 
             this.OkBtn.Location = new System.Drawing.Point(77, 122);
-            this.OkBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.OkBtn.Margin = new System.Windows.Forms.Padding(2);
             this.OkBtn.Name = "OkBtn";
             this.OkBtn.Size = new System.Drawing.Size(65, 20);
             this.OkBtn.TabIndex = 17;
@@ -52,7 +52,7 @@
             // CancelBtn
             // 
             this.CancelBtn.Location = new System.Drawing.Point(9, 122);
-            this.CancelBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.CancelBtn.Margin = new System.Windows.Forms.Padding(2);
             this.CancelBtn.Name = "CancelBtn";
             this.CancelBtn.Size = new System.Drawing.Size(65, 20);
             this.CancelBtn.TabIndex = 16;
@@ -72,9 +72,10 @@
             // 
             // CategoryCmbBx
             // 
+            this.CategoryCmbBx.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.CategoryCmbBx.FormattingEnabled = true;
             this.CategoryCmbBx.Location = new System.Drawing.Point(9, 97);
-            this.CategoryCmbBx.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.CategoryCmbBx.Margin = new System.Windows.Forms.Padding(2);
             this.CategoryCmbBx.Name = "CategoryCmbBx";
             this.CategoryCmbBx.Size = new System.Drawing.Size(135, 21);
             this.CategoryCmbBx.TabIndex = 14;
@@ -92,7 +93,7 @@
             // EventDateDtTmPckr
             // 
             this.EventDateDtTmPckr.Location = new System.Drawing.Point(9, 59);
-            this.EventDateDtTmPckr.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.EventDateDtTmPckr.Margin = new System.Windows.Forms.Padding(2);
             this.EventDateDtTmPckr.Name = "EventDateDtTmPckr";
             this.EventDateDtTmPckr.Size = new System.Drawing.Size(135, 20);
             this.EventDateDtTmPckr.TabIndex = 12;
@@ -100,7 +101,7 @@
             // TitleTxtBx
             // 
             this.TitleTxtBx.Location = new System.Drawing.Point(9, 21);
-            this.TitleTxtBx.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.TitleTxtBx.Margin = new System.Windows.Forms.Padding(2);
             this.TitleTxtBx.Name = "TitleTxtBx";
             this.TitleTxtBx.Size = new System.Drawing.Size(135, 20);
             this.TitleTxtBx.TabIndex = 11;
@@ -128,7 +129,7 @@
             this.Controls.Add(this.EventDateDtTmPckr);
             this.Controls.Add(this.TitleTxtBx);
             this.Controls.Add(this.TitleLbl);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "EditEventForm";
             this.Text = "EditEventForm";
             this.ResumeLayout(false);

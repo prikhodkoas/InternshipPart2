@@ -14,17 +14,35 @@ namespace ScheduleEventCalendar
     {
         public ScheduleEvent ChangedEvent { get; private set; } = new ScheduleEvent();
 
-        public EditEventForm(ScheduleEvent changedEvent)
+        public EditEventForm(ScheduleEvent changedEvent, Dictionary<string, Color> categories)
         {
             ChangedEvent = changedEvent;
 
             InitializeComponent();
+            LoadCategoriesToComboBox(categories);
 
             this.StartPosition = FormStartPosition.CenterParent;
  
             TitleTxtBx.Text = changedEvent.Title;
             EventDateDtTmPckr.Value = changedEvent.EventDate;
-            //CategoryCmbBx.Items
+        }
+
+        private void LoadCategoriesToComboBox(Dictionary<string, Color> categories)
+        {
+            CategoryCmbBx.Items.Clear();
+
+            if (categories != null && categories.Count > 0)
+            {
+                foreach (var cat in categories)
+                {
+                    // Добавляем название категории в ComboBox
+                    CategoryCmbBx.Items.Add(cat.Key);
+                }
+            }
+
+            // Можно выбрать первую категорию по умолчанию
+            if (CategoryCmbBx.Items.Count > 0)
+                CategoryCmbBx.SelectedIndex = 0;
         }
 
         private void CancelBtn_Click(object sender, EventArgs e)

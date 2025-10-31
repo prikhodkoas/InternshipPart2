@@ -13,13 +13,31 @@ namespace ScheduleEventCalendar
     public partial class AddEventForm : Form
     {
         public ScheduleEvent CreatedEvent { get; private set; } = new ScheduleEvent();
-        public AddEventForm(DateTime selectedDate)
+
+        public AddEventForm(DateTime selectedDate, Dictionary<string, Color> categories)
         {
             InitializeComponent();
-
+            LoadCategoriesToComboBox(categories);
             this.StartPosition = FormStartPosition.CenterParent;
 
             EventDateDtTmPckr.Value = selectedDate;
+        }
+        private void LoadCategoriesToComboBox(Dictionary<string, Color> categories)
+        {
+            CategoryCmbBx.Items.Clear();
+
+            if (categories != null && categories.Count > 0)
+            {
+                foreach (var cat in categories)
+                {
+                    // Добавляем название категории в ComboBox
+                    CategoryCmbBx.Items.Add(cat.Key);
+                }
+            }
+
+            // Можно выбрать первую категорию по умолчанию
+            if (CategoryCmbBx.Items.Count > 0)
+                CategoryCmbBx.SelectedIndex = 0;
         }
 
         private void CancelBtn_Click(object sender, EventArgs e)

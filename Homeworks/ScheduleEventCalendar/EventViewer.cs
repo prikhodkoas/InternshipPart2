@@ -8,17 +8,17 @@ namespace ScheduleEventCalendar
     public partial class EventViewer : UserControl
     {
         public Dictionary<DateTime, List<ScheduleEvent>> Events { get; set; } = new Dictionary<DateTime, List<ScheduleEvent>>();
-        
-        public Dictionary<string, Color> Categories { get; set; }
 
-        public event EventHandler<DateTime> DateSelected;
-        public event EventHandler<ScheduleEvent> EventSelected;
-        public event EventHandler<ScheduleEvent> EventDragged;
-        public event EventHandler<DateTime> EventDroppedOnDate;
-        public event EventHandler AddEventRequested;
-        public event EventHandler EditEventRequested;
-        public event EventHandler DeleteEventRequested;
-        public event EventHandler OnCategoryChanged;
+        public Dictionary<string, Color> Categories { get; set; } = new Dictionary<string, Color>();
+
+        public event EventHandler<DateTime> OnDateSelected;
+        public event EventHandler<ScheduleEvent> OnEventSelected;
+        public event EventHandler<ScheduleEvent> OnEventDragged; //
+        public event EventHandler<DateTime> OnEventDroppedOnDate; //
+        public event EventHandler OnAddEventRequested;
+        public event EventHandler OnEditEventRequested;
+        public event EventHandler OnDeleteEventRequested;
+        public event EventHandler OnEventChanged;
 
         #region Logic of Control
         /// <summary>
@@ -39,6 +39,34 @@ namespace ScheduleEventCalendar
             monthCalendar.DragEnter += MonthCalendar_DragEnter;
             monthCalendar.DragDrop += MonthCalendar_DragDrop;
             monthCalendar.DragOver += MonthCalendar_DragOver;
+
+            LstBxEvents.DrawMode = DrawMode.OwnerDrawFixed;
+            LstBxEvents.DrawItem += LstBxEvents_DrawItem;
+        }
+
+        private void LstBxEvents_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            e.DrawBackground();
+
+            if (e.Index < 0 || e.Index >= LstBxEvents.Items.Count)
+                return;
+
+            if (LstBxEvents.Items[e.Index] is ScheduleEvent ev)
+            {
+                Color textColor = Categories.ContainsKey(ev.Category)
+                    ? Categories[ev.Category]
+                    : e.ForeColor;
+
+                using (var brush = new SolidBrush(textColor))
+                    e.Graphics.DrawString(ev.Title, e.Font, brush, e.Bounds);
+            }
+            else
+            {
+                using (var brush = new SolidBrush(e.ForeColor))
+                    e.Graphics.DrawString(LstBxEvents.Items[e.Index].ToString(), e.Font, brush, e.Bounds);
+            }
+
+            e.DrawFocusRectangle();
         }
 
         private void MonthCalendar_MouseDown(object sender, MouseEventArgs e)
@@ -67,31 +95,10 @@ namespace ScheduleEventCalendar
             return null;
         }
 
-        private void AddEventToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            AddEventRequested?.Invoke(this, EventArgs.Empty);
-
-            var selectedDate = monthCalendar.SelectionStart;
-
-            using (var form = new AddEventForm(selectedDate))
-            {
-                if (form.ShowDialog() == DialogResult.OK)
-                {
-                    var newEvent = form.CreatedEvent;
-
-                    if (!Events.ContainsKey(selectedDate))
-                        Events[selectedDate] = new List<ScheduleEvent>();
-
-                    Events[selectedDate].Add(newEvent);
-                }
-            }
-            LoadEventsForDate(selectedDate);
-        }
-
         private void MonthCalendar_DateChanged(object sender, DateRangeEventArgs e)
         {
             LoadEventsForDate(e.End);
-            DateSelected?.Invoke(this, e.End);
+            OnDateSelected?.Invoke(this, e.End);
         }
 
         private void LoadEventsForDate(DateTime date)
@@ -110,45 +117,7 @@ namespace ScheduleEventCalendar
             }
         }
 
-        private void UpdateEventToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            EditEventRequested?.Invoke(this, EventArgs.Empty);
-
-            if (LstBxEvents.SelectedItem is ScheduleEvent selectedEvent)
-            {
-                var oldDate = selectedEvent.EventDate; // Запоминаем старую дату
-
-                using (var form = new EditEventForm(selectedEvent))
-                {
-                    if (form.ShowDialog() == DialogResult.OK)
-                    {
-                        var updatedEvent = form.ChangedEvent;
-
-                        // Если дата изменилась — переносим событие в другую дату
-                        if (oldDate.Date != updatedEvent.EventDate.Date)
-                        {
-                            if (Events.ContainsKey(oldDate))
-                                Events[oldDate].Remove(selectedEvent);
-
-                            if (!Events.ContainsKey(updatedEvent.EventDate.Date))
-                                Events[updatedEvent.EventDate.Date] = new List<ScheduleEvent>();
-
-                            Events[updatedEvent.EventDate.Date].Add(updatedEvent);
-                        }
-                        else
-                        {
-                            // Обновляем поля у старого объекта (если дата не изменилась)
-                            selectedEvent.Title = updatedEvent.Title;
-                            selectedEvent.Category = updatedEvent.Category;
-                            selectedEvent.EventDate = updatedEvent.EventDate;
-                        }
-
-                        LoadEventsForDate(updatedEvent.EventDate);
-                    }
-                }
-                LoadEventsForDate(oldDate);
-            }
-        }
+        
 
         private void LstBxEvents_MouseDown(object sender, MouseEventArgs e)
         {
@@ -170,7 +139,8 @@ namespace ScheduleEventCalendar
 
                     if (LstBxEvents.SelectedItem is ScheduleEvent scheduleEvent)
                     {
-                        EventSelected?.Invoke(this, scheduleEvent);
+                        OnEventSelected?.Invoke(this, scheduleEvent);
+                        OnEventDragged?.Invoke(this, scheduleEvent);
                         LstBxEvents.DoDragDrop(scheduleEvent, DragDropEffects.Move);
                     }
                 }
@@ -204,7 +174,6 @@ namespace ScheduleEventCalendar
             }
         }
 
-
         private void MonthCalendar_DragDrop(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(typeof(ScheduleEvent)))
@@ -231,13 +200,80 @@ namespace ScheduleEventCalendar
                     Events[newDate].Add(movedEvent);
 
                     LoadEventsForDate(monthCalendar.SelectionStart);
+
+                    OnEventDroppedOnDate?.Invoke(this, newDate);
                 }
+            }
+        }
+
+        private void AddEventToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OnAddEventRequested?.Invoke(this, EventArgs.Empty);
+
+            var selectedDate = monthCalendar.SelectionStart;
+
+            using (var form = new AddEventForm(selectedDate, Categories))
+            {
+                if (form.ShowDialog() == DialogResult.OK)
+                {
+                    var newEvent = form.CreatedEvent;
+
+                    if (!Events.ContainsKey(selectedDate))
+                        Events[selectedDate] = new List<ScheduleEvent>();
+
+                    Events[selectedDate].Add(newEvent);
+                }
+            }
+            LoadEventsForDate(selectedDate);
+        }
+
+
+        private void UpdateEventToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OnEditEventRequested?.Invoke(this, EventArgs.Empty);
+
+            if (LstBxEvents.SelectedItem is ScheduleEvent selectedEvent)
+            {
+                var oldDate = selectedEvent.EventDate; // Запоминаем старую дату
+
+                using (var form = new EditEventForm(selectedEvent, Categories))
+                {
+                    if (form.ShowDialog() == DialogResult.OK)
+                    {
+                        var updatedEvent = form.ChangedEvent;
+
+                        // Если дата изменилась — переносим событие в другую дату
+                        if (oldDate.Date != updatedEvent.EventDate.Date)
+                        {
+                            if (Events.ContainsKey(oldDate))
+                                Events[oldDate].Remove(selectedEvent);
+
+                            if (!Events.ContainsKey(updatedEvent.EventDate.Date))
+                                Events[updatedEvent.EventDate.Date] = new List<ScheduleEvent>();
+
+                            Events[updatedEvent.EventDate.Date].Add(updatedEvent);
+                        }
+                        else
+                        {
+                            // Обновляем поля у старого объекта (если дата не изменилась)
+                            selectedEvent.Title = updatedEvent.Title;
+                            selectedEvent.Category = updatedEvent.Category;
+                            selectedEvent.EventDate = updatedEvent.EventDate;
+                        }
+
+                        if(!selectedEvent.Equals(updatedEvent))
+                            OnEventChanged?.Invoke(this, EventArgs.Empty);
+                        
+                        LoadEventsForDate(updatedEvent.EventDate);
+                    }
+                }
+                LoadEventsForDate(oldDate);
             }
         }
 
         private void DeleteEventToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DeleteEventRequested?.Invoke(this, EventArgs.Empty);
+            OnDeleteEventRequested?.Invoke(this, EventArgs.Empty);
             if (LstBxEvents.SelectedItem is ScheduleEvent selectedEvent)
             {
                 var date = selectedEvent.EventDate;
