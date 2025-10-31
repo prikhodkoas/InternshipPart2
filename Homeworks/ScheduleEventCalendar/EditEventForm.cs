@@ -12,11 +12,16 @@ namespace ScheduleEventCalendar
 {
     public partial class EditEventForm : Form
     {
-        public ScheduleEvent ChangedEvent { get; private set; } = new ScheduleEvent();
+        public ScheduleEvent ChangedEvent { get; private set; }
 
         public EditEventForm(ScheduleEvent changedEvent, Dictionary<string, Color> categories)
         {
-            ChangedEvent = changedEvent;
+            ChangedEvent = new ScheduleEvent()
+            {
+                Title = changedEvent.Title,
+                EventDate = changedEvent.EventDate,
+                Category = changedEvent.Category
+            };
 
             InitializeComponent();
             LoadCategoriesToComboBox(categories);

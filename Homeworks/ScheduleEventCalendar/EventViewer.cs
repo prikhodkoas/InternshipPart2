@@ -25,11 +25,14 @@ namespace ScheduleEventCalendar
         /// События, привязанные к датам календаря
         /// </summary>
 
-        public EventViewer()
+        public EventViewer(Dictionary<DateTime, List<ScheduleEvent>> events, Dictionary<string, Color> categories)
         {
             InitializeComponent();
+            
+            Events = events;
+            Categories = categories;
 
-            LoadEventsForDate(monthCalendar.TodayDate);
+            LoadEventsForDate(monthCalendar.SelectionStart.Date);
 
             monthCalendar.AllowDrop = true;
 
@@ -104,7 +107,7 @@ namespace ScheduleEventCalendar
         private void LoadEventsForDate(DateTime date)
         {   
             LstBxEvents.DataSource = null;
-
+            
             if (Events.TryGetValue(date.Date, out var eventsForDate) && eventsForDate.Count > 0)
             {
                 LstBxEvents.DataSource = eventsForDate;
