@@ -98,7 +98,7 @@ namespace ScheduleEventCalendar
         {
             if (LstBxEvents.SelectedItem is ScheduleEvent selectedEvent)
             {
-                var oldDate = selectedEvent.EventDate; // запоминаем старую дату
+                var oldDate = selectedEvent.EventDate; // Запоминаем старую дату
 
                 using (var form = new EditEventForm(selectedEvent))
                 {
@@ -119,7 +119,7 @@ namespace ScheduleEventCalendar
                         }
                         else
                         {
-                            // просто обновляем поля у старого объекта (если дата не изменилась)
+                            // Обновляем поля у старого объекта (если дата не изменилась)
                             selectedEvent.Title = updatedEvent.Title;
                             selectedEvent.Category = updatedEvent.Category;
                             selectedEvent.EventDate = updatedEvent.EventDate;
@@ -152,7 +152,6 @@ namespace ScheduleEventCalendar
 
                     if (LstBxEvents.SelectedItem is ScheduleEvent scheduleEvent)
                     {
-                        // ❗ вызываем у самого списка, не у UserControl
                         LstBxEvents.DoDragDrop(scheduleEvent, DragDropEffects.Move);
                     }
                 }

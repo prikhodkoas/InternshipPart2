@@ -20,6 +20,8 @@ namespace ScheduleEventCalendar
 
             InitializeComponent();
 
+            this.StartPosition = FormStartPosition.CenterParent;
+ 
             TitleTxtBx.Text = changedEvent.Title;
             EventDateDtTmPckr.Value = changedEvent.EventDate;
             //CategoryCmbBx.Items

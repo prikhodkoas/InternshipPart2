@@ -16,6 +16,9 @@ namespace ScheduleEventCalendar
         public AddEventForm(DateTime selectedDate)
         {
             InitializeComponent();
+
+            this.StartPosition = FormStartPosition.CenterParent;
+
             EventDateDtTmPckr.Value = selectedDate;
         }
 
