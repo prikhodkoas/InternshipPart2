@@ -6,10 +6,15 @@ namespace MyCalendar
 {
     public partial class MainForm : Form
     {
+        /// <summary>
+        /// Пользовательский контрол
+        /// </summary>
         private EventViewer eventViewer;
 
+        /// <summary>
+        /// Поставщик данных
+        /// </summary>
         private readonly IDataProvider dataProvider = DataProviderFactory.CreateProvider();
-
 
         public MainForm()
         {
@@ -17,6 +22,9 @@ namespace MyCalendar
             InitializeEventViewer();
         }
 
+        /// <summary>
+        /// Инициализация пользователького контрола
+        /// </summary>
         private void InitializeEventViewer()
         {
             var data = dataProvider.GetData();
@@ -29,6 +37,9 @@ namespace MyCalendar
             eventViewer.OnEventChanged += EventViewer_OnEventChanged;
         }
 
+        /// <summary>
+        /// Сохранение данных после изменений события
+        /// </summary>
         private void EventViewer_OnEventChanged(object sender, System.EventArgs e)
         {
             dataProvider.SetData(eventViewer.Events);

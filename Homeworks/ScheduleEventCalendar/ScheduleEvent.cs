@@ -7,10 +7,22 @@ using System.Threading.Tasks;
 
 namespace ScheduleEventCalendar
 {
+    /// <summary>
+    /// Событие
+    /// </summary>
     public class ScheduleEvent
     {
+        /// <summary>
+        /// Название события
+        /// </summary>
         public string Title { get; set; }
+        /// <summary>
+        /// Дата события
+        /// </summary>
         public DateTime EventDate { get; set; }
+        /// <summary>
+        /// Категория события
+        /// </summary>
         public string Category { get; set; }
 
         public override bool Equals(object obj)

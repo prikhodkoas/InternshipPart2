@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace MyCalendar
 {
+    /// <summary>
+    /// Поставщик данных из кода
+    /// </summary>
     internal class CodeDataProvider : IDataProvider
     {
         DataStorage dataStorage = new DataStorage();

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace MyCalendar
 {
+    /// <summary>
+    /// Фабрика для создания поставщика данных
+    /// </summary>
     internal static class DataProviderFactory
     {
         public static IDataProvider CreateProvider()

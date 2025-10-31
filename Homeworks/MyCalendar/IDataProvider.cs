@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace MyCalendar
 {
+    /// <summary>
+    /// Поставщик данных
+    /// </summary>
     internal interface IDataProvider
     {
         (Dictionary<DateTime, List<ScheduleEvent>>, Dictionary<string, Color>) GetData();

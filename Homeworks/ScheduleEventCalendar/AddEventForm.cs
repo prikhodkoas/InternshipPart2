@@ -10,8 +10,14 @@ using System.Windows.Forms;
 
 namespace ScheduleEventCalendar
 {
+    /// <summary>
+    /// Форма добавления заказа
+    /// </summary>
     public partial class AddEventForm : Form
     {
+        /// <summary>
+        /// Создаваемое событие
+        /// </summary>
         public ScheduleEvent CreatedEvent { get; private set; } = new ScheduleEvent();
 
         public AddEventForm(DateTime selectedDate, Dictionary<string, Color> categories)
@@ -22,6 +28,10 @@ namespace ScheduleEventCalendar
 
             EventDateDtTmPckr.Value = selectedDate;
         }
+
+        /// <summary>
+        /// Загрузка категорий в ComboBox
+        /// </summary>
         private void LoadCategoriesToComboBox(Dictionary<string, Color> categories)
         {
             CategoryCmbBx.Items.Clear();
@@ -40,11 +50,17 @@ namespace ScheduleEventCalendar
                 CategoryCmbBx.SelectedIndex = 0;
         }
 
+        /// <summary>
+        /// Отмена
+        /// </summary>
         private void CancelBtn_Click(object sender, EventArgs e)
         {
             Close();
         }
 
+        /// <summary>
+        /// Созранить изменения
+        /// </summary>
         private void OkBtn_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(TitleTxtBx.Text))

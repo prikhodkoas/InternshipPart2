@@ -7,10 +7,19 @@ namespace ScheduleEventCalendar
 {
     public partial class EventViewer : UserControl
     {
+        /// <summary>
+        /// События, привязанные к датам календаря
+        /// </summary>
         public Dictionary<DateTime, List<ScheduleEvent>> Events { get; set; } = new Dictionary<DateTime, List<ScheduleEvent>>();
 
+        /// <summary>
+        /// Пользовательские категории событий
+        /// </summary>
         public Dictionary<string, Color> Categories { get; set; } = new Dictionary<string, Color>();
 
+        /// <summary>
+        /// Пользовательские события 
+        /// </summary>
         public event EventHandler<DateTime> OnDateSelected;
         public event EventHandler<ScheduleEvent> OnEventSelected;
         public event EventHandler<ScheduleEvent> OnEventDragged; //
@@ -21,10 +30,6 @@ namespace ScheduleEventCalendar
         public event EventHandler OnEventChanged;
 
         #region Logic of Control
-        /// <summary>
-        /// События, привязанные к датам календаря
-        /// </summary>
-
         public EventViewer(Dictionary<DateTime, List<ScheduleEvent>> events, Dictionary<string, Color> categories)
         {
             InitializeComponent();
@@ -47,6 +52,9 @@ namespace ScheduleEventCalendar
             LstBxEvents.DrawItem += LstBxEvents_DrawItem;
         }
 
+        /// <summary>
+        /// Обработка цветов событий по категориям 
+        /// </summary>
         private void LstBxEvents_DrawItem(object sender, DrawItemEventArgs e)
         {
             e.DrawBackground();
@@ -72,6 +80,9 @@ namespace ScheduleEventCalendar
             e.DrawFocusRectangle();
         }
 
+        /// <summary>
+        /// Обработка контекстного меню для календаря
+        /// </summary>
         private void MonthCalendar_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
@@ -86,6 +97,9 @@ namespace ScheduleEventCalendar
             }
         }
 
+        /// <summary>
+        /// Получение даты под кликом мыши
+        /// </summary>
         private DateTime? GetDateFromPoint(Point location)
         {
             var hit = monthCalendar.HitTest(location);
@@ -98,6 +112,9 @@ namespace ScheduleEventCalendar
             return null;
         }
 
+        /// <summary>
+        /// Изменение даты календаря
+        /// </summary>
         private void MonthCalendar_DateChanged(object sender, DateRangeEventArgs e)
         {
             LoadEventsForDate(e.End);
@@ -120,8 +137,9 @@ namespace ScheduleEventCalendar
             }
         }
 
-        
-
+        /// <summary>
+        /// Обработка контекстного меню для ListBox и Drag&Drop для событий
+        /// </summary>
         private void LstBxEvents_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
@@ -150,6 +168,9 @@ namespace ScheduleEventCalendar
             }
         }
 
+        /// <summary>
+        /// Определение изначального эффекта перетаскивания
+        /// </summary>
         private void MonthCalendar_DragEnter(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(typeof(ScheduleEvent)))
@@ -158,6 +179,9 @@ namespace ScheduleEventCalendar
                 e.Effect = DragDropEffects.None;
         }
 
+        /// <summary>
+        /// Определяение эффекта перетаскивания над календарем
+        /// </summary>
         private void MonthCalendar_DragOver(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(typeof(ScheduleEvent)))
@@ -177,6 +201,9 @@ namespace ScheduleEventCalendar
             }
         }
 
+        /// <summary>
+        /// Завершение перетаскивания события
+        /// </summary>
         private void MonthCalendar_DragDrop(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(typeof(ScheduleEvent)))
@@ -209,6 +236,9 @@ namespace ScheduleEventCalendar
             }
         }
 
+        /// <summary>
+        /// Контекстное меню добавления события
+        /// </summary>
         private void AddEventToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OnAddEventRequested?.Invoke(this, EventArgs.Empty);
@@ -230,7 +260,9 @@ namespace ScheduleEventCalendar
             LoadEventsForDate(selectedDate);
         }
 
-
+        /// <summary>
+        /// Контекстное меню редактирования события
+        /// </summary>
         private void UpdateEventToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OnEditEventRequested?.Invoke(this, EventArgs.Empty);
@@ -274,6 +306,9 @@ namespace ScheduleEventCalendar
             }
         }
 
+        /// <summary>
+        /// Контекстное меню удаления события
+        /// </summary>
         private void DeleteEventToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OnDeleteEventRequested?.Invoke(this, EventArgs.Empty);

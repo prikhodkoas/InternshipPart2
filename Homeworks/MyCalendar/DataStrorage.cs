@@ -5,6 +5,9 @@ using System.Drawing;
 
 namespace MyCalendar
 {
+    /// <summary>
+    /// Хранилище данных в коде
+    /// </summary>
     public class DataStorage
     {
         public Dictionary<DateTime, List<ScheduleEvent>> Events = new Dictionary<DateTime, List<ScheduleEvent>>();
