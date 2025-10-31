@@ -16,9 +16,16 @@ namespace ScheduleEventCalendar
         {
             InitializeComponent();
 
-            monthCalendar.MouseDown += MonthCalendar_MouseDown;
+            LoadEventsForDate(monthCalendar.TodayDate);
 
+            monthCalendar.AllowDrop = true;
+
+            monthCalendar.MouseDown += MonthCalendar_MouseDown;
             LstBxEvents.MouseDown += LstBxEvents_MouseDown;
+
+            monthCalendar.DragEnter += MonthCalendar_DragEnter;
+            monthCalendar.DragDrop += MonthCalendar_DragDrop;
+            monthCalendar.DragOver += MonthCalendar_DragOver;
         }
 
         private void MonthCalendar_MouseDown(object sender, MouseEventArgs e)
@@ -66,7 +73,7 @@ namespace ScheduleEventCalendar
             LoadEventsForDate(selectedDate);
         }
 
-        private void monthCalendar_DateChanged(object sender, DateRangeEventArgs e)
+        private void MonthCalendar_DateChanged(object sender, DateRangeEventArgs e)
         {
             LoadEventsForDate(e.End);
         }
@@ -133,7 +140,79 @@ namespace ScheduleEventCalendar
                 if (index != ListBox.NoMatches)
                 {
                     LstBxEvents.SelectedIndex = index;
-                    contextMenuStripEventList.Show(LstBxEvents, e.Location); 
+                    contextMenuStripEventList.Show(LstBxEvents, e.Location);
+                }
+            }
+            else if (e.Button == MouseButtons.Left)
+            {
+                int index = LstBxEvents.IndexFromPoint(e.Location);
+                if (index != ListBox.NoMatches)
+                {
+                    LstBxEvents.SelectedIndex = index;
+
+                    if (LstBxEvents.SelectedItem is ScheduleEvent scheduleEvent)
+                    {
+                        // ❗ вызываем у самого списка, не у UserControl
+                        LstBxEvents.DoDragDrop(scheduleEvent, DragDropEffects.Move);
+                    }
+                }
+            }
+        }
+
+        private void MonthCalendar_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(typeof(ScheduleEvent)))
+                e.Effect = DragDropEffects.Move;
+            else
+                e.Effect = DragDropEffects.None;
+        }
+
+        private void MonthCalendar_DragOver(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(typeof(ScheduleEvent)))
+            {
+                Point clientPoint = monthCalendar.PointToClient(new Point(e.X, e.Y));
+
+                var date = GetDateFromPoint(clientPoint);
+
+                if (date.HasValue)
+                {
+                    e.Effect = DragDropEffects.Move;
+                }
+                else
+                {
+                    e.Effect = DragDropEffects.None;
+                }
+            }
+        }
+
+
+        private void MonthCalendar_DragDrop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(typeof(ScheduleEvent)))
+            {
+                var movedEvent = (ScheduleEvent)e.Data.GetData(typeof(ScheduleEvent));
+
+                Point clientPoint = monthCalendar.PointToClient(new Point(e.X, e.Y));
+                var hit = monthCalendar.HitTest(clientPoint);
+
+                if (hit.HitArea == MonthCalendar.HitArea.Date)
+                {
+                    DateTime newDate = hit.Time.Date;
+
+                    // Удаляем из старой даты
+                    if (_events.ContainsKey(movedEvent.EventDate))
+                        _events[movedEvent.EventDate].Remove(movedEvent);
+
+                    // Добавляем в новую дату
+                    movedEvent.EventDate = newDate;
+                    
+                    if (!_events.ContainsKey(newDate))
+                        _events[newDate] = new List<ScheduleEvent>();
+
+                    _events[newDate].Add(movedEvent);
+
+                    LoadEventsForDate(monthCalendar.SelectionStart);
                 }
             }
         }
