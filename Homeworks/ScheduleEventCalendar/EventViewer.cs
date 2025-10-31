@@ -7,10 +7,23 @@ namespace ScheduleEventCalendar
 {
     public partial class EventViewer : UserControl
     {
+        public Dictionary<DateTime, List<ScheduleEvent>> Events { get; set; } = new Dictionary<DateTime, List<ScheduleEvent>>();
+        
+        public Dictionary<string, Color> Categories { get; set; }
+
+        public event EventHandler<DateTime> DateSelected;
+        public event EventHandler<ScheduleEvent> EventSelected;
+        public event EventHandler<ScheduleEvent> EventDragged;
+        public event EventHandler<DateTime> EventDroppedOnDate;
+        public event EventHandler AddEventRequested;
+        public event EventHandler EditEventRequested;
+        public event EventHandler DeleteEventRequested;
+        public event EventHandler OnCategoryChanged;
+
+        #region Logic of Control
         /// <summary>
         /// События, привязанные к датам календаря
         /// </summary>
-        private readonly Dictionary<DateTime, List<ScheduleEvent>> _events = new Dictionary<DateTime, List<ScheduleEvent>>();
 
         public EventViewer()
         {
@@ -56,6 +69,8 @@ namespace ScheduleEventCalendar
 
         private void AddEventToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            AddEventRequested?.Invoke(this, EventArgs.Empty);
+
             var selectedDate = monthCalendar.SelectionStart;
 
             using (var form = new AddEventForm(selectedDate))
@@ -64,10 +79,10 @@ namespace ScheduleEventCalendar
                 {
                     var newEvent = form.CreatedEvent;
 
-                    if (!_events.ContainsKey(selectedDate))
-                        _events[selectedDate] = new List<ScheduleEvent>();
+                    if (!Events.ContainsKey(selectedDate))
+                        Events[selectedDate] = new List<ScheduleEvent>();
 
-                    _events[selectedDate].Add(newEvent);
+                    Events[selectedDate].Add(newEvent);
                 }
             }
             LoadEventsForDate(selectedDate);
@@ -76,13 +91,14 @@ namespace ScheduleEventCalendar
         private void MonthCalendar_DateChanged(object sender, DateRangeEventArgs e)
         {
             LoadEventsForDate(e.End);
+            DateSelected?.Invoke(this, e.End);
         }
 
         private void LoadEventsForDate(DateTime date)
-        {
+        {   
             LstBxEvents.DataSource = null;
 
-            if (_events.TryGetValue(date.Date, out var eventsForDate) && eventsForDate.Count > 0)
+            if (Events.TryGetValue(date.Date, out var eventsForDate) && eventsForDate.Count > 0)
             {
                 LstBxEvents.DataSource = eventsForDate;
                 LstBxEvents.DisplayMember = "Title";
@@ -96,6 +112,8 @@ namespace ScheduleEventCalendar
 
         private void UpdateEventToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            EditEventRequested?.Invoke(this, EventArgs.Empty);
+
             if (LstBxEvents.SelectedItem is ScheduleEvent selectedEvent)
             {
                 var oldDate = selectedEvent.EventDate; // Запоминаем старую дату
@@ -109,13 +127,13 @@ namespace ScheduleEventCalendar
                         // Если дата изменилась — переносим событие в другую дату
                         if (oldDate.Date != updatedEvent.EventDate.Date)
                         {
-                            if (_events.ContainsKey(oldDate))
-                                _events[oldDate].Remove(selectedEvent);
+                            if (Events.ContainsKey(oldDate))
+                                Events[oldDate].Remove(selectedEvent);
 
-                            if (!_events.ContainsKey(updatedEvent.EventDate.Date))
-                                _events[updatedEvent.EventDate.Date] = new List<ScheduleEvent>();
+                            if (!Events.ContainsKey(updatedEvent.EventDate.Date))
+                                Events[updatedEvent.EventDate.Date] = new List<ScheduleEvent>();
 
-                            _events[updatedEvent.EventDate.Date].Add(updatedEvent);
+                            Events[updatedEvent.EventDate.Date].Add(updatedEvent);
                         }
                         else
                         {
@@ -152,6 +170,7 @@ namespace ScheduleEventCalendar
 
                     if (LstBxEvents.SelectedItem is ScheduleEvent scheduleEvent)
                     {
+                        EventSelected?.Invoke(this, scheduleEvent);
                         LstBxEvents.DoDragDrop(scheduleEvent, DragDropEffects.Move);
                     }
                 }
@@ -200,20 +219,40 @@ namespace ScheduleEventCalendar
                     DateTime newDate = hit.Time.Date;
 
                     // Удаляем из старой даты
-                    if (_events.ContainsKey(movedEvent.EventDate))
-                        _events[movedEvent.EventDate].Remove(movedEvent);
+                    if (Events.ContainsKey(movedEvent.EventDate))
+                        Events[movedEvent.EventDate].Remove(movedEvent);
 
                     // Добавляем в новую дату
                     movedEvent.EventDate = newDate;
                     
-                    if (!_events.ContainsKey(newDate))
-                        _events[newDate] = new List<ScheduleEvent>();
+                    if (!Events.ContainsKey(newDate))
+                        Events[newDate] = new List<ScheduleEvent>();
 
-                    _events[newDate].Add(movedEvent);
+                    Events[newDate].Add(movedEvent);
 
                     LoadEventsForDate(monthCalendar.SelectionStart);
                 }
             }
         }
+
+        private void DeleteEventToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DeleteEventRequested?.Invoke(this, EventArgs.Empty);
+            if (LstBxEvents.SelectedItem is ScheduleEvent selectedEvent)
+            {
+                var date = selectedEvent.EventDate;
+
+                if (Events.ContainsKey(date))
+                {
+                    Events[date].Remove(selectedEvent);
+
+                    if (Events[date].Count == 0)
+                        Events.Remove(date);
+                }
+
+                LoadEventsForDate(date);
+            }
+        }
+        #endregion
     }
 }

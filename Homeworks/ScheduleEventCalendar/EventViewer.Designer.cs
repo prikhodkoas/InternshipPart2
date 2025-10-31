@@ -55,6 +55,7 @@ namespace ScheduleEventCalendar
             this.DeleteEventToolStripMenuItem.Name = "DeleteEventToolStripMenuItem";
             this.DeleteEventToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
             this.DeleteEventToolStripMenuItem.Text = "Удалить событие";
+            this.DeleteEventToolStripMenuItem.Click += DeleteEventToolStripMenuItem_Click;
             // 
             // contextMenuStripEventList
             // 
