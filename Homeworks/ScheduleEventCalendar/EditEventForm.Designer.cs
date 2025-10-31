@@ -129,7 +129,9 @@
             this.Controls.Add(this.EventDateDtTmPckr);
             this.Controls.Add(this.TitleTxtBx);
             this.Controls.Add(this.TitleLbl);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Margin = new System.Windows.Forms.Padding(2);
+            this.MaximizeBox = false;
             this.Name = "EditEventForm";
             this.Text = "EditEventForm";
             this.ResumeLayout(false);
