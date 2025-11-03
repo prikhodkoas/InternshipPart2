@@ -14,9 +14,11 @@ namespace FileLoaderMultiThread
         [STAThread]
         static void Main()
         {
+            var fileLoader = FileLoaderServiceFactory.Create();
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new LoadFilesMultiThreadForm("asd"));
+            Application.Run(new LoadFilesMultiThreadForm(fileLoader));
         }
     }
 }

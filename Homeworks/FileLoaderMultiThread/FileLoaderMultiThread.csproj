@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FileLoaderServiceFactory.cs" />
     <Compile Include="Services\FileLoader.cs" />
     <Compile Include="LoadFileForm.cs">
       <SubType>Form</SubType>
@@ -66,6 +67,9 @@
     <Compile Include="Services\IFileLoaderService.cs" />
     <EmbeddedResource Include="LoadFileForm.resx">
       <DependentUpon>LoadFileForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LoadFilesMultiThreadForm.resx">
+      <DependentUpon>LoadFilesMultiThreadForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
