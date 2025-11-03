@@ -32,6 +32,7 @@
             this.fileIsLoadingNameLbl = new System.Windows.Forms.Label();
             this.cancelLoadingBtn = new System.Windows.Forms.Button();
             this.pauseLoadingBtn = new System.Windows.Forms.Button();
+            this.resumeLoadingBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // progressBar1
@@ -52,7 +53,7 @@
             // 
             // cancelLoadingBtn
             // 
-            this.cancelLoadingBtn.Location = new System.Drawing.Point(147, 58);
+            this.cancelLoadingBtn.Location = new System.Drawing.Point(12, 58);
             this.cancelLoadingBtn.Name = "cancelLoadingBtn";
             this.cancelLoadingBtn.Size = new System.Drawing.Size(75, 23);
             this.cancelLoadingBtn.TabIndex = 2;
@@ -61,18 +62,28 @@
             // 
             // pauseLoadingBtn
             // 
-            this.pauseLoadingBtn.Location = new System.Drawing.Point(228, 58);
+            this.pauseLoadingBtn.Location = new System.Drawing.Point(136, 58);
             this.pauseLoadingBtn.Name = "pauseLoadingBtn";
             this.pauseLoadingBtn.Size = new System.Drawing.Size(75, 23);
             this.pauseLoadingBtn.TabIndex = 3;
             this.pauseLoadingBtn.Text = "Пауза";
             this.pauseLoadingBtn.UseVisualStyleBackColor = true;
             // 
+            // resumeLoadingBtn
+            // 
+            this.resumeLoadingBtn.Location = new System.Drawing.Point(217, 58);
+            this.resumeLoadingBtn.Name = "resumeLoadingBtn";
+            this.resumeLoadingBtn.Size = new System.Drawing.Size(86, 23);
+            this.resumeLoadingBtn.TabIndex = 4;
+            this.resumeLoadingBtn.Text = "Возобновить";
+            this.resumeLoadingBtn.UseVisualStyleBackColor = true;
+            // 
             // LoadFileForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(312, 89);
+            this.Controls.Add(this.resumeLoadingBtn);
             this.Controls.Add(this.pauseLoadingBtn);
             this.Controls.Add(this.cancelLoadingBtn);
             this.Controls.Add(this.fileIsLoadingNameLbl);
@@ -90,5 +101,6 @@
         private System.Windows.Forms.Label fileIsLoadingNameLbl;
         private System.Windows.Forms.Button cancelLoadingBtn;
         private System.Windows.Forms.Button pauseLoadingBtn;
+        private System.Windows.Forms.Button resumeLoadingBtn;
     }
 }
