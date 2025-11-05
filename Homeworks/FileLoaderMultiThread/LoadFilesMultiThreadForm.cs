@@ -52,7 +52,7 @@ namespace FileLoaderMultiThread
             var fileInfo = new DownloadFile()
             {
                 Url = downloadURI,
-                FilePathToSave = downloadURI
+                FilePathToSave = savePath
             };
 
             try
