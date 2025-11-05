@@ -49,7 +49,7 @@ namespace FileLoaderMultiThread.Services
             _tokens[file.Id] = cts;
 
             var loader = new FileLoader(file, cts.Token);
-            loader.ProgressChanged += percent => this.ProgressChanged?.Invoke(file.Id, percent);
+            loader.ProgressChanged += (percent) => this.ProgressChanged?.Invoke(file.Id, percent);
             loader.Completed += () => Completed?.Invoke(file.Id);
 
             _downloaders[file.Id] = loader;

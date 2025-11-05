@@ -71,8 +71,21 @@ namespace FileLoaderMultiThread
             try
             {
                 var request = (HttpWebRequest)WebRequest.Create(_file.Url);
+                //for debug
+                request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64)";
+                request.Accept = "*/*";
+                request.Referer = _file.Url;
+
                 using (var response = (HttpWebResponse)request.GetResponse())
                 {
+                    string contentDisposition = response.Headers["Content-Disposition"];
+                    string fileName = null;
+                    
+                    if (string.IsNullOrEmpty(fileName))
+                        fileName = Path.GetFileName(new Uri(_file.Url).AbsolutePath);
+
+                    _file.Name = fileName;
+
                     using (var stream = response.GetResponseStream())
                     {
                         using (var fs = new FileStream(_file.FilePathToSave, FileMode.Create, FileAccess.Write))
@@ -82,6 +95,9 @@ namespace FileLoaderMultiThread
                             long totalRead = 0;
                             long totalSize = response.ContentLength;
 
+                            // 🛡️ Защита от некорректного ContentLength
+                            bool hasValidSize = totalSize > 0;
+
                             while ((bytesRead = stream.Read(buffer, 0, buffer.Length)) > 0)
                             {
                                 _pauseEvent.WaitOne();
@@ -90,9 +106,16 @@ namespace FileLoaderMultiThread
                                 fs.Write(buffer, 0, bytesRead);
                                 totalRead += bytesRead;
 
-                                int percent = (int)((totalRead * 100) / totalSize);
-                                ProgressChanged?.Invoke(percent);
+                                if (hasValidSize)
+                                {
+                                    int percent = (int)((totalRead * 100) / totalSize);
+                                    percent = Math.Max(0, Math.Min(100, percent)); // Защита от выхода за границы
+                                    ProgressChanged?.Invoke(percent);
+                                }
                             }
+
+                            if (!hasValidSize)
+                                ProgressChanged?.Invoke(100); // Если размер неизвестен — просто 100% в конце
 
                             _isLoaded = true;
                             Completed?.Invoke();
@@ -105,6 +128,7 @@ namespace FileLoaderMultiThread
                 MessageBox.Show("Ошибка загрузки: " + ex.Message);
             }
         }
+
 
         /// <summary>
         /// Останавливает загрузку файла
