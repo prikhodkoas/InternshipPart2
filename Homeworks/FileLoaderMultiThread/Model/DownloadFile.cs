@@ -10,9 +10,7 @@ namespace FileLoaderMultiThread.Model
     {
         public Guid Id { get; } = Guid.NewGuid();
         public string Url { get; set; }
+        public string Name { get; set; }
         public string FilePathToSave { get; set; }
-        public long TotalSize { get; set; }
-        public long DownloadedSize { get; set; }
-        public bool IsLoaded { get; set; }
     }
 }

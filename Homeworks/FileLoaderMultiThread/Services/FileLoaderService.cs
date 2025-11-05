@@ -1,6 +1,7 @@
 ﻿using FileLoaderMultiThread.Model;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -15,7 +16,7 @@ namespace FileLoaderMultiThread.Services
     /// <summary>
     /// Сервис по загрузке файлов 
     /// </summary>
-    internal class FileLoaderService : IFileLoaderService
+    public class FileLoaderService : IFileLoaderService
     {
         /// <summary>
         /// Загрузчики файлов (каждый загрузчик работает в своем потоке)
@@ -48,7 +49,7 @@ namespace FileLoaderMultiThread.Services
             _tokens[file.Id] = cts;
 
             var loader = new FileLoader(file, cts.Token);
-            loader.ProgressChanged += percent => ProgressChanged?.Invoke(file.Id, percent);
+            loader.ProgressChanged += percent => this.ProgressChanged?.Invoke(file.Id, percent);
             loader.Completed += () => Completed?.Invoke(file.Id);
 
             _downloaders[file.Id] = loader;
@@ -97,6 +98,13 @@ namespace FileLoaderMultiThread.Services
         public bool IsLoaded(Guid fileId)
         {
             return _downloaders.TryGetValue(fileId, out var loader) && loader.IsLoaded();
+        }
+
+        public FileLoader GetFileLoader(Guid fileId)
+        {
+            if(_downloaders.TryGetValue(fileId, out var fileLoader)) 
+                return fileLoader;
+            return null;
         }
     }
 }

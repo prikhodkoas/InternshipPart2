@@ -13,10 +13,20 @@ namespace FileLoaderMultiThread.Services
     /// </summary>
     public interface IFileLoaderService
     {
+        /// <summary>
+        /// Событие об изменении прогресса загрузки
+        /// </summary>
+        event Action<Guid, int> ProgressChanged;
+
+        /// <summary>
+        /// Событие о завершении загрузки файлов
+        /// </summary>
+        event Action<Guid> Completed;
         void LoadFile(DownloadFile downloadFile);
         void PauseLoadFile(Guid fileId);
         void ResumeLoadFile(Guid fileId);
         void CancelLoadFile(Guid fileId);
         bool IsLoaded(Guid fileId);
+        FileLoader GetFileLoader(Guid fileId);
     }
 }

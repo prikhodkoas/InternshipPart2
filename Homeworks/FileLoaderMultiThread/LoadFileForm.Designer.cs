@@ -28,66 +28,75 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.loadingProgressBar = new System.Windows.Forms.ProgressBar();
             this.fileIsLoadingNameLbl = new System.Windows.Forms.Label();
             this.cancelLoadingBtn = new System.Windows.Forms.Button();
             this.pauseLoadingBtn = new System.Windows.Forms.Button();
             this.resumeLoadingBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // progressBar1
+            // loadingProgressBar
             // 
-            this.progressBar1.Location = new System.Drawing.Point(12, 29);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(291, 23);
-            this.progressBar1.TabIndex = 0;
+            this.loadingProgressBar.Location = new System.Drawing.Point(18, 45);
+            this.loadingProgressBar.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.loadingProgressBar.Name = "loadingProgressBar";
+            this.loadingProgressBar.Size = new System.Drawing.Size(436, 35);
+            this.loadingProgressBar.TabIndex = 0;
             // 
             // fileIsLoadingNameLbl
             // 
             this.fileIsLoadingNameLbl.AutoSize = true;
-            this.fileIsLoadingNameLbl.Location = new System.Drawing.Point(13, 13);
+            this.fileIsLoadingNameLbl.Location = new System.Drawing.Point(20, 20);
+            this.fileIsLoadingNameLbl.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.fileIsLoadingNameLbl.Name = "fileIsLoadingNameLbl";
-            this.fileIsLoadingNameLbl.Size = new System.Drawing.Size(116, 13);
+            this.fileIsLoadingNameLbl.Size = new System.Drawing.Size(174, 20);
             this.fileIsLoadingNameLbl.TabIndex = 1;
             this.fileIsLoadingNameLbl.Text = "Идет загрузка файла";
             // 
             // cancelLoadingBtn
             // 
-            this.cancelLoadingBtn.Location = new System.Drawing.Point(12, 58);
+            this.cancelLoadingBtn.Location = new System.Drawing.Point(18, 89);
+            this.cancelLoadingBtn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cancelLoadingBtn.Name = "cancelLoadingBtn";
-            this.cancelLoadingBtn.Size = new System.Drawing.Size(75, 23);
+            this.cancelLoadingBtn.Size = new System.Drawing.Size(112, 35);
             this.cancelLoadingBtn.TabIndex = 2;
             this.cancelLoadingBtn.Text = "Отмена";
             this.cancelLoadingBtn.UseVisualStyleBackColor = true;
+            this.cancelLoadingBtn.Click += new System.EventHandler(this.cancelLoadingBtn_Click);
             // 
             // pauseLoadingBtn
             // 
-            this.pauseLoadingBtn.Location = new System.Drawing.Point(136, 58);
+            this.pauseLoadingBtn.Location = new System.Drawing.Point(204, 89);
+            this.pauseLoadingBtn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.pauseLoadingBtn.Name = "pauseLoadingBtn";
-            this.pauseLoadingBtn.Size = new System.Drawing.Size(75, 23);
+            this.pauseLoadingBtn.Size = new System.Drawing.Size(112, 35);
             this.pauseLoadingBtn.TabIndex = 3;
             this.pauseLoadingBtn.Text = "Пауза";
             this.pauseLoadingBtn.UseVisualStyleBackColor = true;
+            this.pauseLoadingBtn.Click += new System.EventHandler(this.pauseLoadingBtn_Click);
             // 
             // resumeLoadingBtn
             // 
-            this.resumeLoadingBtn.Location = new System.Drawing.Point(217, 58);
+            this.resumeLoadingBtn.Location = new System.Drawing.Point(326, 89);
+            this.resumeLoadingBtn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.resumeLoadingBtn.Name = "resumeLoadingBtn";
-            this.resumeLoadingBtn.Size = new System.Drawing.Size(86, 23);
+            this.resumeLoadingBtn.Size = new System.Drawing.Size(129, 35);
             this.resumeLoadingBtn.TabIndex = 4;
             this.resumeLoadingBtn.Text = "Возобновить";
             this.resumeLoadingBtn.UseVisualStyleBackColor = true;
+            this.resumeLoadingBtn.Click += new System.EventHandler(this.resumeLoadingBtn_Click);
             // 
             // LoadFileForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(312, 89);
+            this.ClientSize = new System.Drawing.Size(468, 137);
             this.Controls.Add(this.resumeLoadingBtn);
             this.Controls.Add(this.pauseLoadingBtn);
             this.Controls.Add(this.cancelLoadingBtn);
             this.Controls.Add(this.fileIsLoadingNameLbl);
-            this.Controls.Add(this.progressBar1);
+            this.Controls.Add(this.loadingProgressBar);
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "LoadFileForm";
             this.Text = "Загрузка файла";
             this.ResumeLayout(false);
@@ -97,7 +106,7 @@
 
         #endregion
 
-        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.ProgressBar loadingProgressBar;
         private System.Windows.Forms.Label fileIsLoadingNameLbl;
         private System.Windows.Forms.Button cancelLoadingBtn;
         private System.Windows.Forms.Button pauseLoadingBtn;

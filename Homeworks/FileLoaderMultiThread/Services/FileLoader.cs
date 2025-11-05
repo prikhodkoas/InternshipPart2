@@ -28,6 +28,11 @@ namespace FileLoaderMultiThread
         private readonly ManualResetEvent _pauseEvent = new ManualResetEvent(true);
 
         /// <summary>
+        /// Имя файла
+        /// </summary>
+        private string fileName;
+
+        /// <summary>
         /// Загружен ли файл
         /// </summary>
         private bool _isLoaded = false;
@@ -116,6 +121,11 @@ namespace FileLoaderMultiThread
         /// </summary>
         /// <returns>Загружен ли файл</returns>
         public bool IsLoaded() => _isLoaded;
+
+        public DownloadFile GetDownloadFile()
+        {
+            return _file;
+        }
     }
 
 
