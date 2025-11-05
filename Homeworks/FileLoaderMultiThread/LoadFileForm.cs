@@ -18,12 +18,13 @@ namespace FileLoaderMultiThread
         private Guid _currentFileId;
         public LoadFileForm(IFileLoaderService fileLoaderService, Guid fileId)
         {
-            _fileLoaderService= fileLoaderService;
-            this.fileIsLoadingNameLbl.Text += $"{_fileLoaderService.GetFileLoader(fileId).GetDownloadFile().Name}";
+            InitializeComponent();
+
+            _fileLoaderService = fileLoaderService;
+            this.fileIsLoadingNameLbl.Text += $"{_fileLoaderService.GetFileLoader(fileId).GetDownloadFile().FilePathToSave}";
             _fileLoaderService.ProgressChanged += _fileLoaderService_ProgressChanged;
             _currentFileId = fileId;
 
-            InitializeComponent();
         }
 
         private void _fileLoaderService_ProgressChanged(Guid fileId, int currentPercent)
