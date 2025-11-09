@@ -16,23 +16,38 @@ namespace FileLoaderMultiThread
         private readonly IFileLoaderService _fileLoaderService;
 
         private Guid _currentFileId;
+
+        private readonly string filePath; 
+
         public LoadFileForm(IFileLoaderService fileLoaderService, Guid fileId)
         {
             InitializeComponent();
 
             _fileLoaderService = fileLoaderService;
-            this.fileIsLoadingNameLbl.Text += $"{_fileLoaderService.GetFileLoader(fileId).GetDownloadFile().FilePathToSave}";
-            _fileLoaderService.ProgressChanged += _fileLoaderService_ProgressChanged;
             _currentFileId = fileId;
 
+            var loader = _fileLoaderService.GetFileLoader(fileId);
+            filePath = loader.GetUploadFile().FilePathFromSave;
+            this.fileIsLoadingNameLbl.Text += $" {filePath}";
+
+            _fileLoaderService.ProgressChanged += _fileLoaderService_ProgressChanged;
         }
 
         private void _fileLoaderService_ProgressChanged(Guid fileId, int currentPercent)
         {
-            loadingProgressBar.Value = currentPercent;
-            if(currentPercent == 100)
+            if (fileId != _currentFileId)
+                return;
+
+            if (InvokeRequired)
             {
-                MessageBox.Show("Загрузка завершена");
+                Invoke(new Action<Guid, int>(_fileLoaderService_ProgressChanged), fileId, currentPercent);
+                return;
+            }
+
+            loadingProgressBar.Value = currentPercent;
+            if (currentPercent == 100)
+            {
+                MessageBox.Show($"Файл успешно загружен: {filePath}");
                 this.Close();
             }
         }

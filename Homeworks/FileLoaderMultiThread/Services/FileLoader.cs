@@ -1,4 +1,7 @@
 ﻿using FileLoaderMultiThread.Model;
+using FileUploadService;
+using FileUploadService.dto;
+using FileUploadService.service;
 using System;
 using System.IO;
 using System.Net;
@@ -15,7 +18,7 @@ namespace FileLoaderMultiThread
         /// <summary>
         /// Информация о загружаемом файле
         /// </summary>
-        private readonly DownloadFile _file;
+        private readonly UploadFile _file;
 
         /// <summary>
         /// Токен отмены
@@ -28,9 +31,9 @@ namespace FileLoaderMultiThread
         private readonly ManualResetEvent _pauseEvent = new ManualResetEvent(true);
 
         /// <summary>
-        /// Имя файла
+        /// Сервис для сохранения файла в БД
         /// </summary>
-        private string fileName;
+        private readonly IFileUploadService _fileUploadService;
 
         /// <summary>
         /// Загружен ли файл
@@ -47,10 +50,11 @@ namespace FileLoaderMultiThread
         /// </summary>
         public event Action Completed;
 
-        public FileLoader(DownloadFile file, CancellationToken cancellationToken)
+        public FileLoader(UploadFile file, CancellationToken cancellationToken, IFileUploadService fileUploadService)
         {
             _file = file;
             _token = cancellationToken;
+            _fileUploadService = fileUploadService;
         }
 
         /// <summary>
@@ -58,74 +62,62 @@ namespace FileLoaderMultiThread
         /// </summary>
         public void Start()
         {
-            var thread = new Thread(Download);
+            var thread = new Thread(LoadFromFileSystem);
             thread.IsBackground = true;
             thread.Start();
         }
 
         /// <summary>
-        /// Загрузжает файл из сети
+        /// Загрузжает файл из файловой системы
         /// </summary>
-        private void Download()
+        private void LoadFromFileSystem()
         {
             try
             {
-                var request = (HttpWebRequest)WebRequest.Create(_file.Url);
-                //for debug
-                request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64)";
-                request.Accept = "*/*";
-                request.Referer = _file.Url;
-
-                using (var response = (HttpWebResponse)request.GetResponse())
+                if (!File.Exists(_file.FilePathFromSave))
                 {
-                    string contentDisposition = response.Headers["Content-Disposition"];
-                    string fileName = null;
-                    
-                    if (string.IsNullOrEmpty(fileName))
-                        fileName = Path.GetFileName(new Uri(_file.Url).AbsolutePath);
-
-                    _file.Name = fileName;
-
-                    using (var stream = response.GetResponseStream())
-                    {
-                        using (var fs = new FileStream(_file.FilePathToSave, FileMode.Create, FileAccess.Write))
-                        {
-                            byte[] buffer = new byte[8192];
-                            int bytesRead;
-                            long totalRead = 0;
-                            long totalSize = response.ContentLength;
-
-                            // 🛡️ Защита от некорректного ContentLength
-                            bool hasValidSize = totalSize > 0;
-
-                            while ((bytesRead = stream.Read(buffer, 0, buffer.Length)) > 0)
-                            {
-                                _pauseEvent.WaitOne();
-                                if (_token.IsCancellationRequested) return;
-
-                                fs.Write(buffer, 0, bytesRead);
-                                totalRead += bytesRead;
-
-                                if (hasValidSize)
-                                {
-                                    int percent = (int)((totalRead * 100) / totalSize);
-                                    percent = Math.Max(0, Math.Min(100, percent)); // Защита от выхода за границы
-                                    ProgressChanged?.Invoke(percent);
-                                }
-                            }
-
-                            if (!hasValidSize)
-                                ProgressChanged?.Invoke(100); // Если размер неизвестен — просто 100% в конце
-
-                            _isLoaded = true;
-                            Completed?.Invoke();
-                        }
-                    }
+                    throw new FileNotFoundException("Файл не найден: " + _file.FilePathFromSave);
                 }
+
+                FileInfo fileInfo = new FileInfo(_file.FilePathFromSave);
+                long totalSize = fileInfo.Length;
+                long totalRead = 0;
+
+                byte[] buffer = new byte[8192];
+
+                using (var fs = new FileStream(_file.FilePathFromSave, FileMode.Open, FileAccess.Read))
+                using (var ms = new MemoryStream())
+                {
+                    int bytesRead;
+                    while ((bytesRead = fs.Read(buffer, 0, buffer.Length)) > 0)
+                    {
+                        if (_token.IsCancellationRequested)
+                            return;
+
+                        ms.Write(buffer, 0, bytesRead);
+                        totalRead += bytesRead;
+
+                        int percent = (int)((totalRead * 100) / totalSize);
+                        ProgressChanged?.Invoke(percent);
+                    }
+
+                    // Сохраняем в БД
+                    var dto = new FileDto
+                    {
+                        FileName = _file.Name,
+                        FilePath = _file.FilePathFromSave,
+                        Content = ms.ToArray()
+                    };
+
+                    _fileUploadService.UploadFile(dto);
+                }
+
+                _isLoaded = true;
+                Completed?.Invoke();
             }
-            catch (WebException ex)
+            catch (Exception ex)
             {
-                MessageBox.Show("Ошибка загрузки: " + ex.Message);
+                MessageBox.Show($"Ошибка загрузки файла '{_file.FilePathFromSave}': {ex.Message}");
             }
         }
 
@@ -146,11 +138,9 @@ namespace FileLoaderMultiThread
         /// <returns>Загружен ли файл</returns>
         public bool IsLoaded() => _isLoaded;
 
-        public DownloadFile GetDownloadFile()
+        public UploadFile GetUploadFile()
         {
             return _file;
         }
     }
-
-
 }

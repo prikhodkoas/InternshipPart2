@@ -28,63 +28,56 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.URITxtBx = new System.Windows.Forms.TextBox();
-            this.URILbl = new System.Windows.Forms.Label();
-            this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.FileNameLbl = new System.Windows.Forms.Label();
             this.choosePathBtn = new System.Windows.Forms.Button();
-            this.saveFileBtn = new System.Windows.Forms.Button();
+            this.SaveFileBtn = new System.Windows.Forms.Button();
+            this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.SuspendLayout();
             // 
-            // URITxtBx
+            // FileNameLbl
             // 
-            this.URITxtBx.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.URITxtBx.Location = new System.Drawing.Point(12, 38);
-            this.URITxtBx.Name = "URITxtBx";
-            this.URITxtBx.Size = new System.Drawing.Size(460, 26);
-            this.URITxtBx.TabIndex = 0;
-            // 
-            // URILbl
-            // 
-            this.URILbl.AutoSize = true;
-            this.URILbl.Location = new System.Drawing.Point(12, 9);
-            this.URILbl.Name = "URILbl";
-            this.URILbl.Size = new System.Drawing.Size(201, 20);
-            this.URILbl.TabIndex = 1;
-            this.URILbl.Text = "URL файла для загрузки";
+            this.FileNameLbl.AutoSize = true;
+            this.FileNameLbl.Location = new System.Drawing.Point(12, 9);
+            this.FileNameLbl.Name = "FileNameLbl";
+            this.FileNameLbl.Size = new System.Drawing.Size(235, 20);
+            this.FileNameLbl.TabIndex = 1;
+            this.FileNameLbl.Text = "Выберите файл для загрузки";
             // 
             // choosePathBtn
             // 
             this.choosePathBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.choosePathBtn.Location = new System.Drawing.Point(12, 74);
+            this.choosePathBtn.Location = new System.Drawing.Point(12, 60);
             this.choosePathBtn.Name = "choosePathBtn";
-            this.choosePathBtn.Size = new System.Drawing.Size(130, 32);
+            this.choosePathBtn.Size = new System.Drawing.Size(183, 32);
             this.choosePathBtn.TabIndex = 2;
-            this.choosePathBtn.Text = "Выбор пути";
+            this.choosePathBtn.Text = "Выбрать файл";
             this.choosePathBtn.UseVisualStyleBackColor = true;
             // 
-            // saveFileBtn
+            // SaveFileBtn
             // 
-            this.saveFileBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.saveFileBtn.Location = new System.Drawing.Point(291, 74);
-            this.saveFileBtn.Name = "saveFileBtn";
-            this.saveFileBtn.Size = new System.Drawing.Size(183, 32);
-            this.saveFileBtn.TabIndex = 3;
-            this.saveFileBtn.Text = "Сохранить файл";
-            this.saveFileBtn.UseVisualStyleBackColor = true;
+            this.SaveFileBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.SaveFileBtn.Location = new System.Drawing.Point(289, 60);
+            this.SaveFileBtn.Name = "SaveFileBtn";
+            this.SaveFileBtn.Size = new System.Drawing.Size(183, 32);
+            this.SaveFileBtn.TabIndex = 3;
+            this.SaveFileBtn.Text = "Сохранить файл";
+            this.SaveFileBtn.UseVisualStyleBackColor = true;
+            // 
+            // openFileDialog
+            // 
+            this.openFileDialog.FileName = "openFileDialog";
             // 
             // LoadFilesMultiThreadForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(484, 104);
-            this.Controls.Add(this.saveFileBtn);
+            this.Controls.Add(this.SaveFileBtn);
             this.Controls.Add(this.choosePathBtn);
-            this.Controls.Add(this.URILbl);
-            this.Controls.Add(this.URITxtBx);
+            this.Controls.Add(this.FileNameLbl);
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(2134231443, 160);
+            this.MaximumSize = new System.Drawing.Size(2134231446, 160);
             this.MinimumSize = new System.Drawing.Size(506, 160);
             this.Name = "LoadFilesMultiThreadForm";
             this.Text = "File Loader";
@@ -94,12 +87,10 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.TextBox URITxtBx;
-        private System.Windows.Forms.Label URILbl;
-        private System.Windows.Forms.SaveFileDialog saveFileDialog;
+        private System.Windows.Forms.Label FileNameLbl;
         private System.Windows.Forms.Button choosePathBtn;
-        private System.Windows.Forms.Button saveFileBtn;
+        private System.Windows.Forms.Button SaveFileBtn;
+        private System.Windows.Forms.OpenFileDialog openFileDialog;
     }
 }
 

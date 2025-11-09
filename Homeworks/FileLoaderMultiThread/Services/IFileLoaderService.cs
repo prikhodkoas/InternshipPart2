@@ -22,7 +22,7 @@ namespace FileLoaderMultiThread.Services
         /// Событие о завершении загрузки файлов
         /// </summary>
         event Action<Guid> Completed;
-        void LoadFile(DownloadFile downloadFile);
+        void LoadFile(UploadFile downloadFile);
         void PauseLoadFile(Guid fileId);
         void ResumeLoadFile(Guid fileId);
         void CancelLoadFile(Guid fileId);

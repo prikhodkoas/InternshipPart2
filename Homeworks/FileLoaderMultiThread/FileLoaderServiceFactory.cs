@@ -1,14 +1,11 @@
 ﻿using FileLoaderMultiThread.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FileLoaderMultiThread
 {
+
     public static class FileLoaderServiceFactory
     {
-        public static IFileLoaderService Create() => new FileLoaderService();
+        
+        public static IFileLoaderService Create() => new FileLoaderService(new FileUploadService.service.FileUploadService("Server=localhost;Database=FileStorageDb;Trusted_Connection=True;"));
     }
 }

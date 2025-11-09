@@ -1,4 +1,5 @@
 ﻿using FileLoaderMultiThread.Model;
+using FileUploadService.service;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -28,6 +29,11 @@ namespace FileLoaderMultiThread.Services
         private readonly Dictionary<Guid, CancellationTokenSource> _tokens = new Dictionary<Guid, CancellationTokenSource>();
 
         /// <summary>
+        /// Сервис для сохранения файлов в БД
+        /// </summary>
+        private readonly IFileUploadService _fileUploadService;
+
+        /// <summary>
         /// Событие об изменении прогресса загрузки
         /// </summary>
         public event Action<Guid, int> ProgressChanged;
@@ -37,18 +43,22 @@ namespace FileLoaderMultiThread.Services
         /// </summary>
         public event Action<Guid> Completed;
 
+        public FileLoaderService(IFileUploadService fileUploadService)
+        {
+            _fileUploadService = fileUploadService;
+        }
         /// <summary>
         /// Создает загрузчик файла 
         /// </summary>
         /// <param name="file">Информация о файле</param>
-        public void LoadFile(DownloadFile file)
+        public void LoadFile(UploadFile file)
         {
             if (_downloaders.ContainsKey(file.Id)) return;
 
             var cts = new CancellationTokenSource();
             _tokens[file.Id] = cts;
 
-            var loader = new FileLoader(file, cts.Token);
+            var loader = new FileLoader(file, cts.Token, _fileUploadService);
             loader.ProgressChanged += (percent) => this.ProgressChanged?.Invoke(file.Id, percent);
             loader.Completed += () => Completed?.Invoke(file.Id);
 
