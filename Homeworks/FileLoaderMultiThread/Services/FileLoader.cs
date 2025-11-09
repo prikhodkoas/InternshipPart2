@@ -91,6 +91,8 @@ namespace FileLoaderMultiThread
                     int bytesRead;
                     while ((bytesRead = fs.Read(buffer, 0, buffer.Length)) > 0)
                     {
+                        _pauseEvent.WaitOne();
+                        
                         if (_token.IsCancellationRequested)
                             return;
 

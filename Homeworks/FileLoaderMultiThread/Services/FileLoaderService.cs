@@ -102,10 +102,9 @@ namespace FileLoaderMultiThread.Services
             if (_tokens.TryGetValue(fileId, out var cts))
             {
                 cts.Cancel();
-                _downloaders.Remove(fileId);
-                _tokens.Remove(fileId);
             }
         }
+
 
         /// <summary>
         /// Определяет, загружен ли файл
