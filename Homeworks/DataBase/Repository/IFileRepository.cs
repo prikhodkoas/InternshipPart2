@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace DataBase.Repository
 {
-    internal interface IFileRepository
+    public interface IFileRepository
     {
-        void Add(File file);
+        void Add(DataBase.Model.File file);
         void Save();
     }
 }

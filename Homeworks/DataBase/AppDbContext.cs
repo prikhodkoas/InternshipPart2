@@ -5,13 +5,13 @@ namespace DataBase
 {
     public class AppDbContext : DbContext
     {
-        public DbSet<File> Files { get; set; }
+        public DbSet<DataBase.Model.File> Files { get; set; }
 
         public AppDbContext() : base("name=HomeDbConnection") { }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<File>()
+            modelBuilder.Entity<DataBase.Model.File>()
                 .HasKey(f => f.Id);
 
             base.OnModelCreating(modelBuilder);
