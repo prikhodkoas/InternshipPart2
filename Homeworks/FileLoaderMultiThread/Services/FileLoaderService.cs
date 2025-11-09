@@ -60,7 +60,14 @@ namespace FileLoaderMultiThread.Services
 
             var loader = new FileLoader(file, cts.Token, _fileUploadService);
             loader.ProgressChanged += (percent) => this.ProgressChanged?.Invoke(file.Id, percent);
-            loader.Completed += () => Completed?.Invoke(file.Id);
+
+            loader.Completed += () =>
+            {
+                Completed?.Invoke(file.Id);
+
+                _downloaders.Remove(file.Id);
+                _tokens.Remove(file.Id);
+            };
 
             _downloaders[file.Id] = loader;
             loader.Start();

@@ -31,6 +31,7 @@ namespace FileLoaderMultiThread
             this.fileIsLoadingNameLbl.Text += $" {filePath}";
 
             _fileLoaderService.ProgressChanged += _fileLoaderService_ProgressChanged;
+            _fileLoaderService.Completed += _fileLoaderService_Completed;
         }
 
         private void _fileLoaderService_ProgressChanged(Guid fileId, int currentPercent)
@@ -45,11 +46,6 @@ namespace FileLoaderMultiThread
             }
 
             loadingProgressBar.Value = currentPercent;
-            if (currentPercent == 100)
-            {
-                MessageBox.Show($"Файл успешно загружен: {filePath}");
-                this.Close();
-            }
         }
 
         private void cancelLoadingBtn_Click(object sender, EventArgs e)
@@ -65,6 +61,20 @@ namespace FileLoaderMultiThread
         private void resumeLoadingBtn_Click(object sender, EventArgs e)
         {
             _fileLoaderService.ResumeLoadFile(_currentFileId);
+        }
+
+        private void _fileLoaderService_Completed(Guid fileId)
+        {
+            if (fileId != _currentFileId) return;
+
+            if (InvokeRequired)
+            {
+                Invoke(new Action<Guid>(_fileLoaderService_Completed), fileId);
+                return;
+            }
+
+            MessageBox.Show($"Файл успешно загружен: {filePath}");
+            this.Close();
         }
     }
 }
