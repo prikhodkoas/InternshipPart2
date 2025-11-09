@@ -2,6 +2,9 @@
 
 namespace FileUploadService.mapper
 {
+    /// <summary>
+    /// Маппер для записи в БД
+    /// </summary>
     public class FileMapper : IMapper<FileDto, DataBase.Model.File>
     {
         public FileDto ToDto(DataBase.Model.File entity)

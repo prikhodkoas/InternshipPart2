@@ -34,6 +34,11 @@ namespace FileLoaderMultiThread
             _fileLoaderService.Completed += _fileLoaderService_Completed;
         }
 
+        /// <summary>
+        /// Событие изменения прогресса загрузки
+        /// </summary>
+        /// <param name="fileId"></param>
+        /// <param name="currentPercent"></param>
         private void _fileLoaderService_ProgressChanged(Guid fileId, int currentPercent)
         {
             if (fileId != _currentFileId)
@@ -63,6 +68,10 @@ namespace FileLoaderMultiThread
             _fileLoaderService.ResumeLoadFile(_currentFileId);
         }
 
+        /// <summary>
+        /// Событие завершения процесса загрузки
+        /// </summary>
+        /// <param name="fileId"></param>
         private void _fileLoaderService_Completed(Guid fileId)
         {
             if (fileId != _currentFileId) return;

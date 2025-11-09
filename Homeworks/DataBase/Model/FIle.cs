@@ -2,6 +2,9 @@
 
 namespace DataBase.Model
 {
+    /// <summary>
+    /// Сущность Файл
+    /// </summary>
     public class File
     {
         public Guid Id { get; set; } = Guid.NewGuid();

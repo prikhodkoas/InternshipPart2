@@ -3,6 +3,9 @@ using System.IO;
 
 namespace DataBase
 {
+    /// <summary>
+    /// Контекст БД
+    /// </summary>
     public class AppDbContext : DbContext
     {
         public DbSet<DataBase.Model.File> Files { get; set; }

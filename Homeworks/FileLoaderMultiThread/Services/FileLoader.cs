@@ -140,6 +140,7 @@ namespace FileLoaderMultiThread
         /// <returns>Загружен ли файл</returns>
         public bool IsLoaded() => _isLoaded;
 
+
         public UploadFile GetUploadFile()
         {
             return _file;

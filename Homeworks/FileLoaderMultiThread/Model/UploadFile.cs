@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace FileLoaderMultiThread.Model
 {
+    /// <summary>
+    /// Обьект для работы с UI
+    /// </summary>
     public class UploadFile
     {
         public Guid Id { get; } = Guid.NewGuid();

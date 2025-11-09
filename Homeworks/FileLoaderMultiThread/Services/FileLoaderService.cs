@@ -47,6 +47,7 @@ namespace FileLoaderMultiThread.Services
         {
             _fileUploadService = fileUploadService;
         }
+
         /// <summary>
         /// Создает загрузчик файла 
         /// </summary>
@@ -105,7 +106,6 @@ namespace FileLoaderMultiThread.Services
             }
         }
 
-
         /// <summary>
         /// Определяет, загружен ли файл
         /// </summary>
@@ -116,6 +116,11 @@ namespace FileLoaderMultiThread.Services
             return _downloaders.TryGetValue(fileId, out var loader) && loader.IsLoaded();
         }
 
+        /// <summary>
+        /// Получает загрузчик файла
+        /// </summary>
+        /// <param name="fileId">id файла</param>
+        /// <returns>Загрузчик файла</returns>
         public FileLoader GetFileLoader(Guid fileId)
         {
             if(_downloaders.TryGetValue(fileId, out var fileLoader)) 

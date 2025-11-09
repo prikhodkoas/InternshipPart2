@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace DataBase.Repository
 {
+    /// <summary>
+    /// Репозиторий для работы с таблицей Файл в БД
+    /// </summary>
     public class FileRepository : IFileRepository
     {
         private readonly AppDbContext _appDbContext;

@@ -6,6 +6,9 @@ using System.Runtime.InteropServices;
 
 namespace FileUploadService.service
 {
+    /// <summary>
+    /// Сервис для записи файла в БД
+    /// </summary>
     public class FileUploadService : IFileUploadService
     {
         private readonly IMapper<FileDto, DataBase.Model.File> _mapper = new FileMapper();
@@ -15,6 +18,11 @@ namespace FileUploadService.service
         {
             _connectionString = connectionString;
         }
+        
+        /// <summary>
+        /// Записывает файл в БД
+        /// </summary>
+        /// <param name="fileDto">Файл</param>
         public void UploadFile(FileDto fileDto)
         {
             using (var context = new AppDbContext(_connectionString))

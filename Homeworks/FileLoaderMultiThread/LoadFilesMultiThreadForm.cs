@@ -16,6 +16,9 @@ namespace FileLoaderMultiThread
 {
     public partial class LoadFilesMultiThreadForm : Form
     {
+        /// <summary>
+        /// Сервис по многопоточной загрузке файлов
+        /// </summary>
         private readonly IFileLoaderService _fileLoaderService;
 
         private string fileName;
@@ -39,6 +42,7 @@ namespace FileLoaderMultiThread
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 filePath = openFileDialog.FileName;
+                FileNameLbl.Text = "Выбранный файл: " + filePath;
             }
         }
 
