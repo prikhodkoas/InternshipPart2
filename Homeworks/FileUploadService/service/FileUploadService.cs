@@ -1,26 +1,23 @@
 ﻿using DataBase;
-using FileLoaderMultiThread.Services;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using FileUploadService.mapper;
+using FileUploadService.dto;
+using System.Runtime.InteropServices;
 
-namespace FileUploadService
+
+namespace FileUploadService.service
 {
     public class FileUploadService : IFileUploadService
     {
-        private readonly IMapper<FileDto, DataBase.Model.File> _mapper;
+        private readonly IMapper<FileDto, DataBase.Model.File> _mapper = new FileMapper();
 
-        public FileUploadService(IMapper<FileDto, DataBase.Model.File> mapper)
+        private readonly string _connectionString;
+        public FileUploadService(string connectionString)
         {
-            _mapper = mapper;
+            _connectionString = connectionString;
         }
-
         public void UploadFile(FileDto fileDto)
         {
-            using (var context = new AppDbContext())
+            using (var context = new AppDbContext(_connectionString))
             {
                 using (var transaction = context.Database.BeginTransaction())
                 {
