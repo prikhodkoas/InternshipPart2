@@ -9,6 +9,9 @@ namespace DataBase
 
         public AppDbContext() : base("name=HomeDbConnection") { }
 
+        public AppDbContext(string connectionString)
+            : base(connectionString) { }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<DataBase.Model.File>()
