@@ -7,7 +7,7 @@ namespace DataBase
     {
         public DbSet<File> Files { get; set; }
 
-        public AppDbContext() : base(@"Server=IM1834\SQLEXPRESS;Database=FileStorageDb;Trusted_Connection=True;TrustServerCertificate=True;") { }
+        public AppDbContext() : base("name=HomeDbConnection") { }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

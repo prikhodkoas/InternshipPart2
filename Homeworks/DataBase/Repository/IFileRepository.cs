@@ -9,5 +9,6 @@ namespace DataBase.Repository
     internal interface IFileRepository
     {
         void Add(File file);
+        void Save();
     }
 }

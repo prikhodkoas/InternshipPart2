@@ -17,6 +17,10 @@ namespace DataBase.Repository
         public void Add (File file)
         {
             _appDbContext.Files.Add(file);
+        }
+
+        public void Save()
+        {
             _appDbContext.SaveChanges();
         }
     }
