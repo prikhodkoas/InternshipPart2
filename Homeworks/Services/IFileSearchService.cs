@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 
 namespace Services
 {
@@ -9,6 +10,9 @@ namespace Services
         byte AmountOfThreads { get; set; }
         string FileName { get; set; }
         ObservableCollection<string> FindedPathes { get; }
+
+        event EventHandler SearchCompleted;
+
         void StartSearch();
         void StopSearch();
     }

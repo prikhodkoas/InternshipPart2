@@ -115,6 +115,7 @@ namespace Services
 
         private CancellationTokenSource _cts;
 
+        public event EventHandler SearchCompleted;
 
         public FileSearchService(byte amountOfThreads, string rootDirectory, string fileName)
         {
@@ -144,13 +145,13 @@ namespace Services
                 workerThreads.Add(thread);
             }
 
-
             foreach (var thread in workerThreads)
             {
                 thread.Join();
             }
 
             IsSearching = false;
+            SearchCompleted?.Invoke(this, EventArgs.Empty);
         }
 
         public void StopSearch()
