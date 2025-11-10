@@ -37,7 +37,6 @@ namespace Services
         /// </summary>
         private ObservableCollection<string> _findedPathes = new ObservableCollection<string>();
 
-
         /// <summary>
         /// Свойства для изменений параметров
         /// </summary>
@@ -191,7 +190,7 @@ namespace Services
 
         private void CheckFilesInDirectory(CancellationToken token)
         {
-            while (!token.IsCancellationRequested && !_isMainThreadFinishToPassAllDirectories || _queueOfPathesNeedToCheck.Count > 0)
+            while (!token.IsCancellationRequested && (!_isMainThreadFinishToPassAllDirectories || _queueOfPathesNeedToCheck.Count > 0))
             {
                 string currentPathToCheck = null;
                 if (_queueOfPathesNeedToCheck.Count > 0)
