@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.FileSystemTreeView = new System.Windows.Forms.TreeView();
-            this.ChooseRootCatalogFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.AmountOfThreadsLbl = new System.Windows.Forms.Label();
             this.FindedFilesLbl = new System.Windows.Forms.Label();
             this.AmountOfThreadsNumericUpDown = new System.Windows.Forms.NumericUpDown();
@@ -38,6 +37,9 @@
             this.ChooseRootDirectoryBtn = new System.Windows.Forms.Button();
             this.FindingFileNameLbl = new System.Windows.Forms.Label();
             this.FindingFileNameTxtBx = new System.Windows.Forms.TextBox();
+            this.ChooseRootCatalogFileDialog = new System.Windows.Forms.FolderBrowserDialog();
+            this.StartSearchBtn = new System.Windows.Forms.Button();
+            this.StopSearchBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.AmountOfThreadsNumericUpDown)).BeginInit();
             this.SuspendLayout();
             // 
@@ -47,12 +49,8 @@
             | System.Windows.Forms.AnchorStyles.Left)));
             this.FileSystemTreeView.Location = new System.Drawing.Point(12, 28);
             this.FileSystemTreeView.Name = "FileSystemTreeView";
-            this.FileSystemTreeView.Size = new System.Drawing.Size(144, 71);
+            this.FileSystemTreeView.Size = new System.Drawing.Size(144, 102);
             this.FileSystemTreeView.TabIndex = 0;
-            // 
-            // ChooseRootCatalogFileDialog
-            // 
-            this.ChooseRootCatalogFileDialog.FileName = "openFileDialog1";
             // 
             // AmountOfThreadsLbl
             // 
@@ -141,11 +139,32 @@
             this.FindingFileNameTxtBx.Size = new System.Drawing.Size(129, 20);
             this.FindingFileNameTxtBx.TabIndex = 8;
             // 
+            // StartSearchBtn
+            // 
+            this.StartSearchBtn.Location = new System.Drawing.Point(165, 107);
+            this.StartSearchBtn.Name = "StartSearchBtn";
+            this.StartSearchBtn.Size = new System.Drawing.Size(107, 23);
+            this.StartSearchBtn.TabIndex = 9;
+            this.StartSearchBtn.Text = "Начать поиск";
+            this.StartSearchBtn.UseVisualStyleBackColor = true;
+            this.StartSearchBtn.Click += new System.EventHandler(this.StartSearchBtn_Click);
+            // 
+            // StopSearchBtn
+            // 
+            this.StopSearchBtn.Location = new System.Drawing.Point(278, 107);
+            this.StopSearchBtn.Name = "StopSearchBtn";
+            this.StopSearchBtn.Size = new System.Drawing.Size(107, 23);
+            this.StopSearchBtn.TabIndex = 10;
+            this.StopSearchBtn.Text = "Прервать поиск";
+            this.StopSearchBtn.UseVisualStyleBackColor = true;
+            // 
             // FindFilesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(419, 108);
+            this.ClientSize = new System.Drawing.Size(419, 139);
+            this.Controls.Add(this.StopSearchBtn);
+            this.Controls.Add(this.StartSearchBtn);
             this.Controls.Add(this.FindingFileNameTxtBx);
             this.Controls.Add(this.FindingFileNameLbl);
             this.Controls.Add(this.ChooseRootDirectoryBtn);
@@ -167,7 +186,6 @@
         #endregion
 
         private System.Windows.Forms.TreeView FileSystemTreeView;
-        private System.Windows.Forms.OpenFileDialog ChooseRootCatalogFileDialog;
         private System.Windows.Forms.Label AmountOfThreadsLbl;
         private System.Windows.Forms.Label FindedFilesLbl;
         private System.Windows.Forms.NumericUpDown AmountOfThreadsNumericUpDown;
@@ -176,6 +194,9 @@
         private System.Windows.Forms.Button ChooseRootDirectoryBtn;
         private System.Windows.Forms.Label FindingFileNameLbl;
         private System.Windows.Forms.TextBox FindingFileNameTxtBx;
+        private System.Windows.Forms.FolderBrowserDialog ChooseRootCatalogFileDialog;
+        private System.Windows.Forms.Button StartSearchBtn;
+        private System.Windows.Forms.Button StopSearchBtn;
     }
 }
 
