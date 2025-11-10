@@ -115,6 +115,9 @@ namespace Services
 
         private CancellationTokenSource _cts;
 
+        /// <summary>
+        /// Событие окончания поиска файлов 
+        /// </summary>
         public event EventHandler SearchCompleted;
 
         public FileSearchService(byte amountOfThreads, string rootDirectory, string fileName)
@@ -154,18 +157,31 @@ namespace Services
             SearchCompleted?.Invoke(this, EventArgs.Empty);
         }
 
+        /// <summary>
+        /// Отмена поиска
+        /// </summary>
         public void StopSearch()
         {
             _cts?.Cancel();
         }
 
-
+        /// <summary>
+        /// Проход по всем директориям (основной метод для потока)
+        /// </summary>
+        /// <param name="rootPath">Корневая папка</param>
+        /// <param name="token">Токен отмены</param>
         private void PassAllDiretories(string rootPath, CancellationToken token)
         {
             PassDirectory(new DirectoryInfo(rootPath), token);
             _isMainThreadFinishToPassAllDirectories = true;
         }
         
+        /// <summary>
+        /// Рекурсивный обход дерева файловой системы
+        /// </summary>
+        /// <param name="di">Информация о директории</param>
+        /// <param name="token">ткен отмены</param>
+        /// <exception cref="DirectoryNotFoundException"></exception>
         private void PassDirectory(DirectoryInfo di, CancellationToken token)
         {
             if (token.IsCancellationRequested) return;
@@ -189,6 +205,10 @@ namespace Services
             }
         }
 
+        /// <summary>
+        /// Проверка файлов в директориях потоками
+        /// </summary>
+        /// <param name="token">Токен отмены</param>
         private void CheckFilesInDirectory(CancellationToken token)
         {
             while (!token.IsCancellationRequested && (!_isMainThreadFinishToPassAllDirectories || _queueOfPathesNeedToCheck.Count > 0))

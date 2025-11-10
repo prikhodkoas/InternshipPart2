@@ -15,10 +15,19 @@ namespace FileSearcherMultiThread
 {
     public partial class FindFilesForm : Form
     {
+        /// <summary>
+        /// Сервис по поиску файла в файловой системе
+        /// </summary>
         private readonly IFileSearchService _fileSearchService;
 
+        /// <summary>
+        /// Путь корневой папки
+        /// </summary>
         private string _rootDirectoryPath;
 
+        /// <summary>
+        /// Имя искомого файла
+        /// </summary>
         private string _fileName;
 
         public FindFilesForm(IFileSearchService fileSearchService)
@@ -29,6 +38,9 @@ namespace FileSearcherMultiThread
             _fileSearchService.SearchCompleted += _fileSearchService_SearchCompleted;
         }
 
+        /// <summary>
+        /// Обработчик события на завершение поиска
+        /// </summary>
         private void _fileSearchService_SearchCompleted(object sender, EventArgs e)
         {
             if (InvokeRequired)
@@ -80,6 +92,9 @@ namespace FileSearcherMultiThread
             }
         }
 
+        /// <summary>
+        /// Обработчик события, если найден новый путь к файлу
+        /// </summary>
         private void FindedNewFile(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.Action == NotifyCollectionChangedAction.Add)
@@ -98,6 +113,10 @@ namespace FileSearcherMultiThread
             }
         }
 
+        /// <summary>
+        /// Добавление Элемента в дерево 
+        /// </summary>
+        /// <param name="fullPath">Полный путь к файлу</param>
         private void AddPathToTree(string fullPath)
         {
             string[] parts = fullPath.Split(Path.DirectorySeparatorChar);
@@ -123,24 +142,6 @@ namespace FileSearcherMultiThread
             }
         }
 
-
-        //private void AddPathToTree(string fullPath)
-        //{
-        //    string[] parts = fullPath.Split(Path.DirectorySeparatorChar);
-        //    TreeNodeCollection currentNodes = FileSystemTreeView.Nodes;
-
-        //    foreach (string part in parts)
-        //    {
-        //        TreeNode existingNode = currentNodes.Cast<TreeNode>().FirstOrDefault(n => n.Text == part);
-        //        if (existingNode == null)
-        //        {
-        //            existingNode = new TreeNode(part);
-        //            currentNodes.Add(existingNode);
-        //        }
-        //        currentNodes = existingNode.Nodes;
-        //    }
-        //}
-
         private void StopSearchBtn_Click(object sender, EventArgs e)
         {
             if (_fileSearchService.IsSearching)
@@ -150,8 +151,14 @@ namespace FileSearcherMultiThread
             }
         }
 
+        /// <summary>
+        /// Кэш иконок
+        /// </summary>
         private readonly Dictionary<string, int> _iconCache = new Dictionary<string, int>();
 
+        /// <summary>
+        /// Получение индекса иконки
+        /// </summary>
         private int GetIconIndex(string path)
         {
             string key = Path.GetExtension(path).ToLower();
