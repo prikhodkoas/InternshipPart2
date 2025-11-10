@@ -26,8 +26,20 @@ namespace FileSearcherMultiThread
             _fileSearchService = fileSearchService;
             InitializeComponent();
             _fileSearchService.FindedPathes.CollectionChanged += FindedNewFile;
+            _fileSearchService.SearchCompleted += _fileSearchService_SearchCompleted;
         }
 
+        private void _fileSearchService_SearchCompleted(object sender, EventArgs e)
+        {
+            if (InvokeRequired)
+            {
+                Invoke((MethodInvoker)(() => StartSearchBtn.Enabled = true));
+            }
+            else
+            {
+                StartSearchBtn.Enabled = true;
+            }
+        }
 
         private void ChooseRootDirectoryBtn_Click(object sender, EventArgs e)
         {
@@ -59,7 +71,10 @@ namespace FileSearcherMultiThread
                 _fileSearchService.FileName = _fileName;
                 _fileSearchService.RootDirectoryPath = _rootDirectoryPath;
                 _fileSearchService.AmountOfThreads = (byte)AmountOfThreadsNumericUpDown.Value;
-                _fileSearchService.StartSearch();
+
+                Task.Run(() => _fileSearchService.StartSearch());
+
+                StartSearchBtn.Enabled = false;
             }
         }
 
@@ -98,5 +113,10 @@ namespace FileSearcherMultiThread
             }
         }
 
+        private void StopSearchBtn_Click(object sender, EventArgs e)
+        {
+            _fileSearchService.StopSearch();
+            StartSearchBtn.Enabled = false;
+        }
     }
 }

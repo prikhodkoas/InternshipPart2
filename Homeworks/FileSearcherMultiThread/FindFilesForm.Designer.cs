@@ -157,6 +157,7 @@
             this.StopSearchBtn.TabIndex = 10;
             this.StopSearchBtn.Text = "Прервать поиск";
             this.StopSearchBtn.UseVisualStyleBackColor = true;
+            this.StopSearchBtn.Click += new System.EventHandler(this.StopSearchBtn_Click);
             // 
             // FindFilesForm
             // 
