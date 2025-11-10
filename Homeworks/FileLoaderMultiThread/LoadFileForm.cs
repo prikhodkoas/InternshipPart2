@@ -56,6 +56,7 @@ namespace FileLoaderMultiThread
         private void cancelLoadingBtn_Click(object sender, EventArgs e)
         {
             _fileLoaderService.CancelLoadFile(_currentFileId);
+            this.Close();
         }
 
         private void pauseLoadingBtn_Click(object sender, EventArgs e)
