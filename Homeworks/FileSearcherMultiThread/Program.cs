@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,9 +15,10 @@ namespace FileSearcherMultiThread
         [STAThread]
         static void Main()
         {
+            var configurator = new AppConfigFactory();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FindFilesForm());
+            Application.Run(new FindFilesForm(configurator.Create()));
         }
     }
 }

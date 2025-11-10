@@ -55,7 +55,9 @@ namespace FileSearcherMultiThread
 
         private void StartSearchBtn_Click(object sender, EventArgs e)
         {
-            if(string.IsNullOrEmpty(_rootDirectoryPath))
+            _fileName = FindingFileNameTxtBx.Text;
+
+            if (string.IsNullOrEmpty(_rootDirectoryPath))
             {
                 MessageBox.Show("Выберите путь!");
                 return;
@@ -100,23 +102,72 @@ namespace FileSearcherMultiThread
         {
             string[] parts = fullPath.Split(Path.DirectorySeparatorChar);
             TreeNodeCollection currentNodes = FileSystemTreeView.Nodes;
+            string currentPath = "";
 
-            foreach (string part in parts)
+            for (int i = 0; i < parts.Length; i++)
             {
+                string part = parts[i];
+                if (string.IsNullOrWhiteSpace(part)) continue;
+
+                currentPath = (i == 0) ? part : Path.Combine(currentPath, part);
+
                 TreeNode existingNode = currentNodes.Cast<TreeNode>().FirstOrDefault(n => n.Text == part);
                 if (existingNode == null)
                 {
-                    existingNode = new TreeNode(part);
+                    int iconIndex = GetIconIndex(currentPath);
+                    existingNode = new TreeNode(part, iconIndex, iconIndex);
                     currentNodes.Add(existingNode);
                 }
+
                 currentNodes = existingNode.Nodes;
             }
         }
 
+
+        //private void AddPathToTree(string fullPath)
+        //{
+        //    string[] parts = fullPath.Split(Path.DirectorySeparatorChar);
+        //    TreeNodeCollection currentNodes = FileSystemTreeView.Nodes;
+
+        //    foreach (string part in parts)
+        //    {
+        //        TreeNode existingNode = currentNodes.Cast<TreeNode>().FirstOrDefault(n => n.Text == part);
+        //        if (existingNode == null)
+        //        {
+        //            existingNode = new TreeNode(part);
+        //            currentNodes.Add(existingNode);
+        //        }
+        //        currentNodes = existingNode.Nodes;
+        //    }
+        //}
+
         private void StopSearchBtn_Click(object sender, EventArgs e)
         {
-            _fileSearchService.StopSearch();
-            StartSearchBtn.Enabled = false;
+            if (_fileSearchService.IsSearching)
+            {
+                _fileSearchService.StopSearch();
+                StartSearchBtn.Enabled = false;
+            }
+        }
+
+        private readonly Dictionary<string, int> _iconCache = new Dictionary<string, int>();
+
+        private int GetIconIndex(string path)
+        {
+            string key = Path.GetExtension(path).ToLower();
+            if (string.IsNullOrEmpty(key)) key = "folder";
+
+            if (_iconCache.TryGetValue(key, out int index))
+                return index;
+
+            using (Icon icon = ShellIconService.GetSmallIcon(path))
+            {
+                FileIconsImageList.Images.Add(key, icon.ToBitmap());
+            }
+
+            int newIndex = FileIconsImageList.Images.Count - 1;
+            _iconCache[key] = newIndex;
+            return newIndex;
         }
     }
 }
