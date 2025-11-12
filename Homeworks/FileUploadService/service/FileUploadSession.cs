@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 
 namespace FileUploadService.service
 {
+    /// <summary>
+    /// Сессия загрузки файла в БД
+    /// </summary>
     public class FileUploadSession : IDisposable
     {
 

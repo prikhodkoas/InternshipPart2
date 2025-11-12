@@ -3,6 +3,9 @@ using FileUploadService.dto;
 
 namespace FileUploadService.mapper
 {
+    /// <summary>
+    /// Маппит ChunkDto и Chunk
+    /// </summary>
     internal class ChunkMapper : IMapper<ChunkDto, Chunk>
     {
         public ChunkDto ToDto(Chunk entity)

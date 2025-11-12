@@ -1,14 +1,15 @@
-﻿using FileUploadService.dto;
+﻿using DataBase.Model;
+using FileUploadService.dto;
 using System;
 
 namespace FileUploadService.mapper
 {
     /// <summary>
-    /// Маппер для записи в БД
+    /// Маппер между FileDto и File
     /// </summary>
-    public class FileMapper : IMapper<FileDto, DataBase.Model.File>
+    public class FileMapper : IMapper<FileDto, File>
     {
-        public FileDto ToDto(DataBase.Model.File entity)
+        public FileDto ToDto(File entity)
         {
             return new FileDto
             {
@@ -17,9 +18,9 @@ namespace FileUploadService.mapper
             };
         }
 
-        public DataBase.Model.File ToEntity(FileDto dto)
+        public File ToEntity(FileDto dto)
         {
-            return new DataBase.Model.File
+            return new File
             {
                 Id = new Guid(),
                 FileName = dto.FileName,

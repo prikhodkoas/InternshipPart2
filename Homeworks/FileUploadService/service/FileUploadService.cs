@@ -33,7 +33,6 @@ namespace FileUploadService.service
             var session = new FileUploadSession(_connectionString);
             var fileId = session.CreateFile(fileDto);
 
-            // Сохраняем сессию, чтобы потом добавлять чанки
             _sessions[fileId] = session;
 
             return fileId;

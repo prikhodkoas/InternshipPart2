@@ -1,7 +1,7 @@
 ﻿namespace FileUploadService.dto
 {
     /// <summary>
-    /// Объект для передачи данных между сервисами 
+    /// Объект для передачи FIle между сервисами 
     /// </summary>
     public class FileDto
     {

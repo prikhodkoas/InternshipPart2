@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace FileUploadService.dto
 {
+    /// <summary>
+    /// Класс для передачи Chunk между сервисами
+    /// </summary>
     public class ChunkDto
     {
         public Guid FileId { get; set; }
