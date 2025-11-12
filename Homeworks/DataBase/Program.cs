@@ -12,6 +12,9 @@ namespace DataBase
         static void Main(string[] args)
         {
             Database.SetInitializer(new CreateDatabaseIfNotExists<AppDbContext>());
+
+            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<AppDbContext>());
+
             using (var db = new AppDbContext())
             {
                 db.Database.Initialize(force: true);

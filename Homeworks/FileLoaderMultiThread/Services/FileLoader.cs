@@ -75,47 +75,56 @@ namespace FileLoaderMultiThread
             try
             {
                 if (!File.Exists(_file.FilePathFromSave))
-                {
                     throw new FileNotFoundException("Файл не найден: " + _file.FilePathFromSave);
-                }
 
-                FileInfo fileInfo = new FileInfo(_file.FilePathFromSave);
-                long totalSize = fileInfo.Length;
+                const int chunkSize = 8192;
+                byte[] buffer = new byte[chunkSize];
                 long totalRead = 0;
+                long totalSize = new FileInfo(_file.FilePathFromSave).Length;
 
-                byte[] buffer = new byte[8192];
+                int chunkNumber = 0;
+
+                var fileDto = new FileDto
+                {
+                    FileName = _file.Name,
+                    FilePath = _file.FilePathFromSave
+                };
+
+                var fileId = _fileUploadService.CreateFile(fileDto);
 
                 using (var fs = new FileStream(_file.FilePathFromSave, FileMode.Open, FileAccess.Read))
-                using (var ms = new MemoryStream())
                 {
                     int bytesRead;
                     while ((bytesRead = fs.Read(buffer, 0, buffer.Length)) > 0)
                     {
                         _pauseEvent.WaitOne();
-                        
-                        if (_token.IsCancellationRequested)
-                            return;
 
-                        ms.Write(buffer, 0, bytesRead);
+                        _token.ThrowIfCancellationRequested();
+
+                        byte[] chunkData = new byte[bytesRead];
+                        Array.Copy(buffer, chunkData, bytesRead);
+
+                        var chunkDto = new ChunkDto
+                        {
+                            FileId = fileId,
+                            NumberInSequence = chunkNumber++,
+                            Content = chunkData
+                        };
+
+                        _fileUploadService.UploadChunk(fileId, chunkDto, _token);
+
                         totalRead += bytesRead;
-
                         int percent = (int)((totalRead * 100) / totalSize);
                         ProgressChanged?.Invoke(percent);
                     }
-
-                    // Сохраняем в БД
-                    var dto = new FileDto
-                    {
-                        FileName = _file.Name,
-                        FilePath = _file.FilePathFromSave,
-                        Content = ms.ToArray()
-                    };
-
-                    _fileUploadService.UploadFile(dto);
                 }
 
                 _isLoaded = true;
                 Completed?.Invoke();
+            }
+            catch (OperationCanceledException)
+            {
+                MessageBox.Show($"Загрузка файла '{_file.FilePathFromSave}' отменена пользователем.");
             }
             catch (Exception ex)
             {

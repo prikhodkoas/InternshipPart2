@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataBase.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,9 @@ namespace DataBase.Repository
 {
     public interface IFileRepository
     {
-        void Add(DataBase.Model.File file);
+        Guid AddFile(File file);
+        void AddChunk(Chunk chunk);
+        List<Chunk> GetChunks(Guid fileId);
         void Save();
     }
 }

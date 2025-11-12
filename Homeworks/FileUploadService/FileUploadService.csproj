@@ -51,11 +51,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="dto\ChunkDto.cs" />
     <Compile Include="dto\FileDto.cs" />
+    <Compile Include="mapper\ChunkMapper.cs" />
     <Compile Include="mapper\IMapper.cs" />
     <Compile Include="mapper\FileMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="service\FileUploadService.cs" />
+    <Compile Include="service\FileUploadSession.cs" />
     <Compile Include="service\IFileUploadService.cs" />
   </ItemGroup>
   <ItemGroup>

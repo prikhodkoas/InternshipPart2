@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using DataBase.Model;
+using System.Data.Entity;
 using System.IO;
 
 namespace DataBase
@@ -10,6 +11,8 @@ namespace DataBase
     {
         public DbSet<DataBase.Model.File> Files { get; set; }
 
+        public DbSet<Chunk> Chunks { get; set; }
+
         public AppDbContext() : base("name=HomeDbConnection") { }
 
         public AppDbContext(string connectionString)
@@ -17,8 +20,13 @@ namespace DataBase
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            // File
             modelBuilder.Entity<DataBase.Model.File>()
                 .HasKey(f => f.Id);
+
+            // Chunk
+            modelBuilder.Entity<Chunk>()
+                .HasKey(fd => fd.Id);
 
             base.OnModelCreating(modelBuilder);
         }

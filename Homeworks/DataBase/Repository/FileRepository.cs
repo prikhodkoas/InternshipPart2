@@ -1,8 +1,7 @@
-﻿using System;
+﻿using DataBase.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataBase.Repository
 {
@@ -17,14 +16,21 @@ namespace DataBase.Repository
             _appDbContext = appDbContext;
         }
 
-        public void Add (DataBase.Model.File file)
+        public Guid AddFile(File file) 
         {
-            _appDbContext.Files.Add(file);
+            _appDbContext.Files
+            .Add(file);
+            return file.Id;
         }
 
-        public void Save()
-        {
-            _appDbContext.SaveChanges();
-        }
+        public void Save() => _appDbContext.SaveChanges();
+        
+        public void AddChunk(Chunk chunk) => _appDbContext.Chunks
+            .Add(chunk);
+
+        public List<Chunk> GetChunks(Guid fileId) => _appDbContext.Chunks
+            .Where(fd => fd.FileId == fileId)
+            .OrderBy(fd => fd.NumberInSequence)
+            .ToList();
     }
 }

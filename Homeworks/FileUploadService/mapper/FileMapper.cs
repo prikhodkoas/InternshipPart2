@@ -1,4 +1,5 @@
 ﻿using FileUploadService.dto;
+using System;
 
 namespace FileUploadService.mapper
 {
@@ -12,8 +13,7 @@ namespace FileUploadService.mapper
             return new FileDto
             {
                 FileName = entity.FileName,
-                FilePath = entity.FilePath,
-                Content = entity.Content
+                FilePath = entity.FilePath
             };
         }
 
@@ -21,9 +21,9 @@ namespace FileUploadService.mapper
         {
             return new DataBase.Model.File
             {
+                Id = new Guid(),
                 FileName = dto.FileName,
-                FilePath = dto.FilePath,
-                Content = dto.Content
+                FilePath = dto.FilePath
             };
         }
     }

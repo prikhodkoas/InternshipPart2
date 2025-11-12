@@ -1,7 +1,11 @@
 ﻿using DataBase;
-using FileUploadService.mapper;
+using DataBase.Model;
 using FileUploadService.dto;
-using System.Runtime.InteropServices;
+using FileUploadService.mapper;
+using System;
+using System.Collections.Concurrent;
+using System.Data.Entity;
+using System.Threading;
 
 
 namespace FileUploadService.service
@@ -11,37 +15,61 @@ namespace FileUploadService.service
     /// </summary>
     public class FileUploadService : IFileUploadService
     {
-        private readonly IMapper<FileDto, DataBase.Model.File> _mapper = new FileMapper();
-
         private readonly string _connectionString;
+
+        // Сессии храним по fileId
+        private readonly ConcurrentDictionary<Guid, FileUploadSession> _sessions = new ConcurrentDictionary<Guid, FileUploadSession>();
+
         public FileUploadService(string connectionString)
         {
             _connectionString = connectionString;
         }
-        
+
         /// <summary>
-        /// Записывает файл в БД
+        /// Создаёт запись о файле и возвращает его Id
         /// </summary>
-        /// <param name="fileDto">Файл</param>
-        public void UploadFile(FileDto fileDto)
+        public Guid CreateFile(FileDto fileDto)
         {
-            using (var context = new AppDbContext(_connectionString))
+            var session = new FileUploadSession(_connectionString);
+            var fileId = session.CreateFile(fileDto);
+
+            // Сохраняем сессию, чтобы потом добавлять чанки
+            _sessions[fileId] = session;
+
+            return fileId;
+        }
+
+        /// <summary>
+        /// Загружает один чанк в файл
+        /// </summary>
+        public void UploadChunk(Guid fileId, ChunkDto chunkDto, CancellationToken token)
+        {
+            if (!_sessions.TryGetValue(fileId, out var session))
+                throw new InvalidOperationException("Сессия для этого файла не найдена");
+
+            session.UploadChunk(chunkDto, token);
+        }
+
+        /// <summary>
+        /// Завершает загрузку файла (коммит транзакции)
+        /// </summary>
+        public void CompleteFileUpload(Guid fileId)
+        {
+            if (!_sessions.TryRemove(fileId, out var session))
+                throw new InvalidOperationException("Сессия для этого файла не найдена");
+
+            session.Commit();
+            session.Dispose();
+        }
+
+        /// <summary>
+        /// Отменяет загрузку файла (rollback)
+        /// </summary>
+        public void CancelFileUpload(Guid fileId)
+        {
+            if (_sessions.TryRemove(fileId, out var session))
             {
-                using (var transaction = context.Database.BeginTransaction())
-                {
-                    try
-                    {
-                        var entity = _mapper.ToEntity(fileDto);
-                        context.Files.Add(entity);
-                        context.SaveChanges();
-                        transaction.Commit();
-                    }
-                    catch
-                    {
-                        transaction.Rollback();
-                        throw;
-                    }
-                }
+                session.Dispose(); // Rollback произойдет автоматически
             }
         }
     }
