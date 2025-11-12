@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace Services
 {
+    /// <summary>
+    /// Сервис для получения системных иконок 
+    /// </summary>
     public class ShellIconService
     {
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
@@ -42,29 +45,39 @@ namespace Services
 
         private const uint FILE_ATTRIBUTE_DIRECTORY = 0x10;
         private const uint FILE_ATTRIBUTE_NORMAL = 0x80;
+        private const uint SHGFI_TYPENAME = 0x400;
 
         public static Icon GetSmallIcon(string path)
         {
             SHFILEINFO shinfo = new SHFILEINFO();
-            uint flags = SHGFI_ICON | SHGFI_SMALLICON;
+            uint flags = SHGFI_ICON | SHGFI_SMALLICON | SHGFI_TYPENAME;
             uint attr = FILE_ATTRIBUTE_NORMAL;
 
-            string normalizedPath = path;
+            string normalizedPath = Path.GetFullPath(path);
 
-            // Диски должны иметь слэш, иначе Windows считает их логическим устройством
+            // Диски должны иметь слэш
             if (normalizedPath.EndsWith(":"))
                 normalizedPath += "\\";
 
             bool isDir = Directory.Exists(normalizedPath);
             bool isFile = File.Exists(normalizedPath);
+            bool isDrive = Path.GetPathRoot(normalizedPath).Equals(normalizedPath, StringComparison.OrdinalIgnoreCase);
 
-            // Если это папка (существует)
-            if (isDir)
+            if (isDrive)
+            {
+                // Для дисков используем FILE_ATTRIBUTE_NORMAL
+                flags |= SHGFI_USEFILEATTRIBUTES;
+                attr = 0;
+            }
+            else if (isDir)
             {
                 attr = FILE_ATTRIBUTE_DIRECTORY;
             }
-            // Если путь не существует — определяем по расширению
-            else if (!isFile)
+            else if (isFile)
+            {
+                attr = FILE_ATTRIBUTE_NORMAL;
+            }
+            else
             {
                 flags |= SHGFI_USEFILEATTRIBUTES;
                 attr = GuessDirectory(path) ? FILE_ATTRIBUTE_DIRECTORY : FILE_ATTRIBUTE_NORMAL;
@@ -73,10 +86,7 @@ namespace Services
             SHGetFileInfo(normalizedPath, attr, ref shinfo, (uint)Marshal.SizeOf(shinfo), flags);
 
             if (shinfo.hIcon == IntPtr.Zero)
-            {
-                // fallback — стандартная иконка папки
                 return Icon.ExtractAssociatedIcon(Environment.SystemDirectory);
-            }
 
             Icon icon = (Icon)Icon.FromHandle(shinfo.hIcon).Clone();
             DestroyIcon(shinfo.hIcon);
@@ -85,8 +95,7 @@ namespace Services
 
         private static bool GuessDirectory(string path)
         {
-            string ext = Path.GetExtension(path);
-            return string.IsNullOrEmpty(ext);
+            return !Path.HasExtension(path);
         }
     }
 }

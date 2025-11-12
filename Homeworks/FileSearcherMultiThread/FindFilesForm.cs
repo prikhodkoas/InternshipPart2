@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace FileSearcherMultiThread
 {
@@ -38,21 +39,6 @@ namespace FileSearcherMultiThread
             _fileSearchService.SearchCompleted += _fileSearchService_SearchCompleted;
         }
 
-        /// <summary>
-        /// Обработчик события на завершение поиска
-        /// </summary>
-        private void _fileSearchService_SearchCompleted(object sender, EventArgs e)
-        {
-            if (InvokeRequired)
-            {
-                Invoke((MethodInvoker)(() => StartSearchBtn.Enabled = true));
-            }
-            else
-            {
-                StartSearchBtn.Enabled = true;
-            }
-        }
-
         private void ChooseRootDirectoryBtn_Click(object sender, EventArgs e)
         {
             ChooseRootCatalogFileDialog.Description = "Выберите корневую директорию";
@@ -67,6 +53,7 @@ namespace FileSearcherMultiThread
 
         private void StartSearchBtn_Click(object sender, EventArgs e)
         {
+            FileSystemTreeView.Nodes.Clear();
             _fileName = FindingFileNameTxtBx.Text;
 
             if (string.IsNullOrEmpty(_rootDirectoryPath))
@@ -92,6 +79,30 @@ namespace FileSearcherMultiThread
             }
         }
 
+        private void StopSearchBtn_Click(object sender, EventArgs e)
+        {
+            if (_fileSearchService.IsSearching)
+            {
+                _fileSearchService.StopSearch();
+                StartSearchBtn.Enabled = false;
+            }
+        }
+
+        /// <summary>
+        /// Обработчик события на завершение поиска
+        /// </summary>
+        private void _fileSearchService_SearchCompleted(object sender, EventArgs e)
+        {
+            if (InvokeRequired)
+            {
+                Invoke((MethodInvoker)(() => StartSearchBtn.Enabled = true));
+            }
+            else
+            {
+                StartSearchBtn.Enabled = true;
+            }
+        }
+
         /// <summary>
         /// Обработчик события, если найден новый путь к файлу
         /// </summary>
@@ -114,26 +125,24 @@ namespace FileSearcherMultiThread
         }
 
         /// <summary>
-        /// Добавление Элемента в дерево 
+        /// Добавление элемента в дерево 
         /// </summary>
         /// <param name="fullPath">Полный путь к файлу</param>
         private void AddPathToTree(string fullPath)
         {
-            string[] parts = fullPath.Split(Path.DirectorySeparatorChar);
+            string[] parts = fullPath.Split(Path.DirectorySeparatorChar, (char)StringSplitOptions.RemoveEmptyEntries);
             TreeNodeCollection currentNodes = FileSystemTreeView.Nodes;
             string currentPath = "";
 
             for (int i = 0; i < parts.Length; i++)
             {
                 string part = parts[i];
-                if (string.IsNullOrWhiteSpace(part)) continue;
-
-                currentPath = (i == 0) ? part : Path.Combine(currentPath, part);
+                currentPath = (i == 0 && fullPath.Contains(":")) ? part + "\\" : Path.Combine(currentPath, part);
 
                 TreeNode existingNode = currentNodes.Cast<TreeNode>().FirstOrDefault(n => n.Text == part);
                 if (existingNode == null)
                 {
-                    int iconIndex = GetIconIndex(currentPath);
+                    int iconIndex = GetIconIndex(currentPath, FileSystemTreeView.ImageList);
                     existingNode = new TreeNode(part, iconIndex, iconIndex);
                     currentNodes.Add(existingNode);
                 }
@@ -142,39 +151,14 @@ namespace FileSearcherMultiThread
             }
         }
 
-        private void StopSearchBtn_Click(object sender, EventArgs e)
-        {
-            if (_fileSearchService.IsSearching)
-            {
-                _fileSearchService.StopSearch();
-                StartSearchBtn.Enabled = false;
-            }
-        }
-
-        /// <summary>
-        /// Кэш иконок
-        /// </summary>
-        private readonly Dictionary<string, int> _iconCache = new Dictionary<string, int>();
-
         /// <summary>
         /// Получение индекса иконки
         /// </summary>
-        private int GetIconIndex(string path)
+        private static int GetIconIndex(string path, ImageList imageList)
         {
-            string key = Path.GetExtension(path).ToLower();
-            if (string.IsNullOrEmpty(key)) key = "folder";
-
-            if (_iconCache.TryGetValue(key, out int index))
-                return index;
-
-            using (Icon icon = ShellIconService.GetSmallIcon(path))
-            {
-                FileIconsImageList.Images.Add(key, icon.ToBitmap());
-            }
-
-            int newIndex = FileIconsImageList.Images.Count - 1;
-            _iconCache[key] = newIndex;
-            return newIndex;
+            Icon icon = ShellIconService.GetSmallIcon(path);
+            imageList.Images.Add(icon);
+            return imageList.Images.Count - 1;
         }
     }
 }
