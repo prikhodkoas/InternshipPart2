@@ -3,12 +3,8 @@ using DataBase.Model;
 using FileUploadService.dto;
 using FileUploadService.mapper;
 using System;
-using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace FileUploadService.service
 {

@@ -19,8 +19,8 @@ namespace FileLoaderMultiThread
             _fileLoaderService = fileLoaderService;
             _currentFileId = fileId;
 
-            var loader = _fileLoaderService.GetFileLoader(fileId);
-            filePath = loader.GetUploadFile().FilePathFromSave;
+            var loader = _fileLoaderService?.GetFileLoader(fileId);
+            filePath = loader?.GetUploadFile()?.FilePathFromSave;
             this.fileIsLoadingNameLbl.Text += $" {filePath}";
 
             _fileLoaderService.ProgressChanged += _fileLoaderService_ProgressChanged;
@@ -30,8 +30,8 @@ namespace FileLoaderMultiThread
         /// <summary>
         /// Событие изменения прогресса загрузки
         /// </summary>
-        /// <param name="fileId"></param>
-        /// <param name="currentPercent"></param>
+        /// <param name="fileId">Идентификатор файла</param>
+        /// <param name="currentPercent">Текущий прогресс</param>
         private void _fileLoaderService_ProgressChanged(Guid fileId, int currentPercent)
         {
             if (fileId != _currentFileId)
@@ -65,7 +65,7 @@ namespace FileLoaderMultiThread
         /// <summary>
         /// Событие завершения процесса загрузки
         /// </summary>
-        /// <param name="fileId"></param>
+        /// <param name="fileId">Идентификатор файла</param>
         private void _fileLoaderService_Completed(Guid fileId)
         {
             if (fileId != _currentFileId) return;
