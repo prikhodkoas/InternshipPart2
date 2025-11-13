@@ -23,11 +23,14 @@ namespace SystemMonitorApp
         {
             InitializeComponent();
             InitializeChart();
-            InitializeControls();
-            InitializePerformanceCounters();
+            StartDiagnosticsButton.Click += StartDiagnosticsButton_Click;
+            InitializeInternetCount();
         }
 
-        private void InitializePerformanceCounters()
+        /// <summary>
+        /// Вручную просматривает сетевые интерфейсы
+        /// </summary>
+        private void InitializeInternetCount()
         {
             // Выбираем первый активный интерфейс (Wi-Fi или Ethernet)
             _networkInterface = NetworkInterface.GetAllNetworkInterfaces()
@@ -43,6 +46,9 @@ namespace SystemMonitorApp
             }
         }
 
+        /// <summary>
+        /// Настраивает график сети
+        /// </summary>
         private void InitializeChart()
         {
             NetworkChart.Series.Clear();
@@ -63,7 +69,11 @@ namespace SystemMonitorApp
             AddSeries("Отправлено", Color.OrangeRed);
         }
 
-
+        /// <summary>
+        /// Настройка графиков
+        /// </summary>
+        /// <param name="name">Графика</param>
+        /// <param name="color">Цвет графика</param>
         private void AddSeries(string name, Color color)
         {
             Series s = new Series(name)
@@ -73,22 +83,6 @@ namespace SystemMonitorApp
                 Color = color
             };
             NetworkChart.Series.Add(s);
-        }
-
-        private void InitializeControls()
-        {
-            StartDiagnosticsButton.Click += StartDiagnosticsButton_Click;
-
-            TimerUpdateNumericUpDown.ValueChanged += (s, e) =>
-            {
-                if (_updateTimer != null)
-                    _updateTimer.Interval = (int)(TimerUpdateNumericUpDown.Value * 1000);
-            };
-
-            CPUProgressBar.Minimum = 0;
-            CPUProgressBar.Maximum = 100;
-            RAMProgressBar.Minimum = 0;
-            RAMProgressBar.Maximum = 100;
         }
 
         private async void StartDiagnosticsButton_Click(object sender, EventArgs e)
