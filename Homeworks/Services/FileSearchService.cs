@@ -180,7 +180,7 @@ namespace Services
         /// Рекурсивный обход дерева файловой системы
         /// </summary>
         /// <param name="di">Информация о директории</param>
-        /// <param name="token">ткен отмены</param>
+        /// <param name="token">Токен отмены</param>
         /// <exception cref="DirectoryNotFoundException"></exception>
         private void PassDirectory(DirectoryInfo di, CancellationToken token)
         {
@@ -190,12 +190,12 @@ namespace Services
 
             try
             {
+                lock (_queueOfPathesNeedToCheck)
+                {
+                    _queueOfPathesNeedToCheck.Enqueue(di.FullName);
+                }
                 foreach (var dir in di.GetDirectories())
                 {
-                    lock (_queueOfPathesNeedToCheck)
-                    {
-                        _queueOfPathesNeedToCheck.Enqueue(dir.FullName);
-                    }
                     PassDirectory(dir, token);
                 }
             }
