@@ -14,7 +14,10 @@ namespace SystemMonitorApp
 {
     public partial class SystemResourcesMonitorForm : Form
     {
-        
+        private const byte MAX_PERCENT = 100;
+        private const byte TIME_INTERVAL_TO_DELETE = 30; // в сек
+        private const short MILLISECONDS_TO_SECONDS= 1000;
+
         private readonly ResourcesMonitoringService _resourcesMonitoringService;
 
         private Timer _updateTimer;
@@ -122,7 +125,7 @@ namespace SystemMonitorApp
             _lastXValue += interval;
 
             AddNetworkPoints(_lastXValue, recvRate, sentRate);
-            TrimOldNetworkPoints(_lastXValue, 30);
+            TrimOldNetworkPoints(_lastXValue, timeIntervalToDelete);
             UpdateNetworkAxes(_lastXValue);
         }
 
@@ -131,7 +134,7 @@ namespace SystemMonitorApp
             if (_updateTimer == null)
             {
                 _updateTimer = new Timer();
-                _updateTimer.Interval = (int)(TimerUpdateNumericUpDown.Value * 1000);
+                _updateTimer.Interval = (int)(TimerUpdateNumericUpDown.Value * MILLISECONDS_TO_SECONDS);
                 _updateTimer.Tick += UpdateTimer_Tick;
             }
 
@@ -156,20 +159,20 @@ namespace SystemMonitorApp
                 // CPU
                 float cpu = CPUPerformanceCounter.NextValue();
 
-                CPUProgressBar.Value = (int)Math.Min(cpu, 100);
+                CPUProgressBar.Value = (int)Math.Min(cpu, MAX_PERCENT);
                 CPUPercentCounterLabel.Text = $"{cpu:F1}%";
 
                 // RAM
                 var usedRAMPercent = _resourcesMonitoringService.UpdateRAMInfo();
 
-                RAMProgressBar.Value = (int)Math.Min(usedRAMPercent, 100);
+                RAMProgressBar.Value = (int)Math.Min(usedRAMPercent, MAX_PERCENT);
                 RAMPercentCounterLabel.Text = $"{usedRAMPercent:F1}%";
 
                 // NETWORK
                 _resourcesMonitoringService.UpdateStatistics();
                 var (recvRate, sentRate) = _resourcesMonitoringService.GetNetworkSpeed(intervalSeconds);
 
-                UpdateNetworkChart(recvRate, sentRate, intervalSeconds, 30);
+                UpdateNetworkChart(recvRate, sentRate, intervalSeconds, TIME_INTERVAL_TO_DELETE);
             }
             catch (Exception ex)
             {
@@ -179,8 +182,8 @@ namespace SystemMonitorApp
 
         private void TimerUpdateNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
-            if(!(_updateTimer is null))
-                _updateTimer.Interval = (int)(TimerUpdateNumericUpDown.Value * 1000);
-        }
+            if (!(_updateTimer is null))
+                _updateTimer.Interval = (int)(TimerUpdateNumericUpDown.Value * MILLISECONDS_TO_SECONDS);
+        } 
     }
 }
