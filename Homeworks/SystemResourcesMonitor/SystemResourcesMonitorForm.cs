@@ -163,8 +163,8 @@ namespace SystemMonitorApp
                 CPUPercentCounterLabel.Text = $"{cpu:F1}%";
 
                 // RAM
-                var usedRAMPercent = _resourcesMonitoringService.UpdateRAMInfo();
-
+                var usedRAM = _resourcesMonitoringService.UpdateRAMInfo();
+                var usedRAMPercent = usedRAM * MAX_PERCENT;
                 RAMProgressBar.Value = (int)Math.Min(usedRAMPercent, MAX_PERCENT);
                 RAMPercentCounterLabel.Text = $"{usedRAMPercent:F1}%";
 

@@ -11,6 +11,8 @@ namespace SystemResourcesMonitor
 {
     public class ResourcesMonitoringService
     {
+        private const ushort BYTES_TO_KILOBYTES = 1024;
+        private const int BYTES_TO_MEGABYTES = 1024 * 1024;
         public long LastBytesSent { get; private set; } = 0;
         public long LastBytesReceived { get; private set; } = 0;
 
@@ -19,6 +21,9 @@ namespace SystemResourcesMonitor
 
         private NetworkInterface _networkInterface;
 
+        /// <summary>
+        /// Получение доступного сетевого интерфейса
+        /// </summary>
         public void InitializeNetworkInterface()
         {
             _networkInterface = NetworkInterface.GetAllNetworkInterfaces()
@@ -55,8 +60,8 @@ namespace SystemResourcesMonitor
         /// <returns>Скорость скачивания и отправки</returns>
         public (double recvRate, double sentRate) GetNetworkSpeed(double intervalSeconds)
         {
-            double recvRate = (LastBytesReceived - PrevBytesReceived) / 1024.0 / intervalSeconds;
-            double sentRate = (LastBytesSent - PrevBytesSent) / 1024.0 / intervalSeconds;
+            double recvRate = (LastBytesReceived - PrevBytesReceived) / BYTES_TO_KILOBYTES / intervalSeconds;
+            double sentRate = (LastBytesSent - PrevBytesSent) / BYTES_TO_KILOBYTES / intervalSeconds;
             return (recvRate, sentRate);
         }
 
@@ -67,9 +72,9 @@ namespace SystemResourcesMonitor
         public float UpdateRAMInfo()
         {
             ComputerInfo info = new ComputerInfo();
-            float totalMemory = info.TotalPhysicalMemory / (1024 * 1024);
-            float availableMemory = info.AvailablePhysicalMemory / (1024 * 1024);
-            return (1 - (availableMemory / totalMemory)) * 100f;
+            float totalMemory = info.TotalPhysicalMemory / BYTES_TO_MEGABYTES;
+            float availableMemory = info.AvailablePhysicalMemory / BYTES_TO_MEGABYTES;
+            return (1 - (availableMemory / totalMemory));
         }
     }
 
