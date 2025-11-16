@@ -17,7 +17,7 @@ namespace SystemResourcesMonitor
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new SystemResourcesMonitorForm());
+            Application.Run(new SystemResourcesMonitorForm(new ResourcesMonitoringService()));
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualBasic.Devices;
 using System;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
@@ -7,43 +8,25 @@ using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
+using SystemResourcesMonitor;
 
 namespace SystemMonitorApp
 {
     public partial class SystemResourcesMonitorForm : Form
     {
+        
+        private readonly ResourcesMonitoringService _resourcesMonitoringService;
+
         private Timer _updateTimer;
         private double _lastXValue = 0;
 
-        private NetworkInterface _networkInterface;
-        private long _lastBytesSent = 0;
-        private long _lastBytesReceived = 0;
-
-        public SystemResourcesMonitorForm()
+        public SystemResourcesMonitorForm(ResourcesMonitoringService resourcesMonitoringService)
         {
+            _resourcesMonitoringService = resourcesMonitoringService;
             InitializeComponent();
             InitializeChart();
+            _resourcesMonitoringService.InitializeNetworkInterface();
             StartDiagnosticsButton.Click += StartDiagnosticsButton_Click;
-            InitializeInternetCount();
-        }
-
-        /// <summary>
-        /// Вручную просматривает сетевые интерфейсы
-        /// </summary>
-        private void InitializeInternetCount()
-        {
-            // Выбираем первый активный интерфейс (Wi-Fi или Ethernet)
-            _networkInterface = NetworkInterface.GetAllNetworkInterfaces()
-                .FirstOrDefault(n =>
-                    n.NetworkInterfaceType != NetworkInterfaceType.Loopback &&
-                    n.OperationalStatus == OperationalStatus.Up);
-
-            if (_networkInterface != null)
-            {
-                var stats = _networkInterface.GetIPv4Statistics();
-                _lastBytesSent = stats.BytesSent;
-                _lastBytesReceived = stats.BytesReceived;
-            }
         }
 
         /// <summary>
@@ -72,7 +55,7 @@ namespace SystemMonitorApp
         /// <summary>
         /// Настройка графиков
         /// </summary>
-        /// <param name="name">Графика</param>
+        /// <param name="name">Имя графика</param>
         /// <param name="color">Цвет графика</param>
         private void AddSeries(string name, Color color)
         {
@@ -85,7 +68,65 @@ namespace SystemMonitorApp
             NetworkChart.Series.Add(s);
         }
 
-        private async void StartDiagnosticsButton_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Добавление новых значений на график
+        /// </summary>
+        /// <param name="x">Координата X</param>
+        /// <param name="recvRate">Координата Y для графика получения</param>
+        /// <param name="sentRate">Координата Y для графика отправки</param>
+        private void AddNetworkPoints(double x, double recvRate, double sentRate)
+        {
+            NetworkChart.Series["Получено"].Points.AddXY(x, recvRate);
+            NetworkChart.Series["Отправлено"].Points.AddXY(x, sentRate);
+        }
+
+        /// <summary>
+        /// Удалить записи старше определенного промежутка времени 
+        /// </summary>
+        /// <param name="x">Текущая координата X</param>
+        /// <param name="timeIntervalToDelete">Промежуток времени, который отображается на графике</param>
+        private void TrimOldNetworkPoints(double x, double timeIntervalToDelete)
+        {
+            foreach (var s in NetworkChart.Series)
+            {
+                while (s.Points.Count > 0 && s.Points[0].XValue < x - timeIntervalToDelete)
+                    s.Points.RemoveAt(0);
+            }
+        }
+
+        /// <summary>
+        /// Обновление оси X
+        /// </summary>
+        /// <param name="x">Текущая координата X</param>
+        private void UpdateNetworkAxes(double x)
+        {
+            var area = NetworkChart.ChartAreas[0];
+            area.AxisX.Minimum = Math.Max(0, x - 30);
+            area.AxisX.Maximum = x;
+            area.AxisX.Title = "Время (сек)";
+            area.AxisX.LabelStyle.Format = "F1";
+            area.AxisX.LabelStyle.Interval = 5;
+            area.AxisX.MajorGrid.Interval = 1;
+            area.RecalculateAxesScale();
+        }
+
+        /// <summary>
+        /// Обновление графика сети
+        /// </summary>
+        /// <param name="recvRate">Скорость скачивания</param>
+        /// <param name="sentRate">Скорость отправки</param>
+        /// <param name="interval">Временной промежуток обновления графика</param>
+        /// <param name="timeIntervalToDelete">Промежуток времени, который отображается на графике</param>
+        private void UpdateNetworkChart(double recvRate, double sentRate, double interval, double timeIntervalToDelete)
+        {
+            _lastXValue += interval;
+
+            AddNetworkPoints(_lastXValue, recvRate, sentRate);
+            TrimOldNetworkPoints(_lastXValue, 30);
+            UpdateNetworkAxes(_lastXValue);
+        }
+
+        private void StartDiagnosticsButton_Click(object sender, EventArgs e)
         {
             if (_updateTimer == null)
             {
@@ -101,9 +142,6 @@ namespace SystemMonitorApp
             }
             else
             {
-                CPUPerformanceCounter.NextValue();
-                await Task.Delay(500);
-
                 _updateTimer.Start();
                 StartDiagnosticsButton.Text = "Остановить диагностику";
             }
@@ -113,53 +151,25 @@ namespace SystemMonitorApp
         {
             try
             {
-                // --- CPU ---
+                double intervalSeconds = (double)TimerUpdateNumericUpDown.Value;
+
+                // CPU
                 float cpu = CPUPerformanceCounter.NextValue();
+
                 CPUProgressBar.Value = (int)Math.Min(cpu, 100);
                 CPUPercentCounterLabel.Text = $"{cpu:F1}%";
 
-                // --- RAM ---
-                ComputerInfo info = new ComputerInfo();
-                float totalMemory = info.TotalPhysicalMemory / (1024 * 1024);
-                float availableMemory = info.AvailablePhysicalMemory / (1024 * 1024);
-                float usedMemoryPercent = (1 - (availableMemory / totalMemory)) * 100f;
-                RAMProgressBar.Value = (int)Math.Min(usedMemoryPercent, 100);
-                RAMPercentCounterLabel.Text = $"{usedMemoryPercent:F1}%";
+                // RAM
+                var usedRAMPercent = _resourcesMonitoringService.UpdateRAMInfo();
 
-                // --- Network ---
-                var stats = _networkInterface.GetIPv4Statistics();
-                double intervalSeconds = (double)TimerUpdateNumericUpDown.Value;
+                RAMProgressBar.Value = (int)Math.Min(usedRAMPercent, 100);
+                RAMPercentCounterLabel.Text = $"{usedRAMPercent:F1}%";
 
-                double recvRate = (stats.BytesReceived - _lastBytesReceived) / 1024.0 / intervalSeconds;
-                double sentRate = (stats.BytesSent - _lastBytesSent) / 1024.0 / intervalSeconds;
+                // NETWORK
+                _resourcesMonitoringService.UpdateStatistics();
+                var (recvRate, sentRate) = _resourcesMonitoringService.GetNetworkSpeed(intervalSeconds);
 
-                // X-координата = предыдущая + текущий интервал
-                double xValue = _lastXValue + intervalSeconds;
-
-                NetworkChart.Series["Получено"].Points.AddXY(xValue, recvRate);
-                NetworkChart.Series["Отправлено"].Points.AddXY(xValue, sentRate);
-
-                // Ограничиваем количество точек (например, последние 30 секунд)
-                foreach (var s in NetworkChart.Series)
-                {
-                    while (s.Points.Count > 0 && s.Points[0].XValue < xValue - 30)
-                        s.Points.RemoveAt(0);
-                }
-
-                // Настройка оси X
-                var area = NetworkChart.ChartAreas[0];
-                area.AxisX.Minimum = Math.Max(0, xValue - 30);
-                area.AxisX.Maximum = xValue;
-                area.AxisX.Title = "Время (сек)";
-                area.AxisX.LabelStyle.Format = "F1"; // десятые доли
-                area.AxisX.LabelStyle.Interval = 5;
-                area.AxisX.MajorGrid.Interval = 1;
-                area.RecalculateAxesScale();
-
-                // Сохраняем состояние для следующего тика
-                _lastBytesReceived = stats.BytesReceived;
-                _lastBytesSent = stats.BytesSent;
-                _lastXValue = xValue;
+                UpdateNetworkChart(recvRate, sentRate, intervalSeconds, 30);
             }
             catch (Exception ex)
             {
