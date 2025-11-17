@@ -14,7 +14,7 @@ namespace XMLNotes
 {
     public partial class NotesForm : Form
     {
-        private readonly NoteService _service;
+        private readonly NoteService _noteService;
         private readonly Dictionary<Guid, NoteCard> _cards = new Dictionary<Guid, NoteCard>();
 
         public NotesForm()
@@ -23,17 +23,16 @@ namespace XMLNotes
 
             // Создаём сервис
             string filePath = Path.Combine(Application.StartupPath, "notes.xml");
-            _service = new NoteService(new NoteRepository(filePath));
-
-            LoadNotes();
+            _noteService = new NoteService(new NoteRepository(filePath));
+            LoadAllNotes();
         }
 
-        private void LoadNotes()
+        private void LoadAllNotes()
         {
             flowLayoutPanelNotes.Controls.Clear();
             _cards.Clear();
 
-            var notes = _service.GetAll();
+            var notes = _noteService.GetAllNotes();
             foreach (var note in notes)
             {
                 AddCardToUI(note);
@@ -43,30 +42,31 @@ namespace XMLNotes
         private void AddCardToUI(Note note)
         {
             var card = new NoteCard();
-            card.LoadFromNote(note);
 
-            // Подписка на клик для расширения (опционально)
+            card.TitleTextBox.Text = note.Title;
+            card.TextRichTextBox.Text = note.Text;
+            card.CreatedAtDateTimePicker.Value = note.CreatedAt;
+
             card.Click += Card_Click;
 
             flowLayoutPanelNotes.Controls.Add(card);
             _cards[note.Id] = card;
         }
 
-        private void Card_Click(object sender, EventArgs e)
-        {
-            if (sender is NoteCard clickedCard)
-            {
-                foreach (var card in flowLayoutPanelNotes.Controls.OfType<NoteCard>())
-                {
-                    if (card != clickedCard)
-                        card.Collapse();
-                }
 
-                clickedCard.ToggleExpand(); // карточка увеличивается при клике
-            }
+        public void LoadFromNote(NoteCard card, Note note)
+        {
+            card.TitleTextBox.Text = note.Title;
+            card.TextRichTextBox.Text = note.Text;
+            card.CreatedAtDateTimePicker.Value = note.CreatedAt;
         }
 
-        private void buttonAdd_Click(object sender, EventArgs e)
+        private void Card_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void addBtn_Click(object sender, EventArgs e)
         {
             var note = new Note
             {
@@ -75,7 +75,7 @@ namespace XMLNotes
                 CreatedAt = DateTime.Now
             };
 
-            _service.Add(note);
+            _noteService.Add(note);
             AddCardToUI(note);
         }
     }

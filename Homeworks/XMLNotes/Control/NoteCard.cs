@@ -14,43 +14,58 @@ namespace XMLNotes
     public partial class NoteCard : UserControl
     {
         public Guid Id { get; private set; }
-        private bool isExpanded = false;
-        private int collapsedHeight;
-        private int expandedHeight = 150;
+
+        public event EventHandler Clicked;
+        public event EventHandler EditClicked;
+        public event EventHandler DeleteClicked;
+
 
         public NoteCard()
         {
             InitializeComponent();
-            collapsedHeight = this.Height;
 
-            this.Click += NoteCard_Click;
-            foreach (Control ctrl in this.Controls)
-                ctrl.Click += NoteCard_Click;
+            // Прокрутка мышью
+            RegisterMouseWheel(this);
+        }
+        public void SetControlsIsReadOnly(bool readOnly)
+        {
+            TitleTextBox.ReadOnly = readOnly;
+            TextRichTextBox.ReadOnly = readOnly;
+
+            // Для DateTimePicker просто блокируем изменение
+            CreatedAtDateTimePicker.Enabled = !readOnly;
         }
 
         private void NoteCard_Click(object sender, EventArgs e)
         {
-            ToggleExpand();
+            SetControlsIsReadOnly(false);
         }
 
-        public void ToggleExpand()
+        /// <summary>
+        /// Прокрутка для каждого элемента карточки 
+        /// </summary>
+        /// <param name="control">Элемент</param>
+        private void RegisterMouseWheel(Control control)
         {
-            isExpanded = !isExpanded;
-            this.Height = isExpanded ? expandedHeight : collapsedHeight;
+            control.MouseWheel += Control_MouseWheel;
+            foreach (Control ctrl in control.Controls)
+            {
+                RegisterMouseWheel(ctrl);
+            }
         }
 
-        public void Collapse()
+        /// <summary>
+        /// Обработчик прокрутки контрола
+        /// </summary>
+        private void Control_MouseWheel(object sender, MouseEventArgs e)
         {
-            isExpanded = false;
-            this.Height = collapsedHeight;
-        }
-
-        public void LoadFromNote(Note note)
-        {
-            Id = note.Id;
-            TitleTextBox.Text = note.Title;
-            TextRichTextBox.Text = note.Text;
-            CreatedAtDateTimePicker.Value = note.CreatedAt;
+            if (this.Parent is FlowLayoutPanel panel)
+            {
+                int newValue = panel.VerticalScroll.Value - e.Delta;
+                newValue = Math.Max(panel.VerticalScroll.Minimum, Math.Min(panel.VerticalScroll.Maximum, newValue));
+                panel.VerticalScroll.Value = newValue;
+                panel.PerformLayout();
+            }
         }
     }
 }

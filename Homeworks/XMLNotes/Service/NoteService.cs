@@ -18,7 +18,7 @@ namespace XMLNotes
             _repository.Create();
         }
 
-        public List<Note> GetAll()
+        public List<Note> GetAllNotes()
         {
             return _repository.GetAll();
         }

@@ -28,13 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.TitleLbl = new System.Windows.Forms.Label();
             this.TitleTextBox = new System.Windows.Forms.TextBox();
             this.TextRichTextBox = new System.Windows.Forms.RichTextBox();
             this.TextLbl = new System.Windows.Forms.Label();
             this.CreatedAtLbl = new System.Windows.Forms.Label();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.CreatedAtDateTimePicker = new System.Windows.Forms.DateTimePicker();
             this.SuspendLayout();
             // 
@@ -58,9 +56,11 @@
             // 
             // TextRichTextBox
             // 
+            this.TextRichTextBox.AcceptsTab = true;
             this.TextRichTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.TextRichTextBox.DetectUrls = false;
             this.TextRichTextBox.Location = new System.Drawing.Point(8, 60);
             this.TextRichTextBox.Name = "TextRichTextBox";
             this.TextRichTextBox.Size = new System.Drawing.Size(284, 106);
@@ -85,11 +85,6 @@
             this.CreatedAtLbl.Size = new System.Drawing.Size(125, 13);
             this.CreatedAtLbl.TabIndex = 4;
             this.CreatedAtLbl.Text = "Последнее изменение:";
-            // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
             // CreatedAtDateTimePicker
             // 
@@ -120,12 +115,11 @@
 
         #endregion
 
-        private System.Windows.Forms.Label TitleLbl;
-        private System.Windows.Forms.TextBox TitleTextBox;
-        private System.Windows.Forms.RichTextBox TextRichTextBox;
-        private System.Windows.Forms.Label TextLbl;
-        private System.Windows.Forms.Label CreatedAtLbl;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
-        private System.Windows.Forms.DateTimePicker CreatedAtDateTimePicker;
+        public System.Windows.Forms.Label TitleLbl;
+        public System.Windows.Forms.TextBox TitleTextBox;
+        public System.Windows.Forms.RichTextBox TextRichTextBox;
+        public System.Windows.Forms.Label TextLbl;
+        public System.Windows.Forms.Label CreatedAtLbl;
+        public System.Windows.Forms.DateTimePicker CreatedAtDateTimePicker;
     }
 }
