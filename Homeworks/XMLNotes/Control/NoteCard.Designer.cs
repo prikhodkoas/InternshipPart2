@@ -53,7 +53,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.TitleTextBox.Location = new System.Drawing.Point(8, 21);
             this.TitleTextBox.Name = "TitleTextBox";
-            this.TitleTextBox.Size = new System.Drawing.Size(288, 20);
+            this.TitleTextBox.Size = new System.Drawing.Size(284, 20);
             this.TitleTextBox.TabIndex = 1;
             // 
             // TextRichTextBox
@@ -63,7 +63,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.TextRichTextBox.Location = new System.Drawing.Point(8, 60);
             this.TextRichTextBox.Name = "TextRichTextBox";
-            this.TextRichTextBox.Size = new System.Drawing.Size(288, 107);
+            this.TextRichTextBox.Size = new System.Drawing.Size(284, 106);
             this.TextRichTextBox.TabIndex = 2;
             this.TextRichTextBox.Text = "";
             // 
@@ -80,7 +80,7 @@
             // 
             this.CreatedAtLbl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.CreatedAtLbl.AutoSize = true;
-            this.CreatedAtLbl.Location = new System.Drawing.Point(8, 176);
+            this.CreatedAtLbl.Location = new System.Drawing.Point(8, 175);
             this.CreatedAtLbl.Name = "CreatedAtLbl";
             this.CreatedAtLbl.Size = new System.Drawing.Size(125, 13);
             this.CreatedAtLbl.TabIndex = 4;
@@ -95,9 +95,9 @@
             // 
             this.CreatedAtDateTimePicker.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.CreatedAtDateTimePicker.Location = new System.Drawing.Point(139, 173);
+            this.CreatedAtDateTimePicker.Location = new System.Drawing.Point(139, 172);
             this.CreatedAtDateTimePicker.Name = "CreatedAtDateTimePicker";
-            this.CreatedAtDateTimePicker.Size = new System.Drawing.Size(157, 20);
+            this.CreatedAtDateTimePicker.Size = new System.Drawing.Size(153, 20);
             this.CreatedAtDateTimePicker.TabIndex = 7;
             // 
             // NoteCard
@@ -112,7 +112,7 @@
             this.Controls.Add(this.TitleTextBox);
             this.Controls.Add(this.TitleLbl);
             this.Name = "NoteCard";
-            this.Size = new System.Drawing.Size(304, 201);
+            this.Size = new System.Drawing.Size(300, 200);
             this.ResumeLayout(false);
             this.PerformLayout();
 
