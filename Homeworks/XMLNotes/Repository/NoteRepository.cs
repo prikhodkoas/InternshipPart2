@@ -15,7 +15,7 @@ public class NoteRepository
     }
 
     /// <summary>
-    /// Создание фалйа с заметками
+    /// Создание файла с заметками
     /// </summary>
     /// <returns>Создан файл или нет</returns>
     public bool Create()

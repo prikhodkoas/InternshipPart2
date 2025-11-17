@@ -46,15 +46,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form1.cs">
+    <Compile Include="Model\Note.cs" />
+    <Compile Include="Control\NoteCard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Control\NoteCard.Designer.cs">
+      <DependentUpon>NoteCard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Service\NoteService.cs" />
+    <Compile Include="Repository\NoteRepository.cs" />
+    <Compile Include="NotesForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="NotesForm.Designer.cs">
+      <DependentUpon>NotesForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Model\Note.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Control\NoteCard.resx">
+      <DependentUpon>NoteCard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NotesForm.resx">
+      <DependentUpon>NotesForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
