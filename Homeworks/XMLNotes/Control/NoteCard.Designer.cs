@@ -93,6 +93,8 @@
             // 
             // CreatedAtDateTimePicker
             // 
+            this.CreatedAtDateTimePicker.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.CreatedAtDateTimePicker.Location = new System.Drawing.Point(139, 173);
             this.CreatedAtDateTimePicker.Name = "CreatedAtDateTimePicker";
             this.CreatedAtDateTimePicker.Size = new System.Drawing.Size(157, 20);
