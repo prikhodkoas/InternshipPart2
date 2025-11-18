@@ -52,7 +52,6 @@ namespace FileUploadService.service
 
             var chunk = _chunkMapper.ToEntity(chunkDto);
             _context.Chunks.Add(chunk);
-            _context.SaveChanges();
         }
 
         /// <summary>
@@ -60,7 +59,23 @@ namespace FileUploadService.service
         /// </summary>
         public void Commit()
         {
+            if (_committed)
+                return;
+
+            _context.SaveChanges();
             _transaction.Commit();
+            _committed = true;
+        }
+
+        /// <summary>
+        /// Откат транзакции
+        /// </summary>
+        public void Rollback()
+        {
+            if (_committed)
+                return;
+
+            _transaction.Rollback();
             _committed = true;
         }
 

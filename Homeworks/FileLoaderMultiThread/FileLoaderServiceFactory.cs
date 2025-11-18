@@ -7,6 +7,6 @@ namespace FileLoaderMultiThread
     /// </summary>
     public static class FileLoaderServiceFactory
     {
-        public static IFileLoaderService Create() => new FileLoaderService(new FileUploadService.service.FileUploadService("Server=localhost;Database=FileStorageDb;Trusted_Connection=True;"));
+        public static IFileLoaderService Create() => new FileLoaderService(new FileUploadService.service.FileUploadService(@"Server=IM1834\SQLEXPRESS;Database=FileStorageDb;Trusted_Connection=True;TrustServerCertificate=True;"));
     }
 }

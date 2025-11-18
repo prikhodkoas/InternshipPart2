@@ -39,7 +39,7 @@ namespace FileUploadService.service
         }
 
         /// <summary>
-        /// Загружает один чанк в файл
+        /// Загружает один чанк файла в БД
         /// </summary>
         public void UploadChunk(Guid fileId, ChunkDto chunkDto, CancellationToken token)
         {
@@ -68,6 +68,7 @@ namespace FileUploadService.service
         {
             if (_sessions.TryRemove(fileId, out var session))
             {
+                session.Rollback();
                 session.Dispose(); // Rollback произойдет автоматически
             }
         }

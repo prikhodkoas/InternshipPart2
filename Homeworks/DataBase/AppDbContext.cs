@@ -13,7 +13,7 @@ namespace DataBase
 
         public DbSet<Chunk> Chunks { get; set; }
 
-        public AppDbContext() : base("name=HomeDbConnection") { }
+        public AppDbContext() : base(@"Server=IM1834\SQLEXPRESS;Database=FileStorageDb;Trusted_Connection=True;TrustServerCertificate=True;") { }
 
         public AppDbContext(string connectionString)
             : base(connectionString) { }
