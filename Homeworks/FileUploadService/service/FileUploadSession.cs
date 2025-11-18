@@ -76,7 +76,7 @@ namespace FileUploadService.service
                 return;
 
             _transaction.Rollback();
-            _committed = true;
+            _committed = false;
         }
 
         public void Dispose()

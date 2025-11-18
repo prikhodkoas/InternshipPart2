@@ -118,7 +118,7 @@ namespace FileLoaderMultiThread
                         ProgressChanged?.Invoke(percent);
                     }
                 }
-
+                _fileUploadService.CompleteFileUpload(fileId);
                 _isLoaded = true;
                 Completed?.Invoke();
             }

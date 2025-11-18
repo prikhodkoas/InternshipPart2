@@ -69,7 +69,7 @@ namespace FileUploadService.service
             if (_sessions.TryRemove(fileId, out var session))
             {
                 session.Rollback();
-                session.Dispose(); // Rollback произойдет автоматически
+                session.Dispose(); 
             }
         }
     }
