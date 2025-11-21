@@ -5,6 +5,9 @@ using System.Linq;
 using System.Xml.Linq;
 using XMLNotes.Model;
 
+/// <summary>
+/// Получает данные о заметках из XML документа
+/// </summary>
 public class NoteRepository
 {
     private readonly string _filePath;
