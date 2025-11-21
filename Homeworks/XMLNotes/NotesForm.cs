@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using XMLNotes.Model;
@@ -10,16 +11,20 @@ namespace XMLNotes
 {
     public partial class NotesForm : Form
     {
+        private NoteCard NoteCard { get; set; }
         private readonly NoteService _noteService;
+  
         private BindingList<NoteDto> _notes = new BindingList<NoteDto>(); 
 
         public NotesForm()
         {
             InitializeComponent();
-
+            NoteCard = CreateCard();
             NotesGridView.DataSource = _notes;
             NotesGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            NotesGridView.AllowUserToAddRows = false;
             NotesGridView.ReadOnly = true;
+
             NotesGridView.RowHeaderMouseClick += NotesGridView_RowHeaderMouseClick;
             NotesGridView.CellClick += NotesGridView_CellClick;
 
@@ -27,6 +32,22 @@ namespace XMLNotes
             string filePath = Path.Combine(Application.StartupPath, "notes.xml");
             _noteService = new NoteService(new NoteRepository(filePath));
             LoadAllNotes();
+        }
+
+        /// <summary>
+        /// Создание динамически карточки заметки на форме
+        /// </summary>
+        /// <returns>Карточка заметки</returns>
+        private NoteCard CreateCard()
+        {
+            var noteCard = new NoteCard();
+            noteCard.Parent = this;
+            noteCard.Location = new Point(this.NotesGridView.Width + 8,
+                this.deleteBtn.Location.Y + this.deleteBtn.Height + 8);
+            noteCard.Size = new Size(addBtn.Width + editBtn.Width + 8, 200);
+            noteCard.Anchor = AnchorStyles.Right | AnchorStyles.Top;
+            noteCard.Visible = false;
+            return noteCard;
         }
 
         /// <summary>
@@ -52,10 +73,23 @@ namespace XMLNotes
             }
         }
 
+        /// <summary>
+        /// Загрузка заметок в таблицу с заметками
+        /// </summary>
         private void LoadAllNotes()
         {
             _notes = _noteService.GetAllNotes();
             NotesGridView.DataSource = _notes;
+        }
+
+        /// <summary>
+        /// Инициализация полей в карточке
+        /// </summary>
+        private void InitializeCard()
+        {
+            NoteCard.TitleTextBox.Text = "Новая заметка";
+            NoteCard.TextRichTextBox.Text = "";
+            NoteCard.CreatedAtDateTimePicker.Value = DateTime.Now;
         }
 
         private void AddCardToUI(Note note)
@@ -84,15 +118,23 @@ namespace XMLNotes
 
         private void addBtn_Click(object sender, EventArgs e)
         {
-            var note = new Note
-            {
-                Title = "Новая заметка",
-                Text = "",
-                CreatedAt = DateTime.Now
-            };
+            NoteCard.Visible = true;
+            InitializeCard();
 
-            _noteService.Add(note);
-            AddCardToUI(note);
+            NoteCard.Focus();
+            NoteCard.TitleTextBox.Focus();
+            NoteCard.TitleTextBox.SelectAll();
+
+            // 
+            //var note = new Note
+            //{
+            //    Title = "Новая заметка",
+            //    Text = "",
+            //    CreatedAt = DateTime.Now
+            //};
+
+            //_noteService.Add(note);
+            //AddCardToUI(note);
         }
     }
 }

@@ -39,9 +39,10 @@
             // deleteBtn
             // 
             this.deleteBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.deleteBtn.Location = new System.Drawing.Point(318, 65);
+            this.deleteBtn.Location = new System.Drawing.Point(445, 57);
+            this.deleteBtn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.deleteBtn.Name = "deleteBtn";
-            this.deleteBtn.Size = new System.Drawing.Size(131, 23);
+            this.deleteBtn.Size = new System.Drawing.Size(180, 35);
             this.deleteBtn.TabIndex = 1;
             this.deleteBtn.Text = "Удалить";
             this.deleteBtn.UseVisualStyleBackColor = true;
@@ -49,9 +50,10 @@
             // addBtn
             // 
             this.addBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.addBtn.Location = new System.Drawing.Point(318, 8);
+            this.addBtn.Location = new System.Drawing.Point(445, 14);
+            this.addBtn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.addBtn.Name = "addBtn";
-            this.addBtn.Size = new System.Drawing.Size(131, 23);
+            this.addBtn.Size = new System.Drawing.Size(180, 35);
             this.addBtn.TabIndex = 2;
             this.addBtn.Text = "Добавить";
             this.addBtn.UseVisualStyleBackColor = true;
@@ -60,19 +62,21 @@
             // editBtn
             // 
             this.editBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.editBtn.Location = new System.Drawing.Point(318, 37);
+            this.editBtn.Location = new System.Drawing.Point(643, 14);
+            this.editBtn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.editBtn.Name = "editBtn";
-            this.editBtn.Size = new System.Drawing.Size(131, 23);
+            this.editBtn.Size = new System.Drawing.Size(180, 35);
             this.editBtn.TabIndex = 3;
             this.editBtn.Text = "Редактировать";
             this.editBtn.UseVisualStyleBackColor = true;
             // 
             // openBtn
             // 
-            this.openBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.openBtn.Location = new System.Drawing.Point(318, 489);
+            this.openBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.openBtn.Location = new System.Drawing.Point(643, 59);
+            this.openBtn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.openBtn.Name = "openBtn";
-            this.openBtn.Size = new System.Drawing.Size(131, 23);
+            this.openBtn.Size = new System.Drawing.Size(180, 35);
             this.openBtn.TabIndex = 4;
             this.openBtn.Text = "Открыть";
             this.openBtn.UseVisualStyleBackColor = true;
@@ -84,20 +88,23 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.NotesGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.NotesGridView.Location = new System.Drawing.Point(0, 0);
+            this.NotesGridView.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.NotesGridView.Name = "NotesGridView";
-            this.NotesGridView.Size = new System.Drawing.Size(312, 518);
+            this.NotesGridView.RowHeadersWidth = 62;
+            this.NotesGridView.Size = new System.Drawing.Size(437, 429);
             this.NotesGridView.TabIndex = 5;
             // 
             // NotesForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(457, 518);
+            this.ClientSize = new System.Drawing.Size(861, 429);
             this.Controls.Add(this.NotesGridView);
             this.Controls.Add(this.openBtn);
             this.Controls.Add(this.editBtn);
             this.Controls.Add(this.addBtn);
             this.Controls.Add(this.deleteBtn);
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "NotesForm";
             this.Text = "NotesForm";
             ((System.ComponentModel.ISupportInitialize)(this.NotesGridView)).EndInit();
