@@ -1,0 +1,28 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using XMLNotes.Model;
+
+namespace XMLNotes.Mapper
+{
+    internal class NoteMapper : IMapper<Note, NoteDto>
+    {
+        public NoteDto ToDto(Note entity)
+        {
+            return new NoteDto
+            {
+                Id = Guid.NewGuid().ToString(),
+                Title = entity.Title,
+                Description = entity.Text,
+                UpdatedAt = entity.CreatedAt
+            };
+        }
+
+        public Note ToEntity(NoteDto dto)
+        {
+            throw new NotImplementedException();
+        }
+    }
+}

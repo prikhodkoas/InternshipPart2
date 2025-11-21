@@ -46,6 +46,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Mapper\IMapper.cs" />
+    <Compile Include="Mapper\NoteMapper.cs" />
     <Compile Include="Model\Note.cs" />
     <Compile Include="Control\NoteCard.cs">
       <SubType>UserControl</SubType>
@@ -53,7 +55,7 @@
     <Compile Include="Control\NoteCard.Designer.cs">
       <DependentUpon>NoteCard.cs</DependentUpon>
     </Compile>
-    <Compile Include="NoteDto.cs" />
+    <Compile Include="UIModel\NoteDto.cs" />
     <Compile Include="Service\NoteService.cs" />
     <Compile Include="Repository\NoteRepository.cs" />
     <Compile Include="NotesForm.cs">

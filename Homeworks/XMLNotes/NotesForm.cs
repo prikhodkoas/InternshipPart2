@@ -16,12 +16,12 @@ namespace XMLNotes
         public NotesForm()
         {
             InitializeComponent();
-            
+
             NotesGridView.DataSource = _notes;
             NotesGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            NotesGridView.ReadOnly = true;
             NotesGridView.RowHeaderMouseClick += NotesGridView_RowHeaderMouseClick;
             NotesGridView.CellClick += NotesGridView_CellClick;
-
 
             // Создаём сервис
             string filePath = Path.Combine(Application.StartupPath, "notes.xml");
@@ -54,11 +54,8 @@ namespace XMLNotes
 
         private void LoadAllNotes()
         {
-            var notes = _noteService.GetAllNotes();
-            foreach (var note in notes)
-            {
-                AddCardToUI(note);
-            }
+            _notes = _noteService.GetAllNotes();
+            NotesGridView.DataSource = _notes;
         }
 
         private void AddCardToUI(Note note)
