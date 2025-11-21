@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace XMLNotes
 {
-    public class NoteDto
+    public class NoteDto : INotifyPropertyChanged
     {
         [Browsable(false)]
         public string Id {  get; set; }
@@ -24,5 +24,9 @@ namespace XMLNotes
         [Browsable(true)]
         [DisplayName("Последнее обновление")]
         public DateTime UpdatedAt { get; set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

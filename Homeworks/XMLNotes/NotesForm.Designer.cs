@@ -28,28 +28,18 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.flowLayoutPanelNotes = new System.Windows.Forms.FlowLayoutPanel();
             this.deleteBtn = new System.Windows.Forms.Button();
             this.addBtn = new System.Windows.Forms.Button();
             this.editBtn = new System.Windows.Forms.Button();
             this.openBtn = new System.Windows.Forms.Button();
+            this.NotesGridView = new System.Windows.Forms.DataGridView();
+            ((System.ComponentModel.ISupportInitialize)(this.NotesGridView)).BeginInit();
             this.SuspendLayout();
-            // 
-            // flowLayoutPanelNotes
-            // 
-            this.flowLayoutPanelNotes.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.flowLayoutPanelNotes.AutoScroll = true;
-            this.flowLayoutPanelNotes.Location = new System.Drawing.Point(0, 1);
-            this.flowLayoutPanelNotes.Name = "flowLayoutPanelNotes";
-            this.flowLayoutPanelNotes.Size = new System.Drawing.Size(346, 448);
-            this.flowLayoutPanelNotes.TabIndex = 0;
             // 
             // deleteBtn
             // 
             this.deleteBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.deleteBtn.Location = new System.Drawing.Point(356, 65);
+            this.deleteBtn.Location = new System.Drawing.Point(318, 65);
             this.deleteBtn.Name = "deleteBtn";
             this.deleteBtn.Size = new System.Drawing.Size(131, 23);
             this.deleteBtn.TabIndex = 1;
@@ -59,7 +49,7 @@
             // addBtn
             // 
             this.addBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.addBtn.Location = new System.Drawing.Point(356, 8);
+            this.addBtn.Location = new System.Drawing.Point(318, 8);
             this.addBtn.Name = "addBtn";
             this.addBtn.Size = new System.Drawing.Size(131, 23);
             this.addBtn.TabIndex = 2;
@@ -70,7 +60,7 @@
             // editBtn
             // 
             this.editBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.editBtn.Location = new System.Drawing.Point(356, 37);
+            this.editBtn.Location = new System.Drawing.Point(318, 37);
             this.editBtn.Name = "editBtn";
             this.editBtn.Size = new System.Drawing.Size(131, 23);
             this.editBtn.TabIndex = 3;
@@ -80,35 +70,46 @@
             // openBtn
             // 
             this.openBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.openBtn.Location = new System.Drawing.Point(356, 420);
+            this.openBtn.Location = new System.Drawing.Point(318, 489);
             this.openBtn.Name = "openBtn";
             this.openBtn.Size = new System.Drawing.Size(131, 23);
             this.openBtn.TabIndex = 4;
             this.openBtn.Text = "Открыть";
             this.openBtn.UseVisualStyleBackColor = true;
             // 
+            // NotesGridView
+            // 
+            this.NotesGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.NotesGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.NotesGridView.Location = new System.Drawing.Point(0, 0);
+            this.NotesGridView.Name = "NotesGridView";
+            this.NotesGridView.Size = new System.Drawing.Size(312, 518);
+            this.NotesGridView.TabIndex = 5;
+            // 
             // NotesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(495, 449);
+            this.ClientSize = new System.Drawing.Size(457, 518);
+            this.Controls.Add(this.NotesGridView);
             this.Controls.Add(this.openBtn);
             this.Controls.Add(this.editBtn);
             this.Controls.Add(this.addBtn);
             this.Controls.Add(this.deleteBtn);
-            this.Controls.Add(this.flowLayoutPanelNotes);
             this.Name = "NotesForm";
             this.Text = "NotesForm";
+            ((System.ComponentModel.ISupportInitialize)(this.NotesGridView)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelNotes;
         private System.Windows.Forms.Button deleteBtn;
         private System.Windows.Forms.Button addBtn;
         private System.Windows.Forms.Button editBtn;
         private System.Windows.Forms.Button openBtn;
+        private System.Windows.Forms.DataGridView NotesGridView;
     }
 }

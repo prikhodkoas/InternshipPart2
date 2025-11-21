@@ -53,6 +53,7 @@
     <Compile Include="Control\NoteCard.Designer.cs">
       <DependentUpon>NoteCard.cs</DependentUpon>
     </Compile>
+    <Compile Include="NoteDto.cs" />
     <Compile Include="Service\NoteService.cs" />
     <Compile Include="Repository\NoteRepository.cs" />
     <Compile Include="NotesForm.cs">
