@@ -331,5 +331,45 @@ namespace XMLNotes
                 }
             }
         }
+
+        /// <summary>
+        /// Поиск по ключевым словам
+        /// </summary>
+        private void SearchTextBox_TextChanged(object sender, EventArgs e)
+        {
+            SearchInGrid(SearchTextBox.Text);
+        }
+
+        /// <summary>
+        /// Выделение заметок которые совпадают по ключевому слову
+        /// </summary>
+        /// <param name="keyword"></param>
+        private void SearchInGrid(string keyword)
+        {
+            if (string.IsNullOrWhiteSpace(keyword)) return;
+
+            foreach (DataGridViewRow row in NotesGridView.Rows)
+            {
+                row.Selected = false;
+
+                foreach (DataGridViewCell cell in row.Cells)
+                {
+                    if (cell.Value != null &&
+                        cell.Value.ToString().IndexOf(keyword, StringComparison.OrdinalIgnoreCase) >= 0)
+                    {
+                        row.Selected = true;
+                        break;
+                    }
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Обработчик события потери фокуса textbox'а для поиска 
+        /// </summary>
+        private void SearchTextBox_Leave(object sender, EventArgs e)
+        {
+            SearchTextBox.Text = string.Empty;
+        }
     }
 }

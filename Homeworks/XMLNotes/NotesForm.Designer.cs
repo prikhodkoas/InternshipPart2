@@ -34,16 +34,18 @@
             this.openBtn = new System.Windows.Forms.Button();
             this.NotesGridView = new System.Windows.Forms.DataGridView();
             this.OpenNotesFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.SearchTextBox = new System.Windows.Forms.TextBox();
+            this.searchLbl = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.NotesGridView)).BeginInit();
             this.SuspendLayout();
             // 
             // deleteBtn
             // 
             this.deleteBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.deleteBtn.Location = new System.Drawing.Point(406, 59);
+            this.deleteBtn.Location = new System.Drawing.Point(411, 121);
             this.deleteBtn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.deleteBtn.Name = "deleteBtn";
-            this.deleteBtn.Size = new System.Drawing.Size(180, 35);
+            this.deleteBtn.Size = new System.Drawing.Size(179, 35);
             this.deleteBtn.TabIndex = 3;
             this.deleteBtn.Text = "Удалить";
             this.deleteBtn.UseVisualStyleBackColor = true;
@@ -52,7 +54,7 @@
             // addBtn
             // 
             this.addBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.addBtn.Location = new System.Drawing.Point(409, 14);
+            this.addBtn.Location = new System.Drawing.Point(410, 76);
             this.addBtn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.addBtn.Name = "addBtn";
             this.addBtn.Size = new System.Drawing.Size(180, 35);
@@ -64,7 +66,7 @@
             // editBtn
             // 
             this.editBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.editBtn.Location = new System.Drawing.Point(607, 14);
+            this.editBtn.Location = new System.Drawing.Point(608, 76);
             this.editBtn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.editBtn.Name = "editBtn";
             this.editBtn.Size = new System.Drawing.Size(180, 35);
@@ -76,7 +78,7 @@
             // openBtn
             // 
             this.openBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.openBtn.Location = new System.Drawing.Point(607, 59);
+            this.openBtn.Location = new System.Drawing.Point(608, 121);
             this.openBtn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.openBtn.Name = "openBtn";
             this.openBtn.Size = new System.Drawing.Size(180, 35);
@@ -95,29 +97,54 @@
             this.NotesGridView.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.NotesGridView.Name = "NotesGridView";
             this.NotesGridView.RowHeadersWidth = 62;
-            this.NotesGridView.Size = new System.Drawing.Size(398, 498);
+            this.NotesGridView.Size = new System.Drawing.Size(398, 568);
             this.NotesGridView.TabIndex = 5;
             // 
             // OpenNotesFileDialog
             // 
             this.OpenNotesFileDialog.FileName = "openFileDialog1";
             // 
+            // SearchTextBox
+            // 
+            this.SearchTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.SearchTextBox.Location = new System.Drawing.Point(410, 33);
+            this.SearchTextBox.Multiline = true;
+            this.SearchTextBox.Name = "SearchTextBox";
+            this.SearchTextBox.Size = new System.Drawing.Size(378, 35);
+            this.SearchTextBox.TabIndex = 6;
+            this.SearchTextBox.TextChanged += new System.EventHandler(this.SearchTextBox_TextChanged);
+            this.SearchTextBox.Leave += new System.EventHandler(this.SearchTextBox_Leave);
+            // 
+            // searchLbl
+            // 
+            this.searchLbl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.searchLbl.AutoSize = true;
+            this.searchLbl.Location = new System.Drawing.Point(407, 10);
+            this.searchLbl.Name = "searchLbl";
+            this.searchLbl.Size = new System.Drawing.Size(212, 20);
+            this.searchLbl.TabIndex = 7;
+            this.searchLbl.Text = "Поиск по ключевому слову";
+            // 
             // NotesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 481);
+            this.ClientSize = new System.Drawing.Size(800, 551);
+            this.Controls.Add(this.searchLbl);
+            this.Controls.Add(this.SearchTextBox);
             this.Controls.Add(this.NotesGridView);
             this.Controls.Add(this.openBtn);
             this.Controls.Add(this.editBtn);
             this.Controls.Add(this.addBtn);
             this.Controls.Add(this.deleteBtn);
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.MinimumSize = new System.Drawing.Size(822, 537);
+            this.MinimumSize = new System.Drawing.Size(822, 607);
             this.Name = "NotesForm";
+            this.ShowInTaskbar = false;
             this.Text = "Редактор заметок";
             ((System.ComponentModel.ISupportInitialize)(this.NotesGridView)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -128,5 +155,7 @@
         private System.Windows.Forms.Button openBtn;
         private System.Windows.Forms.DataGridView NotesGridView;
         private System.Windows.Forms.OpenFileDialog OpenNotesFileDialog;
+        private System.Windows.Forms.TextBox SearchTextBox;
+        private System.Windows.Forms.Label searchLbl;
     }
 }
