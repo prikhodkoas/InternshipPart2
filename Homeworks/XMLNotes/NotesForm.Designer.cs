@@ -115,7 +115,7 @@
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.MinimumSize = new System.Drawing.Size(822, 537);
             this.Name = "NotesForm";
-            this.Text = "NotesForm";
+            this.Text = "Редактор заметок";
             ((System.ComponentModel.ISupportInitialize)(this.NotesGridView)).EndInit();
             this.ResumeLayout(false);
 
