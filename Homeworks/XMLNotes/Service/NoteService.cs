@@ -47,9 +47,12 @@ namespace XMLNotes
             _repository.Update(note);
         }
 
-        public void Delete(Guid id)
+        public void Delete(string id)
         {
-            _repository.Delete(id);
+            if(Guid.TryParse(id, out Guid result))
+            {
+                _repository.Delete(result);
+            }
         }
     }
 }

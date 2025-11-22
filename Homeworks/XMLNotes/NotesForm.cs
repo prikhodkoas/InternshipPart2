@@ -254,5 +254,27 @@ namespace XMLNotes
             NoteCard.TextRichTextBox.Text = noteDto.Description;
             NoteCard.CreatedAtDateTimePicker.Value = noteDto.UpdatedAt;
         }
+
+        private void deleteBtn_Click(object sender, EventArgs e)
+        {
+            if (NotesGridView.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Выделите строку для удаления заметки!", "Ошибка");
+                return;
+            }
+            var result = MessageBox.Show(
+                        "Вы уверены, что хотите удалить выбранную заметку?",
+                        "Подтверждение",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question);
+            if (result == DialogResult.Yes)
+            {
+                if (NotesGridView.SelectedRows[0].DataBoundItem is NoteDto noteDto)
+                {
+                    _notes.Remove(noteDto);
+                    _noteService.Delete(noteDto.Id);
+                }
+            }
+        }
     }
 }

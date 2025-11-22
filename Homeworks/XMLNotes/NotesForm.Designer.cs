@@ -43,9 +43,10 @@
             this.deleteBtn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.deleteBtn.Name = "deleteBtn";
             this.deleteBtn.Size = new System.Drawing.Size(180, 35);
-            this.deleteBtn.TabIndex = 1;
+            this.deleteBtn.TabIndex = 3;
             this.deleteBtn.Text = "Удалить";
             this.deleteBtn.UseVisualStyleBackColor = true;
+            this.deleteBtn.Click += new System.EventHandler(this.deleteBtn_Click);
             // 
             // addBtn
             // 
@@ -54,7 +55,7 @@
             this.addBtn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.addBtn.Name = "addBtn";
             this.addBtn.Size = new System.Drawing.Size(180, 35);
-            this.addBtn.TabIndex = 2;
+            this.addBtn.TabIndex = 1;
             this.addBtn.Text = "Добавить";
             this.addBtn.UseVisualStyleBackColor = true;
             this.addBtn.Click += new System.EventHandler(this.addBtn_Click);
@@ -66,7 +67,7 @@
             this.editBtn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.editBtn.Name = "editBtn";
             this.editBtn.Size = new System.Drawing.Size(180, 35);
-            this.editBtn.TabIndex = 3;
+            this.editBtn.TabIndex = 2;
             this.editBtn.Text = "Редактировать";
             this.editBtn.UseVisualStyleBackColor = true;
             this.editBtn.Click += new System.EventHandler(this.editBtn_Click);
