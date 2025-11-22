@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -52,6 +53,22 @@ namespace XMLNotes
             if(Guid.TryParse(id, out Guid result))
             {
                 _repository.Delete(result);
+            }
+        }
+
+        public BindingList<NoteDto> OpenNotesFromFile(string filePath)
+        {
+            try
+            {
+                if (!_repository.ChangeFilePath(filePath))
+                {
+                    throw new InvalidOperationException("Не удалось открыть файл заметок: путь некорректен.");
+                }
+                return GetAllNotes();
+            }
+            catch
+            {
+                throw new FormatException("Не удалось открыть файл заметок: файл не соответствует структуре!");
             }
         }
     }

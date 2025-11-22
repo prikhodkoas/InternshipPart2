@@ -33,6 +33,7 @@
             this.editBtn = new System.Windows.Forms.Button();
             this.openBtn = new System.Windows.Forms.Button();
             this.NotesGridView = new System.Windows.Forms.DataGridView();
+            this.OpenNotesFileDialog = new System.Windows.Forms.OpenFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.NotesGridView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -82,6 +83,7 @@
             this.openBtn.TabIndex = 4;
             this.openBtn.Text = "Открыть";
             this.openBtn.UseVisualStyleBackColor = true;
+            this.openBtn.Click += new System.EventHandler(this.openBtn_Click);
             // 
             // NotesGridView
             // 
@@ -95,6 +97,10 @@
             this.NotesGridView.RowHeadersWidth = 62;
             this.NotesGridView.Size = new System.Drawing.Size(398, 498);
             this.NotesGridView.TabIndex = 5;
+            // 
+            // OpenNotesFileDialog
+            // 
+            this.OpenNotesFileDialog.FileName = "openFileDialog1";
             // 
             // NotesForm
             // 
@@ -121,5 +127,6 @@
         private System.Windows.Forms.Button editBtn;
         private System.Windows.Forms.Button openBtn;
         private System.Windows.Forms.DataGridView NotesGridView;
+        private System.Windows.Forms.OpenFileDialog OpenNotesFileDialog;
     }
 }

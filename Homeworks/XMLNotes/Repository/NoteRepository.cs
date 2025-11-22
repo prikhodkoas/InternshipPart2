@@ -10,11 +10,40 @@ using XMLNotes.Model;
 /// </summary>
 public class NoteRepository
 {
-    private readonly string _filePath;
-
+    private string _filePath;
+    public string FilePath {  get { return _filePath; } }
     public NoteRepository(string filePath)
     {
-        _filePath = filePath;
+        ChangeFilePath(filePath);
+    }
+
+    /// <summary>
+    /// Безопасная смена пути к файлу
+    /// </summary>
+    /// <param name="newPath">Новый путь к XML файлу</param>
+    /// <returns>Успешно ли сменили путь</returns>
+    public bool ChangeFilePath(string newPath)
+    {
+        if (string.IsNullOrWhiteSpace(newPath))
+            return false;
+        try
+        {
+            var dir = Path.GetDirectoryName(newPath);
+            if (!Directory.Exists(dir))
+                return false;
+
+            if (!File.Exists(newPath))
+            {
+                new XDocument(new XElement("Notes")).Save(newPath);
+            }
+
+            _filePath = newPath;
+            return true;
+        }
+        catch
+        {
+            return false; 
+        }
     }
 
     /// <summary>

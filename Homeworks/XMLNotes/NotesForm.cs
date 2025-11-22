@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using XMLNotes.Model;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace XMLNotes
 {
@@ -273,6 +274,29 @@ namespace XMLNotes
                 {
                     _notes.Remove(noteDto);
                     _noteService.Delete(noteDto.Id);
+                }
+            }
+        }
+
+        private void openBtn_Click(object sender, EventArgs e)
+        {
+            OpenNotesFileDialog.Filter = "XML файлы (*.xml)|*.xml";
+            OpenNotesFileDialog.Title = "Выберите файл заметок";
+            if (OpenNotesFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    _notes = _noteService.OpenNotesFromFile(OpenNotesFileDialog.FileName);
+
+                    NotesGridView.DataSource = _notes;
+
+                    MessageBox.Show("Файл успешно открыт!", "Информация",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ошибка открытия файла: {ex.Message}", "Ошибка",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
