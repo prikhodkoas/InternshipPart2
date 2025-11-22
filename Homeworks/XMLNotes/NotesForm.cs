@@ -12,7 +12,8 @@ namespace XMLNotes
     public partial class NotesForm : Form
     {
         private NoteCard NoteCard { get; set; }
-        private Button ApplyBtn {  get; set; }
+        private Button ApplyBtn { get; set; }
+        private Button CancelButton { get; set; }
 
         private readonly NoteService _noteService;
   
@@ -24,9 +25,10 @@ namespace XMLNotes
 
             NoteCard = CreateCard();
             this.Controls.Add(NoteCard);
-            ApplyBtn = CreateButton();
+            ApplyBtn = CreateApplyButton();
             this.Controls.Add(ApplyBtn);
-
+            CancelButton = CreateCancelButton();
+            this.Controls.Add(CancelButton);
 
             NotesGridView.DataSource = _notes;
             NotesGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
@@ -43,7 +45,18 @@ namespace XMLNotes
         }
 
         /// <summary>
-        /// Создание динамически карточки заметки на форме
+        /// Загрузка заметок в таблицу с заметками
+        /// </summary>
+        private void LoadAllNotes()
+        {
+            _notes = _noteService.GetAllNotes();
+            NotesGridView.DataSource = _notes;
+        }
+
+        #region Инициализация динамически создаваемых элементов
+
+        /// <summary>
+        /// Создание карточки заметки на форме
         /// </summary>
         /// <returns>Карточка заметки</returns>
         private NoteCard CreateCard()
@@ -59,42 +72,84 @@ namespace XMLNotes
         }
 
         /// <summary>
-        /// Создание динамически кнопки подтверждения на форме
+        /// Создание кнопки подтверждения на форме
         /// </summary>
         /// <returns>Карточка заметки</returns>
-        private Button CreateButton()
+        private Button CreateApplyButton()
         {
             var btn = new Button();
             btn.Size = new Size(120, 25);
-            btn.Location = new Point(this.Width - 27 - btn.Size.Width,
+            btn.Location = new Point(ClientSize.Width - 16 - btn.Size.Width,
                 this.NoteCard.Location.Y + this.NoteCard.Height + 8);
             btn.Anchor = AnchorStyles.Right | AnchorStyles.Top;
             btn.Text = "Подтвердить";
-            btn.Click += Btn_Click;
+            btn.Click += ApplyBtn_Click;
             btn.Visible = false;
             return btn;
         }
 
-        private void Btn_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Создание кнопки отмены на форме
+        /// </summary>
+        /// <returns>Карточка заметки</returns>
+        private Button CreateCancelButton()
         {
+            var btn = new Button();
+            btn.Size = new Size(120, 25);
+            btn.Location = new Point(ApplyBtn.Left - btn.Width - 8,
+                NoteCard.Bottom + 8);
+            btn.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btn.Text = "Отмена";
+            btn.Click += CancelBtn_Click;
+            btn.Visible = false;
+            return btn;
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Обработчик нажатия на кнопку подтверждения создания заметки
+        /// </summary>
+        private void ApplyBtn_Click(object sender, EventArgs e)
+        {
+            HideControls();
             var noteDto = new NoteDto()
             {
                 Title = NoteCard?.TitleTextBox?.Text,
                 Description = NoteCard?.TextRichTextBox?.Text,
                 UpdatedAt = NoteCard.CreatedAtDateTimePicker.Value
-            }; 
+            };
             _noteService.Add(noteDto);
             _notes.Add(noteDto);
-
-            NoteCard.Visible = false;
-            ApplyBtn.Visible = false;
         }
 
-        public void LoadFromNote(NoteCard card, Note note)
+        /// <summary>
+        /// Обработчик нажатия на кнопку отмены создания заметки
+        /// </summary>
+        private void CancelBtn_Click(object sender, EventArgs e)
         {
-            card.TitleTextBox.Text = note.Title;
-            card.TextRichTextBox.Text = note.Text;
-            card.CreatedAtDateTimePicker.Value = note.CreatedAt;
+            InitializeCard();
+            HideControls();
+        }
+        
+        /// <summary>
+        /// Скрытие всех контролов для создания заметки
+        /// </summary>
+        private void HideControls()
+        {
+            NoteCard.Visible = false;
+            ApplyBtn.Visible = false;
+            CancelButton.Visible = false;
+        }
+
+        /// <summary>
+        /// Показ контролов для создания заметки
+        /// </summary>
+        private void ShowControls()
+        {
+            NoteCard.Visible = true;
+            ApplyBtn.Visible = true;
+            CancelButton.Visible = true;
         }
 
         /// <summary>
@@ -121,15 +176,6 @@ namespace XMLNotes
         }
 
         /// <summary>
-        /// Загрузка заметок в таблицу с заметками
-        /// </summary>
-        private void LoadAllNotes()
-        {
-            _notes = _noteService.GetAllNotes();
-            NotesGridView.DataSource = _notes;
-        }
-
-        /// <summary>
         /// Инициализация полей в карточке
         /// </summary>
         private void InitializeCard()
@@ -137,6 +183,30 @@ namespace XMLNotes
             NoteCard.TitleTextBox.Text = "Новая заметка";
             NoteCard.TextRichTextBox.Text = "";
             NoteCard.CreatedAtDateTimePicker.Value = DateTime.Now;
+        }
+
+        /// <summary>
+        /// Обработчик кнопки Добавление заметки
+        /// </summary>
+        private void addBtn_Click(object sender, EventArgs e)
+        {
+            InitializeCard();
+            ShowControls();
+
+            NoteCard.Focus();
+            NoteCard.TitleTextBox.Focus();
+            NoteCard.TitleTextBox.SelectAll();
+        }
+
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        public void LoadFromNote(NoteCard card, Note note)
+        {
+            card.TitleTextBox.Text = note.Title;
+            card.TextRichTextBox.Text = note.Text;
+            card.CreatedAtDateTimePicker.Value = note.CreatedAt;
         }
 
         private void AddCardToUI(Note note)
@@ -147,18 +217,6 @@ namespace XMLNotes
             card.TextRichTextBox.Text = note.Text;
             card.CreatedAtDateTimePicker.Value = note.CreatedAt;
 
-        }
-
-        private void addBtn_Click(object sender, EventArgs e)
-        {
-            NoteCard.Visible = true;
-            InitializeCard();
-
-            NoteCard.Focus();
-            NoteCard.TitleTextBox.Focus();
-            NoteCard.TitleTextBox.SelectAll();
-
-            ApplyBtn.Visible = true;
         }
     }
 }
