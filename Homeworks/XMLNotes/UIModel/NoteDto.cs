@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace XMLNotes
 {
+    /// <summary>
+    /// Класс-модель данных, которые биндятся на таблицу
+    /// </summary>
     public class NoteDto : INotifyPropertyChanged
     {
         [Browsable(false)]

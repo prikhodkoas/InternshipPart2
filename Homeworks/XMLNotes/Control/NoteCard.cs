@@ -11,6 +11,9 @@ using XMLNotes.Model;
 
 namespace XMLNotes
 {
+    /// <summary>
+    /// Карточка заметки
+    /// </summary>
     public partial class NoteCard : UserControl
     {
         public Guid Id { get; private set; }
@@ -19,26 +22,11 @@ namespace XMLNotes
         public event EventHandler EditClicked;
         public event EventHandler DeleteClicked;
 
-
         public NoteCard()
         {
             InitializeComponent();
 
-            // Прокрутка мышью
             RegisterMouseWheel(this);
-        }
-        public void SetControlsIsReadOnly(bool readOnly)
-        {
-            TitleTextBox.ReadOnly = readOnly;
-            TextRichTextBox.ReadOnly = readOnly;
-
-            // Для DateTimePicker просто блокируем изменение
-            CreatedAtDateTimePicker.Enabled = !readOnly;
-        }
-
-        private void NoteCard_Click(object sender, EventArgs e)
-        {
-            SetControlsIsReadOnly(false);
         }
 
         /// <summary>

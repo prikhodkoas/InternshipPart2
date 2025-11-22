@@ -7,6 +7,9 @@ using XMLNotes.Model;
 
 namespace XMLNotes.Mapper
 {
+    /// <summary>
+    /// Маппер UI-модели данных заметок с моделью данных заметок XML
+    /// </summary>
     internal class NoteMapper : IMapper<Note, NoteDto>
     {
         public NoteDto ToDto(Note entity)

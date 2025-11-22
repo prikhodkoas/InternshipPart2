@@ -1,28 +1,53 @@
 ﻿using System;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using XMLNotes.Model;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
+using XMLNotes.Repository;
 
 namespace XMLNotes
 {
+    /// <summary>
+    /// Форма для работы с заметками
+    /// </summary>
     public partial class NotesForm : Form
     {
+        /// <summary>
+        /// Контрол для взаимодействия с заметкой
+        /// </summary>
         private NoteCard NoteCard { get; set; }
+
+        /// <summary>
+        /// Кнопка подтверждения действия
+        /// </summary>
         private Button ApplyBtn { get; set; }
+
+        /// <summary>
+        /// Кнопка отмены действия
+        /// </summary>
         private Button CancelButton { get; set; }
 
+        /// <summary>
+        /// Сервис по работе с заметками
+        /// </summary>
         private readonly NoteService _noteService;
 
+        /// <summary>
+        /// Структура для биндинга данных на таблицу
+        /// </summary>
         private BindingList<NoteDto> _notes = new BindingList<NoteDto>();
+
+        /// <summary>
+        /// Текущая рабочая заметка
+        /// </summary>
         private NoteDto CurrentNote { get; set; }
 
+        /// <summary>
+        /// Режим работы кнопки подтверждения действия
+        /// </summary>
         private ActionMode _actionMode = ActionMode.Add;
+
         public NotesForm()
         {
             InitializeComponent();
@@ -44,7 +69,7 @@ namespace XMLNotes
 
             // Сервис
             string filePath = Path.Combine(Application.StartupPath, "notes.xml");
-            _noteService = new NoteService(new NoteRepository(filePath));
+            _noteService = new NoteService(new XMLNoteRepository(filePath));
             LoadAllNotes();
         }
 
@@ -256,6 +281,9 @@ namespace XMLNotes
             NoteCard.CreatedAtDateTimePicker.Value = noteDto.UpdatedAt;
         }
 
+        /// <summary>
+        /// Обработчик кнопки Удаление заметки
+        /// </summary>
         private void deleteBtn_Click(object sender, EventArgs e)
         {
             if (NotesGridView.SelectedRows.Count == 0)
@@ -278,6 +306,9 @@ namespace XMLNotes
             }
         }
 
+        /// <summary>
+        /// Обработчик кнопки Открытие нового файла с заметками
+        /// </summary>
         private void openBtn_Click(object sender, EventArgs e)
         {
             OpenNotesFileDialog.Filter = "XML файлы (*.xml)|*.xml";

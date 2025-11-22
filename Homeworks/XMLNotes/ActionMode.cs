@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace XMLNotes
 {
+    // Режим работы кнопки подтверждения
     public enum ActionMode
     {
         Add = 0,

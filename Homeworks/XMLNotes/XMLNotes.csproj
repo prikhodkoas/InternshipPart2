@@ -56,9 +56,10 @@
     <Compile Include="Control\NoteCard.Designer.cs">
       <DependentUpon>NoteCard.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\INoteRepository.cs" />
     <Compile Include="UIModel\NoteDto.cs" />
     <Compile Include="Service\NoteService.cs" />
-    <Compile Include="Repository\NoteRepository.cs" />
+    <Compile Include="Repository\XMLNoteRepository.cs" />
     <Compile Include="NotesForm.cs">
       <SubType>Form</SubType>
     </Compile>

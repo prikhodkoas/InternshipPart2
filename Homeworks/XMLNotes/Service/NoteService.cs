@@ -8,20 +8,35 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using XMLNotes.Mapper;
 using XMLNotes.Model;
+using XMLNotes.Repository;
 
 namespace XMLNotes
 {
+    /// <summary>
+    /// Сервис по работе с заметками
+    /// </summary>
     public class NoteService
     {
+        /// <summary>
+        /// Маппер UI-модели данных заметок с моделью данных заметок XML
+        /// </summary>
         private readonly IMapper<Note, NoteDto> _noteMapper = new NoteMapper();
-        private readonly NoteRepository _repository;
+        
+        /// <summary>
+        /// Репозиторий для сохранения заметок 
+        /// </summary>
+        private readonly INoteRepository _repository;
 
-        public NoteService(NoteRepository repository)
+        public NoteService(INoteRepository repository)
         {
             _repository = repository;
             _repository.Create();
         }
 
+        /// <summary>
+        /// Получение всех заметок из репозитория
+        /// </summary>
+        /// <returns>Список заметок</returns>
         public BindingList<NoteDto> GetAllNotes()
         {
             var notes = _repository.GetAll();
@@ -33,6 +48,10 @@ namespace XMLNotes
             return new BindingList<NoteDto>(notesDto);
         }
 
+        /// <summary>
+        /// Добавление заметки
+        /// </summary>
+        /// <param name="noteDto">UI-модель заметки</param>
         public void Add(NoteDto noteDto)
         {
             var note = _noteMapper.ToEntity(noteDto);
@@ -40,6 +59,10 @@ namespace XMLNotes
             _repository.Add(note);
         }
 
+        /// <summary>
+        /// Обновление заметки
+        /// </summary>
+        /// <param name="noteDto">UI-модель заметки</param>
         public void Update(NoteDto noteDto)
         {
             var note = _noteMapper.ToEntity(noteDto);
@@ -48,6 +71,10 @@ namespace XMLNotes
             _repository.Update(note);
         }
 
+        /// <summary>
+        /// Удаление заметки
+        /// </summary>
+        /// <param name="id">ID UI-модели заметки</param>
         public void Delete(string id)
         {
             if(Guid.TryParse(id, out Guid result))
@@ -56,6 +83,12 @@ namespace XMLNotes
             }
         }
 
+        /// <summary>
+        /// Открытие файла с заметками
+        /// </summary>
+        /// <param name="filePath">Путь к файлу</param>
+        /// <returns></returns>
+        /// <exception cref="FormatException">Файл не соответствует рабочему формату</exception>
         public BindingList<NoteDto> OpenNotesFromFile(string filePath)
         {
             try
