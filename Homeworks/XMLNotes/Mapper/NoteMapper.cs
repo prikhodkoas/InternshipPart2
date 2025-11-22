@@ -13,7 +13,7 @@ namespace XMLNotes.Mapper
         {
             return new NoteDto
             {
-                Id = Guid.NewGuid().ToString(),
+                Id = entity.Id.ToString(),
                 Title = entity.Title,
                 Description = entity.Text,
                 UpdatedAt = entity.CreatedAt
@@ -22,7 +22,12 @@ namespace XMLNotes.Mapper
 
         public Note ToEntity(NoteDto dto)
         {
-            throw new NotImplementedException();
+            return new Note
+            {
+                Title = dto.Title,
+                Text = dto.Description,
+                CreatedAt = dto.UpdatedAt
+            };
         }
     }
 }

@@ -23,9 +23,10 @@ namespace XMLNotes
             InitializeComponent();
 
             NoteCard = CreateCard();
-
+            this.Controls.Add(NoteCard);
             ApplyBtn = CreateButton();
             this.Controls.Add(ApplyBtn);
+
 
             NotesGridView.DataSource = _notes;
             NotesGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
@@ -51,12 +52,11 @@ namespace XMLNotes
             noteCard.Parent = this;
             noteCard.Location = new Point(this.NotesGridView.Width + 8,
                 this.deleteBtn.Location.Y + this.deleteBtn.Height + 8);
-            noteCard.Size = new Size(addBtn.Width + editBtn.Width + 8, 200);
+            noteCard.Size = new Size(addBtn.Width + editBtn.Width + 8, 210);
             noteCard.Anchor = AnchorStyles.Right | AnchorStyles.Top;
             noteCard.Visible = false;
             return noteCard;
         }
-
 
         /// <summary>
         /// Создание динамически кнопки подтверждения на форме
@@ -65,9 +65,9 @@ namespace XMLNotes
         private Button CreateButton()
         {
             var btn = new Button();
-            btn.Size = new Size(180, 35);
-            btn.Location = new Point(this.Width - 8 - btn.Size.Width,
-                this.NotesGridView.Location.Y + this.NotesGridView.Height + 8);
+            btn.Size = new Size(120, 25);
+            btn.Location = new Point(this.Width - 27 - btn.Size.Width,
+                this.NoteCard.Location.Y + this.NoteCard.Height + 8);
             btn.Anchor = AnchorStyles.Right | AnchorStyles.Top;
             btn.Text = "Подтвердить";
             btn.Click += Btn_Click;
@@ -77,7 +77,24 @@ namespace XMLNotes
 
         private void Btn_Click(object sender, EventArgs e)
         {
-            
+            var noteDto = new NoteDto()
+            {
+                Title = NoteCard?.TitleTextBox?.Text,
+                Description = NoteCard?.TextRichTextBox?.Text,
+                UpdatedAt = NoteCard.CreatedAtDateTimePicker.Value
+            }; 
+            _noteService.Add(noteDto);
+            _notes.Add(noteDto);
+
+            NoteCard.Visible = false;
+            ApplyBtn.Visible = false;
+        }
+
+        public void LoadFromNote(NoteCard card, Note note)
+        {
+            card.TitleTextBox.Text = note.Title;
+            card.TextRichTextBox.Text = note.Text;
+            card.CreatedAtDateTimePicker.Value = note.CreatedAt;
         }
 
         /// <summary>
@@ -132,14 +149,6 @@ namespace XMLNotes
 
         }
 
-
-        public void LoadFromNote(NoteCard card, Note note)
-        {
-            card.TitleTextBox.Text = note.Title;
-            card.TextRichTextBox.Text = note.Text;
-            card.CreatedAtDateTimePicker.Value = note.CreatedAt;
-        }
-
         private void addBtn_Click(object sender, EventArgs e)
         {
             NoteCard.Visible = true;
@@ -150,16 +159,6 @@ namespace XMLNotes
             NoteCard.TitleTextBox.SelectAll();
 
             ApplyBtn.Visible = true;
-            // 
-            //var note = new Note
-            //{
-            //    Title = "Новая заметка",
-            //    Text = "",
-            //    CreatedAt = DateTime.Now
-            //};
-
-            //_noteService.Add(note);
-            //AddCardToUI(note);
         }
     }
 }

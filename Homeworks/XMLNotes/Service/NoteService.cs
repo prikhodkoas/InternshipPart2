@@ -32,8 +32,10 @@ namespace XMLNotes
             return new BindingList<NoteDto>(notesDto);
         }
 
-        public void Add(Note note)
+        public void Add(NoteDto noteDto)
         {
+            var note = _noteMapper.ToEntity(noteDto);
+            note.Id = Guid.NewGuid();
             _repository.Add(note);
         }
 
