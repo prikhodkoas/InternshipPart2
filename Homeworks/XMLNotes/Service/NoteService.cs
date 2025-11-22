@@ -39,8 +39,11 @@ namespace XMLNotes
             _repository.Add(note);
         }
 
-        public void Update(Note note)
+        public void Update(NoteDto noteDto)
         {
+            var note = _noteMapper.ToEntity(noteDto);
+            if(Guid.TryParse(noteDto.Id, out Guid result))
+                note.Id = result;
             _repository.Update(note);
         }
 

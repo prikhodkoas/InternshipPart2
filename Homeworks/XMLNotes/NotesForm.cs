@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using XMLNotes.Model;
 
@@ -16,9 +17,11 @@ namespace XMLNotes
         private Button CancelButton { get; set; }
 
         private readonly NoteService _noteService;
-  
-        private BindingList<NoteDto> _notes = new BindingList<NoteDto>(); 
 
+        private BindingList<NoteDto> _notes = new BindingList<NoteDto>();
+        private NoteDto CurrentNote { get; set; }
+
+        private ActionMode _actionMode = ActionMode.Add;
         public NotesForm()
         {
             InitializeComponent();
@@ -108,23 +111,47 @@ namespace XMLNotes
         #endregion
 
         /// <summary>
-        /// Обработчик нажатия на кнопку подтверждения создания заметки
+        /// Обработчик нажатия на кнопку подтверждения действия с заметкой
         /// </summary>
         private void ApplyBtn_Click(object sender, EventArgs e)
         {
-            HideControls();
-            var noteDto = new NoteDto()
+            switch (_actionMode)
             {
-                Title = NoteCard?.TitleTextBox?.Text,
-                Description = NoteCard?.TextRichTextBox?.Text,
-                UpdatedAt = NoteCard.CreatedAtDateTimePicker.Value
-            };
-            _noteService.Add(noteDto);
-            _notes.Add(noteDto);
+                case ActionMode.Add:
+                    {
+                        HideControls();
+
+                        var noteDto = new NoteDto()
+                        {
+                            Title = NoteCard?.TitleTextBox?.Text,
+                            Description = NoteCard?.TextRichTextBox?.Text,
+                            UpdatedAt = NoteCard.CreatedAtDateTimePicker.Value
+                        };
+                        _notes.Add(noteDto);
+
+                        _noteService.Add(noteDto);
+                    }
+                    break;
+                case ActionMode.Edit:
+                    {
+                        HideControls();
+
+                        var noteDto = _notes.FirstOrDefault(n => n.Id == CurrentNote.Id);
+                        if (noteDto != null)
+                        {
+                            noteDto.Title = NoteCard.TitleTextBox.Text;
+                            noteDto.Description = NoteCard.TextRichTextBox.Text;
+                            noteDto.UpdatedAt = NoteCard.CreatedAtDateTimePicker.Value;
+                        }
+
+                        _noteService.Update(noteDto);
+                    }
+                    break;
+            }
         }
 
         /// <summary>
-        /// Обработчик нажатия на кнопку отмены создания заметки
+        /// Обработчик нажатия на кнопку отмены дйствия с заметкой
         /// </summary>
         private void CancelBtn_Click(object sender, EventArgs e)
         {
@@ -196,27 +223,36 @@ namespace XMLNotes
             NoteCard.Focus();
             NoteCard.TitleTextBox.Focus();
             NoteCard.TitleTextBox.SelectAll();
+            _actionMode = ActionMode.Add;
         }
 
-        
         /// <summary>
-        /// 
+        /// Обработчик кнопки Редактирование заметки
         /// </summary>
-        public void LoadFromNote(NoteCard card, Note note)
+        private void editBtn_Click(object sender, EventArgs e)
         {
-            card.TitleTextBox.Text = note.Title;
-            card.TextRichTextBox.Text = note.Text;
-            card.CreatedAtDateTimePicker.Value = note.CreatedAt;
+            if (NotesGridView.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Выделите строку для редактирования заметки!", "Ошибка");
+                return;
+            }
+            if (NotesGridView.SelectedRows[0].DataBoundItem is NoteDto noteDto)
+            {
+                LoadFromNote(noteDto);
+                ShowControls();
+                CurrentNote = noteDto;
+                _actionMode = ActionMode.Edit;
+            }
         }
 
-        private void AddCardToUI(Note note)
+        /// <summary>
+        /// Инициализация карточки заметки для редактирования
+        /// </summary>
+        public void LoadFromNote(NoteDto noteDto)
         {
-            var card = new NoteCard();
-
-            card.TitleTextBox.Text = note.Title;
-            card.TextRichTextBox.Text = note.Text;
-            card.CreatedAtDateTimePicker.Value = note.CreatedAt;
-
+            NoteCard.TitleTextBox.Text = noteDto.Title;
+            NoteCard.TextRichTextBox.Text = noteDto.Description;
+            NoteCard.CreatedAtDateTimePicker.Value = noteDto.UpdatedAt;
         }
     }
 }
