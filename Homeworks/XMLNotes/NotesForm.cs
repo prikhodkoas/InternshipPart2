@@ -12,6 +12,8 @@ namespace XMLNotes
     public partial class NotesForm : Form
     {
         private NoteCard NoteCard { get; set; }
+        private Button ApplyBtn {  get; set; }
+
         private readonly NoteService _noteService;
   
         private BindingList<NoteDto> _notes = new BindingList<NoteDto>(); 
@@ -19,7 +21,12 @@ namespace XMLNotes
         public NotesForm()
         {
             InitializeComponent();
+
             NoteCard = CreateCard();
+
+            ApplyBtn = CreateButton();
+            this.Controls.Add(ApplyBtn);
+
             NotesGridView.DataSource = _notes;
             NotesGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             NotesGridView.AllowUserToAddRows = false;
@@ -28,7 +35,7 @@ namespace XMLNotes
             NotesGridView.RowHeaderMouseClick += NotesGridView_RowHeaderMouseClick;
             NotesGridView.CellClick += NotesGridView_CellClick;
 
-            // Создаём сервис
+            // Сервис
             string filePath = Path.Combine(Application.StartupPath, "notes.xml");
             _noteService = new NoteService(new NoteRepository(filePath));
             LoadAllNotes();
@@ -48,6 +55,29 @@ namespace XMLNotes
             noteCard.Anchor = AnchorStyles.Right | AnchorStyles.Top;
             noteCard.Visible = false;
             return noteCard;
+        }
+
+
+        /// <summary>
+        /// Создание динамически кнопки подтверждения на форме
+        /// </summary>
+        /// <returns>Карточка заметки</returns>
+        private Button CreateButton()
+        {
+            var btn = new Button();
+            btn.Size = new Size(180, 35);
+            btn.Location = new Point(this.Width - 8 - btn.Size.Width,
+                this.NotesGridView.Location.Y + this.NotesGridView.Height + 8);
+            btn.Anchor = AnchorStyles.Right | AnchorStyles.Top;
+            btn.Text = "Подтвердить";
+            btn.Click += Btn_Click;
+            btn.Visible = false;
+            return btn;
+        }
+
+        private void Btn_Click(object sender, EventArgs e)
+        {
+            
         }
 
         /// <summary>
@@ -100,7 +130,6 @@ namespace XMLNotes
             card.TextRichTextBox.Text = note.Text;
             card.CreatedAtDateTimePicker.Value = note.CreatedAt;
 
-            card.Click += Card_Click;
         }
 
 
@@ -109,11 +138,6 @@ namespace XMLNotes
             card.TitleTextBox.Text = note.Title;
             card.TextRichTextBox.Text = note.Text;
             card.CreatedAtDateTimePicker.Value = note.CreatedAt;
-        }
-
-        private void Card_Click(object sender, EventArgs e)
-        {
-            
         }
 
         private void addBtn_Click(object sender, EventArgs e)
@@ -125,6 +149,7 @@ namespace XMLNotes
             NoteCard.TitleTextBox.Focus();
             NoteCard.TitleTextBox.SelectAll();
 
+            ApplyBtn.Visible = true;
             // 
             //var note = new Note
             //{

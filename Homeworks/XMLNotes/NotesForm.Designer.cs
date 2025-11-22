@@ -39,7 +39,7 @@
             // deleteBtn
             // 
             this.deleteBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.deleteBtn.Location = new System.Drawing.Point(445, 57);
+            this.deleteBtn.Location = new System.Drawing.Point(470, 59);
             this.deleteBtn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.deleteBtn.Name = "deleteBtn";
             this.deleteBtn.Size = new System.Drawing.Size(180, 35);
@@ -50,7 +50,7 @@
             // addBtn
             // 
             this.addBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.addBtn.Location = new System.Drawing.Point(445, 14);
+            this.addBtn.Location = new System.Drawing.Point(470, 14);
             this.addBtn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.addBtn.Name = "addBtn";
             this.addBtn.Size = new System.Drawing.Size(180, 35);
@@ -62,7 +62,7 @@
             // editBtn
             // 
             this.editBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.editBtn.Location = new System.Drawing.Point(643, 14);
+            this.editBtn.Location = new System.Drawing.Point(668, 14);
             this.editBtn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.editBtn.Name = "editBtn";
             this.editBtn.Size = new System.Drawing.Size(180, 35);
@@ -73,7 +73,7 @@
             // openBtn
             // 
             this.openBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.openBtn.Location = new System.Drawing.Point(643, 59);
+            this.openBtn.Location = new System.Drawing.Point(668, 59);
             this.openBtn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.openBtn.Name = "openBtn";
             this.openBtn.Size = new System.Drawing.Size(180, 35);
@@ -91,7 +91,7 @@
             this.NotesGridView.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.NotesGridView.Name = "NotesGridView";
             this.NotesGridView.RowHeadersWidth = 62;
-            this.NotesGridView.Size = new System.Drawing.Size(437, 429);
+            this.NotesGridView.Size = new System.Drawing.Size(459, 429);
             this.NotesGridView.TabIndex = 5;
             // 
             // NotesForm
